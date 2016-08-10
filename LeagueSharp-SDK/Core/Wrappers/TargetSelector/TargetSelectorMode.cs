@@ -25,9 +25,9 @@ namespace LeagueSharp.SDK
 
     using LeagueSharp.SDK.UI;
     using LeagueSharp.SDK.Utils;
+
+    
     using EloBuddy;
-
-
 
     /// <summary>
     ///     The mode menu for the TargetSelector

@@ -701,7 +701,7 @@ namespace LeagueSharp.SDK
 
             if (Variables.TickCount - this.iconColorTick > 400 && this.IconFlash)
             {
-                this.IconColor = this.ActiveIconColor.Equals(this.IconColor) ? this.SecondIconColor : this.IconColor;
+                this.IconColor = this.ActiveIconColor == this.IconColor ? this.SecondIconColor : this.IconColor;
                 this.iconColorTick = Variables.TickCount;
             }
         }

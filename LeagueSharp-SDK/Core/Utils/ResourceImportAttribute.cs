@@ -20,6 +20,7 @@ namespace LeagueSharp.SDK.Utils
     using System;
     using EloBuddy;
 
+
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Field | AttributeTargets.Property)]
     internal class ResourceImportAttribute : Attribute
     {

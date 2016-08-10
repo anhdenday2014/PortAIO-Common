@@ -22,15 +22,12 @@
 
 namespace LeagueSharp.SDK.UI.Skins
 {
-    using EloBuddy;
     using SharpDX;
     using SharpDX.Direct3D9;
-    using System;
-
+    using EloBuddy;
     /// <summary>
     ///     Default Skin Settings.
     /// </summary>
-    [Serializable]
     public abstract class MenuSettings
     {
         #region Static Fields
@@ -55,7 +52,7 @@ namespace LeagueSharp.SDK.UI.Skins
             ContainerHeight = 30;
             ContainerSelectedColor = new ColorBGRA(255, 255, 255, 255 / 2);
             ContainerSeparatorColor = new ColorBGRA(255, 255, 255, 100);
-            Position = new SerializableVector2(30, 30).ToVector2();
+            Position = new Vector2(30, 30);
             ContainerWidth = 200f;
             Font = new Font(
                 EloBuddy.Drawing.Direct3DDevice,
@@ -161,7 +158,7 @@ namespace LeagueSharp.SDK.UI.Skins
         /// <summary>
         ///     Gets or sets the default menu zero-position.
         /// </summary>
-        public static SerializableVector2 Position
+        public static Vector2 Position
         {
             get
             {

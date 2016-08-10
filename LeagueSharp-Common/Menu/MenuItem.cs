@@ -5,12 +5,13 @@
     using System.Drawing;
     using System.Linq;
     using System.Reflection;
-    using EloBuddy;
+
     using SharpDX;
     using SharpDX.Direct3D9;
 
     using Color = SharpDX.Color;
     using Rectangle = SharpDX.Rectangle;
+    using EloBuddy;
 
     /// <summary>
     ///     The menu item.
@@ -219,7 +220,7 @@
         {
             get
             {
-                return MenuDrawHelper.Font.MeasureText(this.DisplayName).Width + this.Height * 2 + 10
+                return MenuDrawHelper.Font.MeasureText((this.DisplayName)).Width + this.Height * 2 + 10
                        + ((this.ValueType == MenuValueType.StringList)
                               ? this.GetValue<StringList>()
                                     .SList.Select(v => MenuDrawHelper.Font.MeasureText(v).Width + 25)
@@ -674,7 +675,7 @@
         /// </summary>
         internal void OnDraw()
         {
-            var s = this.DisplayName;
+            var s = (this.DisplayName);
 
             MenuDrawHelper.DrawBox(
                 this.Position,
@@ -701,7 +702,10 @@
             switch (this.ValueType)
             {
                 case MenuValueType.Boolean:
-                    MenuDrawHelper.DrawOnOff(this.GetValue<bool>(), new Vector2(this.Position.X + this.Width - this.Height, this.Position.Y), this);
+                    MenuDrawHelper.DrawOnOff(
+                        this.GetValue<bool>(),
+                        new Vector2(this.Position.X + this.Width - this.Height, this.Position.Y),
+                        this);
                     break;
 
                 case MenuValueType.Slider:
@@ -710,37 +714,91 @@
 
                 case MenuValueType.KeyBind:
                     var val = this.GetValue<KeyBind>();
+
                     if (this.Interacting)
                     {
-                        s = "Press new key(s)";
+                        s = ("Press new key(s)");
                     }
+
                     if (val.Key != 0)
                     {
-                        var x = !string.IsNullOrEmpty(this.Tooltip) ? (int)this.Position.X + this.Width - this.Height - font.MeasureText("[" + Utils.KeyToText(val.Key) + "]").Width - 35 : (int)this.Position.X + this.Width - this.Height - font.MeasureText("[" + Utils.KeyToText(val.Key) + "]").Width - 10;
-                        font.DrawText(null, "[" + Utils.KeyToText(val.Key) + "]", new Rectangle(x, (int)this.Position.Y, this.Width, this.Height), FontDrawFlags.VerticalCenter, new ColorBGRA(1, 169, 234, 255));
+                        var x = !string.IsNullOrEmpty(this.Tooltip)
+                                    ? (int)this.Position.X + this.Width - this.Height
+                                      - font.MeasureText("[" + Utils.KeyToText(val.Key) + "]").Width - 35
+                                    : (int)this.Position.X + this.Width - this.Height
+                                      - font.MeasureText("[" + Utils.KeyToText(val.Key) + "]").Width - 10;
+
+                        font.DrawText(
+                            null,
+                            "[" + Utils.KeyToText(val.Key) + "]",
+                            new Rectangle(x, (int)this.Position.Y, this.Width, this.Height),
+                            FontDrawFlags.VerticalCenter,
+                            new ColorBGRA(1, 169, 234, 255));
                     }
+
                     if (val.SecondaryKey != 0)
                     {
-                        var x_secondary = !string.IsNullOrEmpty(this.Tooltip) ? (int)this.Position.X + this.Width - this.Height - font.MeasureText("[" + Utils.KeyToText(val.Key) + "]").Width - font.MeasureText("[" + Utils.KeyToText(val.Key) + "]").Width / 4 - font.MeasureText("[" + Utils.KeyToText(val.SecondaryKey) + "]").Width - 35 : (int)this.Position.X + this.Width - this.Height - font.MeasureText("[" + Utils.KeyToText(val.Key) + "]").Width - font.MeasureText("[" + Utils.KeyToText(val.Key) + "]").Width / 4 - font.MeasureText("[" + Utils.KeyToText(val.SecondaryKey) + "]").Width - 10;
-                        font.DrawText( null,"[" + Utils.KeyToText(val.SecondaryKey) + "]", new Rectangle(x_secondary, (int)this.Position.Y, this.Width, this.Height), FontDrawFlags.VerticalCenter, new ColorBGRA(1, 169, 234, 255));
+                        var x_secondary = !string.IsNullOrEmpty(this.Tooltip)
+                                              ? (int)this.Position.X + this.Width - this.Height
+                                                - font.MeasureText("[" + Utils.KeyToText(val.Key) + "]").Width
+                                                - font.MeasureText("[" + Utils.KeyToText(val.Key) + "]").Width / 4
+                                                - font.MeasureText("[" + Utils.KeyToText(val.SecondaryKey) + "]").Width
+                                                - 35
+                                              : (int)this.Position.X + this.Width - this.Height
+                                                - font.MeasureText("[" + Utils.KeyToText(val.Key) + "]").Width
+                                                - font.MeasureText("[" + Utils.KeyToText(val.Key) + "]").Width / 4
+                                                - font.MeasureText("[" + Utils.KeyToText(val.SecondaryKey) + "]").Width
+                                                - 10;
+
+                        font.DrawText(
+                            null,
+                            "[" + Utils.KeyToText(val.SecondaryKey) + "]",
+                            new Rectangle(x_secondary, (int)this.Position.Y, this.Width, this.Height),
+                            FontDrawFlags.VerticalCenter,
+                            new ColorBGRA(1, 169, 234, 255));
                     }
-                    MenuDrawHelper.DrawOnOff(val.Active,new Vector2(this.Position.X + this.Width - this.Height, this.Position.Y), this);
+
+                    MenuDrawHelper.DrawOnOff(
+                        val.Active,
+                        new Vector2(this.Position.X + this.Width - this.Height, this.Position.Y),
+                        this);
+
                     break;
 
                 case MenuValueType.Integer:
                     var intVal = this.GetValue<int>();
-                    MenuDrawHelper.Font.DrawText(null, intVal.ToString(), new Rectangle((int)this.Position.X + 5, (int)this.Position.Y, this.Width, this.Height), FontDrawFlags.VerticalCenter | FontDrawFlags.Right, new ColorBGRA(255, 255, 255, 255));
+                    MenuDrawHelper.Font.DrawText(
+                        null,
+                        intVal.ToString(),
+                        new Rectangle((int)this.Position.X + 5, (int)this.Position.Y, this.Width, this.Height),
+                        FontDrawFlags.VerticalCenter | FontDrawFlags.Right,
+                        new ColorBGRA(255, 255, 255, 255));
                     break;
 
                 case MenuValueType.Color:
                     var colorVal = this.GetValue<System.Drawing.Color>();
-                    MenuDrawHelper.DrawBox(this.Position + new Vector2(this.Width - this.Height, 0), this.Height, this.Height,colorVal, 1, System.Drawing.Color.Black);
+                    MenuDrawHelper.DrawBox(
+                        this.Position + new Vector2(this.Width - this.Height, 0),
+                        this.Height,
+                        this.Height,
+                        colorVal,
+                        1,
+                        System.Drawing.Color.Black);
                     break;
 
                 case MenuValueType.Circle:
                     var circleVal = this.GetValue<Circle>();
-                    MenuDrawHelper.DrawBox(this.Position + new Vector2(this.Width - this.Height * 2, 0), this.Height, this.Height, circleVal.Color, 1, System.Drawing.Color.Black);
-                    MenuDrawHelper.DrawOnOff(circleVal.Active, new Vector2(this.Position.X + this.Width - this.Height, this.Position.Y), this);
+                    MenuDrawHelper.DrawBox(
+                        this.Position + new Vector2(this.Width - this.Height * 2, 0),
+                        this.Height,
+                        this.Height,
+                        circleVal.Color,
+                        1,
+                        System.Drawing.Color.Black);
+                    MenuDrawHelper.DrawOnOff(
+                        circleVal.Active,
+                        new Vector2(this.Position.X + this.Width - this.Height, this.Position.Y),
+                        this);
                     break;
 
                 case MenuValueType.StringList:
@@ -761,7 +819,7 @@
 
                     MenuDrawHelper.Font.DrawText(
                         null,
-                        t,
+                        (t),
                         new Rectangle(
                             (int)this.Position.X - 5 - 2 * this.Height,
                             (int)this.Position.Y,
@@ -784,7 +842,7 @@
                 FontDrawFlags.VerticalCenter,
                 this.FontColor);
 
-            var textWidth = font.MeasureText(null, this.DisplayName);
+            var textWidth = font.MeasureText(null, (this.DisplayName));
             if ((this.FontStyle & FontStyle.Strikeout) != 0)
             {
                 Drawing.DrawLine(

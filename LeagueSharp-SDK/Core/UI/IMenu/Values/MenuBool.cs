@@ -27,9 +27,8 @@ namespace LeagueSharp.SDK.UI
     /// <summary>
     ///     Menu boolean.
     /// </summary>
-    [Serializable()]
-    [KnownType(typeof(MenuBool))]
-    public class MenuBool : MenuItem//, ISerializable
+    [Serializable]
+    public class MenuBool : MenuItem, ISerializable
     {
         #region Fields
 
@@ -57,13 +56,6 @@ namespace LeagueSharp.SDK.UI
         /// <param name="uniqueString">
         ///     String used when saving settings.
         /// </param>
-        /// 
-
-        public MenuBool()
-        {
-
-        }
-
         public MenuBool(string name, string displayName, bool value = false, string uniqueString = "")
             : base(name, displayName, uniqueString)
         {
@@ -163,8 +155,7 @@ namespace LeagueSharp.SDK.UI
         ///     serialization.
         /// </param>
         /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
-        //[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
-        /*
+        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
@@ -174,7 +165,6 @@ namespace LeagueSharp.SDK.UI
 
             info.AddValue("value", this.Value);
         }
-        */
 
         #endregion
 
@@ -204,7 +194,7 @@ namespace LeagueSharp.SDK.UI
         ///     serialization.
         /// </param>
         /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
-        //[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         protected virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("value", this.Value);

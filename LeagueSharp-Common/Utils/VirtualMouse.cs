@@ -1,8 +1,9 @@
 ﻿namespace LeagueSharp.Common
 {
     using System;
-    using EloBuddy;
+
     using SharpDX;
+    using EloBuddy;
 
     public static class VirtualMouse
     {

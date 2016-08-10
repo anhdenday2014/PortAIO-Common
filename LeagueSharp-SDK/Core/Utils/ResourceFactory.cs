@@ -21,7 +21,7 @@ namespace LeagueSharp.SDK.Utils
     using System.IO;
     using System.Linq;
     using System.Reflection;
-    //using System.Security.Permissions;
+    using System.Security.Permissions;
     using System.Text;
     using EloBuddy;
 
@@ -29,7 +29,7 @@ namespace LeagueSharp.SDK.Utils
     {
         #region Public Methods and Operators
 
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static byte[] ByteResource(string file, Assembly assembly = null)
         {
             if (file == null)
@@ -55,7 +55,7 @@ namespace LeagueSharp.SDK.Utils
             }
         }
 
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static string StringResource(string file, Assembly assembly = null)
         {
             if (file == null)

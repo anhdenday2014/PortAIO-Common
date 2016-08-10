@@ -25,9 +25,8 @@ namespace LeagueSharp.SDK.UI
 
     using LeagueSharp.SDK.UI.Skins;
     using LeagueSharp.SDK.Utils;
-    using EloBuddy;
+
     using SharpDX;
-    using System.Runtime.Serialization;
 
     /// <summary>
     ///     Menu Value Changed delegate
@@ -39,10 +38,6 @@ namespace LeagueSharp.SDK.UI
     /// <summary>
     ///     Menu User Interface.
     /// </summary>
-    /// 
-    [Serializable()]
-    [KnownType(typeof(Menu))]
-    [DataContract(IsReference = true)]
     public class Menu : AMenuComponent
     {
         #region Fields
@@ -65,11 +60,6 @@ namespace LeagueSharp.SDK.UI
         #endregion
 
         #region Constructors and Destructors
-
-        public Menu()
-        {
-
-        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Menu" /> class.
@@ -342,7 +332,7 @@ namespace LeagueSharp.SDK.UI
         /// <param name="position">
         ///     The position.
         /// </param>
-        public override void OnDraw(SerializableVector2 position)
+        public override void OnDraw(Vector2 position)
         {
             this.Position = position;
             this.Handler.Draw();

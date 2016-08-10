@@ -24,6 +24,7 @@
 
 namespace LeagueSharp.SDK.UI.Skins.Tech
 {
+    using EloBuddy;
     using SharpDX;
     using SharpDX.Direct3D9;
 
@@ -44,7 +45,7 @@ namespace LeagueSharp.SDK.UI.Skins.Tech
             ContainerSelectedColor = new ColorBGRA(11, 32, 33, 255);
 
             Font = new Font(
-                EloBuddy.Drawing.Direct3DDevice,
+                Drawing.Direct3DDevice,
                 14,
                 0,
                 FontWeight.DoNotCare,
@@ -57,7 +58,7 @@ namespace LeagueSharp.SDK.UI.Skins.Tech
                 "Arial Rounded MT Bold");
 
             FontCaption = new Font(
-                EloBuddy.Drawing.Direct3DDevice,
+                Drawing.Direct3DDevice,
                 14,
                 0,
                 FontWeight.DoNotCare,
@@ -70,7 +71,7 @@ namespace LeagueSharp.SDK.UI.Skins.Tech
                 "Arial Rounded MT Bold");
 
             FontMenuSymbol = new Font(
-                EloBuddy.Drawing.Direct3DDevice,
+                Drawing.Direct3DDevice,
                 20,
                 0,
                 FontWeight.DoNotCare,

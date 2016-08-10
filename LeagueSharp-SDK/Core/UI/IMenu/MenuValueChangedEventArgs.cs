@@ -22,7 +22,6 @@ namespace LeagueSharp.SDK.UI
     /// <summary>
     ///     Arguments for the OnValueChanged event.
     /// </summary>
-    [Serializable()]
     public class MenuValueChangedEventArgs : EventArgs
     {
         #region Constructors and Destructors

@@ -20,6 +20,7 @@ namespace LeagueSharp.SDK
     using System;
     using System.Reflection;
     using EloBuddy;
+
     /// <summary>
     ///     Provides events for OnStealth
     /// </summary>

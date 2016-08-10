@@ -19,9 +19,9 @@ namespace LeagueSharp.SDK.Utils
 {
     using System.Linq;
     using System.Text.RegularExpressions;
+    using EloBuddy;
 
     using LeagueSharp.SDK.Enumerations;
-    using EloBuddy;
 
     /// <summary>
     ///     The jungle utility class, provides utils for jungle related items.

@@ -27,6 +27,7 @@ namespace LeagueSharp.SDK.UI.Skins.Blue
 
     using SharpDX;
     using SharpDX.Direct3D9;
+    using EloBuddy;
 
     /// <summary>
     ///     A default implementation of <see cref="ADrawable{MenuButton}" />
@@ -47,7 +48,7 @@ namespace LeagueSharp.SDK.UI.Skins.Blue
         /// <summary>
         ///     The line.
         /// </summary>
-        private static readonly Line Line = new Line(EloBuddy.Drawing.Direct3DDevice) { GLLines = true };
+        private static readonly Line Line = new Line(Drawing.Direct3DDevice) { GLLines = true };
 
         #endregion
 

@@ -6,7 +6,7 @@
     using System.Reflection;
     using EloBuddy;
 
-
+    
 
     /// <summary>
     ///     Queues actions.

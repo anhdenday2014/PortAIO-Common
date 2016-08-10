@@ -18,17 +18,11 @@
 namespace LeagueSharp.SDK.UI.Skins
 {
     using LeagueSharp.SDK.Utils;
-    using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     ///     Provides an implementation of <see cref="ADrawable" /> that does nothing. This is used to prevent exceptions when
     ///     no <see cref="ADrawable" /> exists for a given <see cref="AMenuComponent" />.
     /// </summary>
-    /// 
-    [Serializable()]
-    [KnownType(typeof(ADrawableAdapter))]
-    [DataContract(IsReference = true)]
     public class ADrawableAdapter : ADrawable
     {
         #region Public Methods and Operators

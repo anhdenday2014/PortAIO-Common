@@ -26,6 +26,7 @@ namespace LeagueSharp.SDK.UI.Skins.Light
 
     using SharpDX;
     using SharpDX.Direct3D9;
+    using EloBuddy;
 
     /// <summary>
     ///     Implements a default ITheme.
@@ -37,7 +38,7 @@ namespace LeagueSharp.SDK.UI.Skins.Light
         /// <summary>
         ///     The line.
         /// </summary>
-        private static readonly Line Line = new Line(EloBuddy.Drawing.Direct3DDevice) { GLLines = true, Width = 1 };
+        private static readonly Line Line = new Line(Drawing.Direct3DDevice) { GLLines = true, Width = 1 };
 
         #endregion
 

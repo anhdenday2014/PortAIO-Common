@@ -1,7 +1,8 @@
 ﻿namespace LeagueSharp.Common
 {
-    using SharpDX;
     using EloBuddy;
+    using SharpDX;
+
     /// <summary>
     ///     The cursor tracker class.
     /// </summary>

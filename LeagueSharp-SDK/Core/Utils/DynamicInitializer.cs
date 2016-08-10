@@ -19,9 +19,9 @@ namespace LeagueSharp.SDK.Utils
 {
     using System;
     using System.Reflection.Emit;
-
     using EloBuddy;
 
+    
 
     /// <summary>
     ///     Dynamic instantiation from classes

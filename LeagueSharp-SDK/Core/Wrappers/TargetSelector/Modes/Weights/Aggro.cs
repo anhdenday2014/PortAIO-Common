@@ -114,7 +114,7 @@ namespace LeagueSharp.SDK.TSModes.Weights
         /// <param name="args">
         ///     The <see cref="LeagueSharp.GameObjectAggroEventArgs" /> instance containing the event data.
         /// </param>
-    /*    private static void OnObjAiBaseAggro(Obj_AI_Base sender, GameObjectAggroEventArgs args)
+   /*     private static void OnObjAiBaseAggro(Obj_AI_Base sender, GameObjectAggroEventArgs args)
         {
             if (!sender.IsEnemy)
             {

@@ -24,14 +24,10 @@ namespace LeagueSharp.SDK.UI.Skins.Default
 
     using SharpDX;
     using SharpDX.Direct3D9;
-    using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     ///     A default implementation of a <see cref="ADrawable{MenuList}" />
     /// </summary>
-    [Serializable()]
-    [KnownType(typeof(DefaultList))]
     public class DefaultList : ADrawable<MenuList>
     {
         #region Constants
@@ -119,12 +115,12 @@ namespace LeagueSharp.SDK.UI.Skins.Default
             Line.Draw(
                 new[]
                     {
-                        new SerializableVector2(
+                        new Vector2(
                             position.X + this.Component.MenuWidth - (this.dropDownButtonWidth / 2f),
-                            position.Y + 1).ToVector2(),
-                        new SerializableVector2(
+                            position.Y + 1),
+                        new Vector2(
                             position.X + this.Component.MenuWidth - (this.dropDownButtonWidth / 2f),
-                            position.Y + MenuSettings.ContainerHeight).ToVector2()
+                            position.Y + MenuSettings.ContainerHeight)
                     },
                 MenuSettings.HoverColor);
             Line.End();
@@ -135,10 +131,10 @@ namespace LeagueSharp.SDK.UI.Skins.Default
                 Line.Draw(
                     new[]
                         {
-                            new SerializableVector2(
+                            new Vector2(
                                 position.X + this.Component.MenuWidth - dropdownMenuWidth,
-                                position.Y + (Line.Width / 2)).ToVector2(),
-                            new SerializableVector2(position.X + this.Component.MenuWidth, position.Y + (Line.Width / 2)).ToVector2()
+                                position.Y + (Line.Width / 2)),
+                            new Vector2(position.X + this.Component.MenuWidth, position.Y + (Line.Width / 2))
                         },
                     MenuSettings.HoverColor);
                 Line.End();
@@ -155,10 +151,10 @@ namespace LeagueSharp.SDK.UI.Skins.Default
             Line.Draw(
                 new[]
                     {
-                        new SerializableVector2(position.X + this.Component.MenuWidth - this.dropDownButtonWidth - 1, position.Y + 1).ToVector2(),
-                        new SerializableVector2(
+                        new Vector2(position.X + this.Component.MenuWidth - this.dropDownButtonWidth - 1, position.Y + 1),
+                        new Vector2(
                             position.X + this.Component.MenuWidth - this.dropDownButtonWidth - 1,
-                            position.Y + MenuSettings.ContainerHeight).ToVector2()
+                            position.Y + MenuSettings.ContainerHeight)
                     },
                 MenuSettings.ContainerSeparatorColor);
             Line.End();
@@ -174,14 +170,14 @@ namespace LeagueSharp.SDK.UI.Skins.Default
             Line.Draw(
                 new[]
                     {
-                        new SerializableVector2(
+                        new Vector2(
                             position.X + this.Component.MenuWidth - this.dropDownButtonWidth - (2 * TextSpacing)
                             - this.Component.MaxStringWidth,
-                            position.Y + 1).ToVector2(),
-                        new SerializableVector2(
+                            position.Y + 1),
+                        new Vector2(
                             position.X + this.Component.MenuWidth - this.dropDownButtonWidth - (2 * TextSpacing)
                             - this.Component.MaxStringWidth,
-                            position.Y + MenuSettings.ContainerHeight).ToVector2()
+                            position.Y + MenuSettings.ContainerHeight)
                     },
                 MenuSettings.ContainerSeparatorColor);
             Line.End();
@@ -200,12 +196,12 @@ namespace LeagueSharp.SDK.UI.Skins.Default
                             Line.Draw(
                                 new[]
                                     {
-                                        new SerializableVector2(
+                                        new Vector2(
                                             position.X + this.Component.MenuWidth - (Line.Width / 2),
-                                            position.Y + MenuSettings.ContainerHeight).ToVector2(),
-                                        new SerializableVector2(
+                                            position.Y + MenuSettings.ContainerHeight),
+                                        new Vector2(
                                             position.X + this.Component.MenuWidth - (Line.Width / 2),
-                                            position.Y + MenuSettings.ContainerHeight + dropdownMenuHeight).ToVector2()
+                                            position.Y + MenuSettings.ContainerHeight + dropdownMenuHeight)
                                     },
                                 dropdownColor);
                             Line.End();
@@ -224,14 +220,14 @@ namespace LeagueSharp.SDK.UI.Skins.Default
                                     Line.Draw(
                                         new[]
                                             {
-                                                new SerializableVector2(
+                                                new Vector2(
                                                     position.X + this.Component.MenuWidth - dropdownMenuWidth,
                                                     position.Y + ((i + 1) * MenuSettings.ContainerHeight)
-                                                    + (MenuSettings.ContainerHeight / 2f)).ToVector2(),
-                                                new SerializableVector2(
+                                                    + (MenuSettings.ContainerHeight / 2f)),
+                                                new Vector2(
                                                     position.X + this.Component.MenuWidth,
                                                     position.Y + ((i + 1) * MenuSettings.ContainerHeight)
-                                                    + (MenuSettings.ContainerHeight / 2f)).ToVector2()
+                                                    + (MenuSettings.ContainerHeight / 2f))
                                             },
                                         MenuSettings.HoverColor);
                                     Line.End();
@@ -242,12 +238,12 @@ namespace LeagueSharp.SDK.UI.Skins.Default
                                 Line.Draw(
                                     new[]
                                         {
-                                            new SerializableVector2(
+                                            new Vector2(
                                                 position.X + this.Component.MenuWidth - dropdownMenuWidth,
-                                                position.Y + (MenuSettings.ContainerHeight * (i + 1))).ToVector2(),
-                                            new SerializableVector2(
+                                                position.Y + (MenuSettings.ContainerHeight * (i + 1))),
+                                            new Vector2(
                                                 position.X + this.Component.MenuWidth,
-                                                position.Y + (MenuSettings.ContainerHeight * (i + 1))).ToVector2()
+                                                position.Y + (MenuSettings.ContainerHeight * (i + 1)))
                                         },
                                     MenuSettings.ContainerSeparatorColor);
                                 Line.End();
@@ -275,18 +271,18 @@ namespace LeagueSharp.SDK.UI.Skins.Default
                             Line.Draw(
                                 new[]
                                     {
-                                        new SerializableVector2(
+                                        new Vector2(
                                             position.X + this.Component.MenuWidth - dropdownMenuWidth,
-                                            position.Y + MenuSettings.ContainerHeight).ToVector2(),
-                                        new SerializableVector2(
+                                            position.Y + MenuSettings.ContainerHeight),
+                                        new Vector2(
                                             position.X + this.Component.MenuWidth - dropdownMenuWidth,
-                                            position.Y + (MenuSettings.ContainerHeight * (valueStrings.Length + 1))).ToVector2(),
-                                        new SerializableVector2(
+                                            position.Y + (MenuSettings.ContainerHeight * (valueStrings.Length + 1))),
+                                        new Vector2(
                                             position.X + this.Component.MenuWidth,
-                                            position.Y + (MenuSettings.ContainerHeight * (valueStrings.Length + 1))).ToVector2(),
-                                        new SerializableVector2(
+                                            position.Y + (MenuSettings.ContainerHeight * (valueStrings.Length + 1))),
+                                        new Vector2(
                                             position.X + this.Component.MenuWidth,
-                                            position.Y + MenuSettings.ContainerHeight).ToVector2()
+                                            position.Y + MenuSettings.ContainerHeight)
                                     },
                                 MenuSettings.ContainerSeparatorColor);
                             Line.End();

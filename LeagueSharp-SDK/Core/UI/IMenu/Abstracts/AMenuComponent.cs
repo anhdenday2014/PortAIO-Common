@@ -25,17 +25,10 @@ namespace LeagueSharp.SDK.UI
     using LeagueSharp.SDK.Utils;
 
     using SharpDX;
-    using EloBuddy;
-    using System.Runtime.Serialization;
 
     /// <summary>
     ///     Abstract build of a menu component.
     /// </summary>
-    /// 
-
-    [Serializable()]
-    [KnownType(typeof(AMenuComponent))]
-    [DataContract]
     public abstract class AMenuComponent : DynamicObject
     {
         #region Fields
@@ -90,11 +83,11 @@ namespace LeagueSharp.SDK.UI
         /// </param>
         protected AMenuComponent(string name, string displayName, string uniqueString)
         {
-         /*   if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(displayName))
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(displayName))
             {
                 throw new Exception("Please enter a valid name.\nName: " + name + "\nDisplayName: " + displayName);
             }
-            //*/
+
             this.UniqueString = uniqueString;
             this.Name = name;
             this.DisplayName = displayName;
@@ -164,7 +157,7 @@ namespace LeagueSharp.SDK.UI
         /// <summary>
         ///     Gets or sets the Component Position
         /// </summary>
-        public SerializableVector2 Position { get; set; }
+        public Vector2 Position { get; set; }
 
         /// <summary>
         ///     Gets or sets a value indicating whether component is on the uppermost level.
@@ -333,7 +326,7 @@ namespace LeagueSharp.SDK.UI
         /// <param name="position">
         ///     The position.
         /// </param>
-        public abstract void OnDraw(SerializableVector2 position);
+        public abstract void OnDraw(Vector2 position);
 
         /// <summary>
         ///     Component Update callback.

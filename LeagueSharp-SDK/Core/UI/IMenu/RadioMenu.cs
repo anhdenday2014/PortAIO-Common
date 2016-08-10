@@ -22,7 +22,6 @@ namespace LeagueSharp.SDK.UI
     /// <summary>
     ///     RadioMenu Item.
     /// </summary>
-    [Serializable]
     public class RadioMenu : Menu
     {
         #region Constructors and Destructors

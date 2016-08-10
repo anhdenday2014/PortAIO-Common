@@ -202,7 +202,6 @@ namespace LeagueSharp.SDK
         /// </summary>
         static GameObjects()
         {
-            Chat.Print("Load GameObjects");
             Initialize();
         }
 

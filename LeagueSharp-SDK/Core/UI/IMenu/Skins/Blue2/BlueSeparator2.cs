@@ -24,6 +24,7 @@ namespace LeagueSharp.SDK.UI.Skins.Blue2
 {
     using LeagueSharp.SDK.Enumerations;
     using LeagueSharp.SDK.UI.Skins.Blue;
+    using EloBuddy;
 
     /// <summary>
     ///     Implements <see cref="ADrawable{MenuSeperator}" /> as a default skin.

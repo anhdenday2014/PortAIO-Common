@@ -1140,7 +1140,7 @@ namespace LeagueSharp.SDK
             this.ChargeDuration = (int)(deltaT * 1000);
             this.chargedCastedT = 0;
 
-            Obj_AI_Base.OnProcessSpellCast += this.OnProcessSpellCast;
+            Obj_AI_Base.OnSpellCast += this.OnProcessSpellCast;
             Spellbook.OnUpdateChargeableSpell += this.Spellbook_OnUpdateChargedSpell;
             Spellbook.OnCastSpell += this.SpellbookOnCastSpell;
 

@@ -8,10 +8,9 @@
     using System.Runtime.Serialization.Formatters.Binary;
     using System.Security.Cryptography;
     using System.Text;
-    using EloBuddy;
-    using SharpDX;
 
-    using System.Runtime.Serialization;
+    using SharpDX;
+    using EloBuddy;
 
     /// <summary>
     ///     The non game related utilities.
@@ -41,7 +40,7 @@
         {
             get
             {
-                return (int)(Game.Time * 1000);
+                return (int)(Game.Time * 1000f);
             }
         }
 
@@ -337,13 +336,15 @@
         /// <returns>
         ///     The object as the given type.
         /// </returns>
-        internal static T3 Deserialize<T3>(byte[] arrBytes)
+        internal static T Deserialize<T>(byte[] arrBytes)
         {
-            var memStream = new MemoryStream();
-            var binForm = new BinaryFormatter { Binder = new AllowAllAssemblyVersionsDeserializationBinder() };
-            memStream.Write(arrBytes, 0, arrBytes.Length);
-            memStream.Seek(0, SeekOrigin.Begin);
-            return (T3)binForm.Deserialize(memStream);
+            using (var memory = new MemoryStream())
+            {
+                memory.Write(arrBytes, 0, arrBytes.Length);
+                memory.Seek(0, SeekOrigin.Begin);
+
+                return (T)new BinaryFormatter().Deserialize(memory);
+            }
         }
 
         /// <summary>
@@ -362,38 +363,12 @@
                 return null;
             }
 
-            var bf = new BinaryFormatter();
-            var ms = new MemoryStream();
-            bf.Serialize(ms, obj);
-            return ms.ToArray();
-        }
-
-        internal sealed class AllowAllAssemblyVersionsDeserializationBinder : SerializationBinder
-        {
-            #region Public Methods and Operators
-
-            /// <summary>
-            ///     The bind to type.
-            /// </summary>
-            /// <param name="assemblyName">
-            ///     The assembly name
-            /// </param>
-            /// <param name="typeName">
-            ///     The type name
-            /// </param>
-            /// <returns>
-            ///     The type which has been bind.
-            /// </returns>
-            public override Type BindToType(string assemblyName, string typeName)
+            using (var memory = new MemoryStream())
             {
-                // In this case we are always using the current assembly
-                assemblyName = Assembly.GetExecutingAssembly().FullName;
+                new BinaryFormatter().Serialize(memory, obj);
 
-                // Get the type using the typeName and assemblyName
-                return Type.GetType($"{typeName}, {assemblyName}");
+                return memory.ToArray();
             }
-
-            #endregion
         }
 
         #endregion

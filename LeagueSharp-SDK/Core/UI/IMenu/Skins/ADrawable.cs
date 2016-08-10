@@ -18,15 +18,10 @@
 namespace LeagueSharp.SDK.UI.Skins
 {
     using LeagueSharp.SDK.Utils;
-    using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     ///     Defines a handler which is responsible for the drawing and interactions of an <see cref="AMenuComponent" />.
-    /// </summary>.
-    /// 
-    [Serializable()]
-    [DataContract(IsReference = true)]
+    /// </summary>
     public abstract class ADrawable
     {
         #region Public Methods and Operators
@@ -72,9 +67,6 @@ namespace LeagueSharp.SDK.UI.Skins
     ///     Defines a handler which is responsible for the drawing and interactions of an <see cref="AMenuComponent" />.
     /// </summary>
     /// <typeparam name="T"><see cref="ADrawable" /> type</typeparam>
-    /// 
-    [Serializable()]
-    [DataContract(IsReference = true)]
     public abstract class ADrawable<T> : ADrawable
         where T : AMenuComponent
     {

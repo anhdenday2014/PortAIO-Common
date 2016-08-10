@@ -21,7 +21,7 @@ namespace LeagueSharp.SDK.UI
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
-    using System.Security.Permissions;
+    //using System.Security.Permissions;
 
     using LeagueSharp.SDK.UI.Skins;
     using LeagueSharp.SDK.Utils;
@@ -29,8 +29,7 @@ namespace LeagueSharp.SDK.UI
     /// <summary>
     ///     A list of values.
     /// </summary>
-    [Serializable()]
-    [KnownType(typeof(MenuList))]
+    [Serializable]
     public abstract class MenuList : MenuItem
     {
         #region Fields
@@ -47,7 +46,7 @@ namespace LeagueSharp.SDK.UI
         /// <summary>
         ///     Initializes a new instance of the <see cref="MenuList" /> class.
         /// </summary>
-        public MenuList()
+        internal MenuList()
         {
         }
 
@@ -174,10 +173,8 @@ namespace LeagueSharp.SDK.UI
     /// <typeparam name="T">
     ///     Type of object in the list
     /// </typeparam>
-    [Serializable()]
-    [KnownType(typeof(MenuList<List<string>>))]
-    [KnownType(typeof(MenuList<string>))]
-    public class MenuList<T> : MenuList/*, ISerializable//*/
+    [Serializable]
+    public class MenuList<T> : MenuList, ISerializable
     {
         #region Fields
 
@@ -191,10 +188,6 @@ namespace LeagueSharp.SDK.UI
         #endregion
 
         #region Constructors and Destructors
-
-        public MenuList()
-        {
-        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MenuList{T}" /> class.
@@ -247,7 +240,7 @@ namespace LeagueSharp.SDK.UI
         {
             this.ListIndex = (int)info.GetValue("index", typeof(int));
         }
-        //*/
+
         #endregion
 
         #region Public Properties
@@ -429,7 +422,7 @@ namespace LeagueSharp.SDK.UI
         /// <exception cref="T:System.Security.SecurityException">
         ///     The caller does not have the required permission. =
         /// </exception>
-  /*      [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+        //[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
@@ -439,7 +432,7 @@ namespace LeagueSharp.SDK.UI
 
             info.AddValue("index", this.Index, typeof(int));
         }
-//*/
+
         #endregion
 
         #region Methods
@@ -458,12 +451,12 @@ namespace LeagueSharp.SDK.UI
         /// <exception cref="T:System.Security.SecurityException">
         ///     The caller does not have the required permission. =
         /// </exception>
-       // [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-        void GetObjectData(SerializationInfo info, StreamingContext context)
+        //[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+        protected virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("index", this.Index, typeof(int));
         }
-        //*/
+
         #endregion
     }
 }

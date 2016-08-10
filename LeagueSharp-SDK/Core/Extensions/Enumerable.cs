@@ -23,9 +23,9 @@ namespace LeagueSharp.SDK
     using System.Linq;
 
     
+    using EloBuddy;
 
     using SharpDX;
-    using EloBuddy;
 
     /// <summary>
     ///     Enumerable Extensions.

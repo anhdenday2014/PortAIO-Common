@@ -17,8 +17,8 @@
 
 namespace LeagueSharp.SDK.Core.UI.Animations
 {
-    using SharpDX;
     using EloBuddy;
+    using SharpDX;
 
     /// <summary>
     ///     A implementation of a <see cref="Animation" />

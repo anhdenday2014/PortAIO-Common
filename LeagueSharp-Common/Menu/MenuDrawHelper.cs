@@ -5,11 +5,11 @@
 
     using SharpDX;
     using SharpDX.Direct3D9;
-    using EloBuddy;
-    using Line = EloBuddy.SDK.Rendering.Line;
+
     using Color = System.Drawing.Color;
     using Font = SharpDX.Direct3D9.Font;
     using Rectangle = SharpDX.Rectangle;
+    using EloBuddy;
 
     /// <summary>
     ///     The menu draw helper.
@@ -51,12 +51,41 @@
             var faceName = Menu.Root.Item("FontName").GetValue<StringList>().SelectedValue;
             var height = Menu.Root.Item("FontSize").GetValue<Slider>().Value;
             var outputPercision = FontPrecision.Default;
-            var quality = (FontQuality) Enum.Parse(typeof(FontQuality), Menu.Root.Item("FontQuality").GetValue<StringList>().SelectedValue, true);
+            var quality =
+                (FontQuality)
+                Enum.Parse(
+                    typeof(FontQuality),
+                    Menu.Root.Item("FontQuality").GetValue<StringList>().SelectedValue,
+                    true);
 
-            Font = new Font(device, new FontDescription { FaceName = faceName, Height = height, OutputPrecision = outputPercision, Quality = quality });
-            FontBold = new Font(device, new FontDescription { FaceName = faceName, Height = height, OutputPrecision = outputPercision, Weight = FontWeight.Bold, Quality = quality });
-            FontItalic = new Font(device, new FontDescription { FaceName = faceName, Height = height, OutputPrecision = outputPercision, Italic = true, Quality = quality });
-            FontBoldItalic = new Font(device, new FontDescription { FaceName = faceName, Height = height, OutputPrecision = outputPercision, Weight = FontWeight.Bold, Italic = true, Quality = quality });
+            Font = new Font(
+                device,
+                new FontDescription
+                    { FaceName = faceName, Height = height, OutputPrecision = outputPercision, Quality = quality });
+
+            FontBold = new Font(
+                device,
+                new FontDescription
+                    {
+                        FaceName = faceName, Height = height, OutputPrecision = outputPercision, Weight = FontWeight.Bold,
+                        Quality = quality
+                    });
+
+            FontItalic = new Font(
+                device,
+                new FontDescription
+                    {
+                        FaceName = faceName, Height = height, OutputPrecision = outputPercision, Italic = true,
+                        Quality = quality
+                    });
+
+            FontBoldItalic = new Font(
+                device,
+                new FontDescription
+                    {
+                        FaceName = faceName, Height = height, OutputPrecision = outputPercision, Weight = FontWeight.Bold,
+                        Italic = true, Quality = quality
+                    });
 
             Drawing.OnPreReset += OnPreReset;
             Drawing.OnPostReset += OnPostReset;
@@ -138,28 +167,28 @@
             Color borderColor)
         {
             Drawing.DrawLine(position.X, position.Y + 16, position.X + width, position.Y + 16, height, color);
+
             if (borderwidth > 0)
             {
                 Drawing.DrawLine(position.X, position.Y, position.X + width, position.Y, borderwidth, borderColor);
-                Drawing.DrawLine(position.X, position.Y + height, position.X + width, position.Y + height, borderwidth, borderColor);
-
+                Drawing.DrawLine(
+                    position.X,
+                    position.Y + height,
+                    position.X + width,
+                    position.Y + height,
+                    borderwidth,
+                    borderColor);
                 Drawing.DrawLine(position.X, position.Y, position.X, position.Y + height, borderwidth, borderColor);
-                Drawing.DrawLine(position.X + width, position.Y, position.X + width, position.Y + height, borderwidth, borderColor);
+                Drawing.DrawLine(
+                    position.X + width,
+                    position.Y,
+                    position.X + width,
+                    position.Y + height,
+                    borderwidth,
+                    borderColor);
             }
         }
 
-        public static Vector3 V3E(this Vector3 from, Vector3 direction, float distance)
-        {
-            return from + distance * Vector3.Normalize(direction - from);
-        }
-
-        public static SharpDX.Color ToSharpDxColor(this System.Drawing.Color color)
-        {
-            System.Drawing.KnownColor colorenum = (System.Drawing.KnownColor)Enum.Parse(typeof(System.Drawing.KnownColor), color.Name);
-            return new SharpDX.Color(System.Drawing.Color.FromKnownColor(colorenum).ToArgb());
-        }
-
-        // thay doi 
         /// <summary>
         ///     Draws the on and off box.
         /// </summary>
@@ -240,13 +269,13 @@
         ///     Indicates whether to draw informative text.
         /// </param>
         internal static void DrawSlider(
-                 Vector2 position,
-                 MenuItem item,
-                 int min,
-                 int max,
-                 int value,
-                 int width,
-                 bool drawText)
+                Vector2 position,
+                MenuItem item,
+                int min,
+                int max,
+                int value,
+                int width,
+                bool drawText)
         {
             width = (width > 0 ? width : item.Width);
             var percentage = 100 * (value - min) / (max - min);
@@ -271,7 +300,7 @@
                     new ColorBGRA(255, 255, 255, 255));
             }
         }
-        // thay doi
+
         /// <summary>
         ///     Draws the tooltip button.
         /// </summary>

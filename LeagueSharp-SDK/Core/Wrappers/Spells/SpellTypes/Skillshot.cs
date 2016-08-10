@@ -7,10 +7,10 @@
     using LeagueSharp.SDK.Clipper;
     using LeagueSharp.SDK.Enumerations;
 
-    using EloBuddy;
-
+    
 
     using SharpDX;
+    using EloBuddy;
 
     using Color = System.Drawing.Color;
 
@@ -80,7 +80,6 @@
                     if (this.StartPosition == Vector2.Zero)
                     {
                         //LogManager.GetCurrentClassLogger().Warn($"Couldn't find the start position for skillshot: {this}, FromObject: {this.SData.FromObject}");
-
                         return false;
                     }
                 }
@@ -129,6 +128,10 @@
         #endregion
 
         #region Methods
+
+        internal virtual void Game_OnUpdate()
+        {
+        }
 
         internal virtual void UpdatePath()
         {

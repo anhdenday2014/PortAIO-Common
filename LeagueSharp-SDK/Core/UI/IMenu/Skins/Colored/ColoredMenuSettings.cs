@@ -24,6 +24,7 @@
 
 namespace LeagueSharp.SDK.UI.Skins.Colored
 {
+    using EloBuddy;
     using SharpDX;
     using SharpDX.Direct3D9;
 
@@ -58,7 +59,7 @@ namespace LeagueSharp.SDK.UI.Skins.Colored
             ContainerSelectedColor = new ColorBGRA(215, 70, 53, 255);
 
             FontCaption = new Font(
-                EloBuddy.Drawing.Direct3DDevice,
+                Drawing.Direct3DDevice,
                 14,
                 0,
                 FontWeight.DoNotCare,
@@ -71,7 +72,7 @@ namespace LeagueSharp.SDK.UI.Skins.Colored
                 "Tahoma");
 
             FontMenuSymbol = new Font(
-                EloBuddy.Drawing.Direct3DDevice,
+                Drawing.Direct3DDevice,
                 20,
                 0,
                 FontWeight.DoNotCare,

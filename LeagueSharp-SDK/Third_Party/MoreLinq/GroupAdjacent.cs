@@ -299,7 +299,7 @@ namespace LeagueSharp.SDK.MoreLinq
         }
 
 #if !NO_SERIALIZATION_ATTRIBUTES
-        [Serializable()]
+        [Serializable]
 #endif
         private sealed class Grouping<TKey, TElement> : IGrouping<TKey, TElement>
         {

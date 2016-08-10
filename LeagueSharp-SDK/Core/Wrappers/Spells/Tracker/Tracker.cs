@@ -2,9 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
-    using EloBuddy;
 
     using LeagueSharp.SDK.Enumerations;
+    using EloBuddy;
 
     
 

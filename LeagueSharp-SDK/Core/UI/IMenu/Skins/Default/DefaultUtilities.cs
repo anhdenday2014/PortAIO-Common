@@ -20,12 +20,10 @@ namespace LeagueSharp.SDK.UI.Skins.Default
     using LeagueSharp.SDK.Utils;
 
     using SharpDX;
-    using System;
 
     /// <summary>
     ///     Provides a set of functions used in the Default theme.
     /// </summary>
-    [Serializable()]
     public class DefaultUtilities
     {
         #region Public Methods and Operators

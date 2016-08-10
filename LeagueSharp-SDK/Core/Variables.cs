@@ -41,7 +41,7 @@ namespace LeagueSharp.SDK
         /// <summary>
         ///     Gets the Orbwalker instance.
         /// </summary>
-        public static Orbwalker Orbwalker { get; set; }
+        public static Orbwalker Orbwalker { get; internal set; }
 
         /// <summary>
         ///     Gets the TargetSelector instance.

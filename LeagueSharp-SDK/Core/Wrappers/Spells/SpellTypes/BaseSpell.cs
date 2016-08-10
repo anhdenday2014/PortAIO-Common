@@ -6,9 +6,9 @@
     using LeagueSharp.SDK.Enumerations;
 
     using SharpDX;
+    using EloBuddy;
 
     using Color = System.Drawing.Color;
-    using EloBuddy;
 
     public abstract class BaseSpell
     {

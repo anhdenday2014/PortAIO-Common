@@ -5,7 +5,6 @@
 
     using SharpDX;
     using SharpDX.Direct3D9;
-    using EloBuddy;
 
     internal class Utils
     {
@@ -14,7 +13,7 @@
         /// <summary>
         ///     The line.
         /// </summary>
-        public static readonly Line Line = new Line(Drawing.Direct3DDevice) { GLLines = true };
+        public static readonly Line Line = new Line(EloBuddy.Drawing.Direct3DDevice) { GLLines = true };
 
         #endregion
 
@@ -238,7 +237,7 @@
             Color color)
         {
             var vertices = new VertexBuffer(
-                Drawing.Direct3DDevice,
+                EloBuddy.Drawing.Direct3DDevice,
                 SharpDX.Utilities.SizeOf<Vector4>() * 2 * (resolution + 4),
                 Usage.WriteOnly,
                 VertexFormat.Diffuse | VertexFormat.PositionRhw,
@@ -302,24 +301,24 @@
                     VertexElement.VertexDeclarationEnd
                 };
 
-            var vertexDeclaration = new VertexDeclaration(Drawing.Direct3DDevice, vertexElements);
+            var vertexDeclaration = new VertexDeclaration(EloBuddy.Drawing.Direct3DDevice, vertexElements);
 
             if (smoothing)
             {
-                Drawing.Direct3DDevice.SetRenderState(RenderState.MultisampleAntialias, true);
-                Drawing.Direct3DDevice.SetRenderState(RenderState.AntialiasedLineEnable, true);
+                EloBuddy.Drawing.Direct3DDevice.SetRenderState(RenderState.MultisampleAntialias, true);
+                EloBuddy.Drawing.Direct3DDevice.SetRenderState(RenderState.AntialiasedLineEnable, true);
             }
             else
             {
-                Drawing.Direct3DDevice.SetRenderState(RenderState.MultisampleAntialias, false);
-                Drawing.Direct3DDevice.SetRenderState(RenderState.AntialiasedLineEnable, false);
+                EloBuddy.Drawing.Direct3DDevice.SetRenderState(RenderState.MultisampleAntialias, false);
+                EloBuddy.Drawing.Direct3DDevice.SetRenderState(RenderState.AntialiasedLineEnable, false);
             }
 
-            var olddec = Drawing.Direct3DDevice.VertexDeclaration;
-            Drawing.Direct3DDevice.SetStreamSource(0, vertices, 0, SharpDX.Utilities.SizeOf<Vector4>() * 2);
-            Drawing.Direct3DDevice.VertexDeclaration = vertexDeclaration;
-            Drawing.Direct3DDevice.DrawPrimitives(PrimitiveType.LineStrip, 0, resolution);
-            Drawing.Direct3DDevice.VertexDeclaration = olddec;
+            var olddec = EloBuddy.Drawing.Direct3DDevice.VertexDeclaration;
+            EloBuddy.Drawing.Direct3DDevice.SetStreamSource(0, vertices, 0, SharpDX.Utilities.SizeOf<Vector4>() * 2);
+            EloBuddy.Drawing.Direct3DDevice.VertexDeclaration = vertexDeclaration;
+            EloBuddy.Drawing.Direct3DDevice.DrawPrimitives(PrimitiveType.LineStrip, 0, resolution);
+            EloBuddy.Drawing.Direct3DDevice.VertexDeclaration = olddec;
 
             vertexDeclaration.Dispose();
             vertices.Dispose();
@@ -347,7 +346,7 @@
             Color color)
         {
             var vertices = new VertexBuffer(
-                Drawing.Direct3DDevice,
+                EloBuddy.Drawing.Direct3DDevice,
                 SharpDX.Utilities.SizeOf<Vector4>() * 2 * (resolution + 4),
                 Usage.WriteOnly,
                 VertexFormat.Diffuse | VertexFormat.PositionRhw,
@@ -412,24 +411,24 @@
                     VertexElement.VertexDeclarationEnd
                 };
 
-            var vertexDeclaration = new VertexDeclaration(Drawing.Direct3DDevice, vertexElements);
+            var vertexDeclaration = new VertexDeclaration(EloBuddy.Drawing.Direct3DDevice, vertexElements);
 
             if (smoothing)
             {
-                Drawing.Direct3DDevice.SetRenderState(RenderState.MultisampleAntialias, true);
-                Drawing.Direct3DDevice.SetRenderState(RenderState.AntialiasedLineEnable, true);
+                EloBuddy.Drawing.Direct3DDevice.SetRenderState(RenderState.MultisampleAntialias, true);
+                EloBuddy.Drawing.Direct3DDevice.SetRenderState(RenderState.AntialiasedLineEnable, true);
             }
             else
             {
-                Drawing.Direct3DDevice.SetRenderState(RenderState.MultisampleAntialias, false);
-                Drawing.Direct3DDevice.SetRenderState(RenderState.AntialiasedLineEnable, false);
+                EloBuddy.Drawing.Direct3DDevice.SetRenderState(RenderState.MultisampleAntialias, false);
+                EloBuddy.Drawing.Direct3DDevice.SetRenderState(RenderState.AntialiasedLineEnable, false);
             }
 
-            var olddec = Drawing.Direct3DDevice.VertexDeclaration;
-            Drawing.Direct3DDevice.SetStreamSource(0, vertices, 0, SharpDX.Utilities.SizeOf<Vector4>() * 2);
-            Drawing.Direct3DDevice.VertexDeclaration = vertexDeclaration;
-            Drawing.Direct3DDevice.DrawPrimitives(PrimitiveType.TriangleFan, 0, resolution);
-            Drawing.Direct3DDevice.VertexDeclaration = olddec;
+            var olddec = EloBuddy.Drawing.Direct3DDevice.VertexDeclaration;
+            EloBuddy.Drawing.Direct3DDevice.SetStreamSource(0, vertices, 0, SharpDX.Utilities.SizeOf<Vector4>() * 2);
+            EloBuddy.Drawing.Direct3DDevice.VertexDeclaration = vertexDeclaration;
+            EloBuddy.Drawing.Direct3DDevice.DrawPrimitives(PrimitiveType.TriangleFan, 0, resolution);
+            EloBuddy.Drawing.Direct3DDevice.VertexDeclaration = olddec;
 
             vertexDeclaration.Dispose();
             vertices.Dispose();

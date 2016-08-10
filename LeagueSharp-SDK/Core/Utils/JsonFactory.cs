@@ -20,11 +20,11 @@ namespace LeagueSharp.SDK.Utils
     using System;
     using System.IO;
     using System.Reflection;
-    //using System.Security.Permissions;
+    using System.Security.Permissions;
+    using EloBuddy;
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
-    using EloBuddy;
 
     /// <summary>
     ///     JSON.NET "secure" :roto: Wrapper
@@ -76,7 +76,7 @@ namespace LeagueSharp.SDK.Utils
         /// <param name="file"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static T JsonFile<T>(string file, JsonSerializerSettings settings = null)
         {
             if (file == null)
@@ -94,7 +94,7 @@ namespace LeagueSharp.SDK.Utils
         /// <param name="type"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static object JsonFile(string file, Type type = null, JsonSerializerSettings settings = null)
         {
             if (file == null)
@@ -113,7 +113,7 @@ namespace LeagueSharp.SDK.Utils
         /// <param name="assembly"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static T JsonResource<T>(string file, Assembly assembly = null, JsonSerializerSettings settings = null)
         {
             if (file == null)
@@ -132,7 +132,7 @@ namespace LeagueSharp.SDK.Utils
         /// <param name="assembly"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static object JsonResource(
             string file,
             Type type = null,
@@ -154,7 +154,7 @@ namespace LeagueSharp.SDK.Utils
         /// <param name="s"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static T JsonString<T>(string s, JsonSerializerSettings settings = null)
         {
             if (s == null)
@@ -172,7 +172,7 @@ namespace LeagueSharp.SDK.Utils
         /// <param name="type"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static object JsonString(string s, Type type = null, JsonSerializerSettings settings = null)
         {
             if (s == null)
@@ -189,7 +189,7 @@ namespace LeagueSharp.SDK.Utils
         /// <param name="file"></param>
         /// <param name="obj"></param>
         /// <param name="settings"></param>
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static void ToFile(string file, object obj, JsonSerializerSettings settings = null)
         {
             if (file == null)
@@ -211,7 +211,7 @@ namespace LeagueSharp.SDK.Utils
         /// <param name="obj"></param>
         /// <param name="settings"></param>
         /// <returns></returns>
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         public static string ToString(object obj, JsonSerializerSettings settings = null)
         {
             if (obj == null)

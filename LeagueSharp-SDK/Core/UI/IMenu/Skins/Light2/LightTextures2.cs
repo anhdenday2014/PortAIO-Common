@@ -29,6 +29,7 @@ namespace LeagueSharp.SDK.UI.Skins.Light2
     using PortAIO.Common.Properties;
 
     using SharpDX.Direct3D9;
+    using EloBuddy;
 
     internal enum LightTexture2
     {
@@ -89,7 +90,7 @@ namespace LeagueSharp.SDK.UI.Skins.Light2
         {
             var resized = new Bitmap(bmp, width, height);
             var texture = Texture.FromMemory(
-                EloBuddy.Drawing.Direct3DDevice,
+                Drawing.Direct3DDevice,
                 (byte[])new ImageConverter().ConvertTo(resized, typeof(byte[])),
                 resized.Width,
                 resized.Height,

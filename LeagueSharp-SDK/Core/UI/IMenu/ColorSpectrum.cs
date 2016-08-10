@@ -10,7 +10,6 @@
     using SharpDX.Direct3D9;
 
     using Color = System.Drawing.Color;
-    using EloBuddy;
 
     internal class ColorSpectrum
     {
@@ -413,7 +412,7 @@
             Orientation orientation)
         {
             var vertices = new VertexBuffer(
-                Drawing.Direct3DDevice,
+                EloBuddy.Drawing.Direct3DDevice,
                 SharpDX.Utilities.SizeOf<Vector4>() * 2 * 4,
                 Usage.WriteOnly,
                 VertexFormat.Diffuse | VertexFormat.PositionRhw,
@@ -450,13 +449,13 @@
                     VertexElement.VertexDeclarationEnd
                 };
 
-            var vertexDeclaration = new VertexDeclaration(Drawing.Direct3DDevice, vertexElements);
+            var vertexDeclaration = new VertexDeclaration(EloBuddy.Drawing.Direct3DDevice, vertexElements);
 
-            var olddec = Drawing.Direct3DDevice.VertexDeclaration;
-            Drawing.Direct3DDevice.SetStreamSource(0, vertices, 0, SharpDX.Utilities.SizeOf<Vector4>() * 2);
-            Drawing.Direct3DDevice.VertexDeclaration = vertexDeclaration;
-            Drawing.Direct3DDevice.DrawPrimitives(PrimitiveType.TriangleStrip, 0, 2);
-            Drawing.Direct3DDevice.VertexDeclaration = olddec;
+            var olddec = EloBuddy.Drawing.Direct3DDevice.VertexDeclaration;
+            EloBuddy.Drawing.Direct3DDevice.SetStreamSource(0, vertices, 0, SharpDX.Utilities.SizeOf<Vector4>() * 2);
+            EloBuddy.Drawing.Direct3DDevice.VertexDeclaration = vertexDeclaration;
+            EloBuddy.Drawing.Direct3DDevice.DrawPrimitives(PrimitiveType.TriangleStrip, 0, 2);
+            EloBuddy.Drawing.Direct3DDevice.VertexDeclaration = olddec;
 
             vertexDeclaration.Dispose();
             vertices.Dispose();

@@ -20,9 +20,9 @@ namespace LeagueSharp.SDK
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using EloBuddy;
 
     using LeagueSharp.SDK.UI;
+    using EloBuddy;
 
     /// <summary>
     ///     Humanize the target selector process

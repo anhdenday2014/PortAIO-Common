@@ -2,11 +2,12 @@
 {
     using System.Drawing;
 
-    using EloBuddy;
+    using PortAIO.Common.Properties;
+
     using SharpDX;
 
     using Color = System.Drawing.Color;
-    using PortAIO.Common.Properties;
+    using EloBuddy;
 
     /// <summary>
     ///     The color picker.

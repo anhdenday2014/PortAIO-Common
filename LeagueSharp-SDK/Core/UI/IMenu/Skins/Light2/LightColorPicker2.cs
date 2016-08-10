@@ -30,6 +30,7 @@ namespace LeagueSharp.SDK.UI.Skins.Light2
 
     using SharpDX;
     using SharpDX.Direct3D9;
+    using EloBuddy;
 
     using Color = SharpDX.Color;
     using Rectangle = SharpDX.Rectangle;
@@ -121,7 +122,7 @@ namespace LeagueSharp.SDK.UI.Skins.Light2
         /// <summary>
         ///     The line.
         /// </summary>
-        private static readonly Line Line = new Line(EloBuddy.Drawing.Direct3DDevice) { GLLines = true };
+        private static readonly Line Line = new Line(Drawing.Direct3DDevice) { GLLines = true };
 
         #endregion
 
@@ -464,7 +465,7 @@ namespace LeagueSharp.SDK.UI.Skins.Light2
                         this.ApplyButtonBoundaries().Height))
                     {
                         this.Component.Active = false;
-                        this.Component.Color = this.ColorBox.Rgb.ToSharpDxColor();
+                        this.Component.Color = this.colorBox.Rgb.ToSharpDxColor();
                     }
                     else if (args.Cursor.IsUnderRectangle(
                         this.CancelButtonBoundaries().X,

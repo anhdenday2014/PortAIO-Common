@@ -22,15 +22,10 @@ namespace LeagueSharp.SDK.UI.Skins.Default
 
     using SharpDX;
     using SharpDX.Direct3D9;
-    using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     ///     A default implementation of <see cref="ADrawable{MenuButton}" />
     /// </summary>
-    /// 
-    [Serializable()]
-    [KnownType(typeof(DefaultButton))]
     public class DefaultButton : ADrawable<MenuButton>
     {
         #region Constants
@@ -135,12 +130,12 @@ namespace LeagueSharp.SDK.UI.Skins.Default
             Line.Draw(
                 new[]
                     {
-                        new SerializableVector2(
+                        new Vector2(
                             this.Component.Position.X + this.Component.MenuWidth - buttonTextWidth - (2 * TextGap),
-                            this.Component.Position.Y + (MenuSettings.ContainerHeight / 2f)).ToVector2(),
-                        new SerializableVector2(
+                            this.Component.Position.Y + (MenuSettings.ContainerHeight / 2f)),
+                        new Vector2(
                             this.Component.Position.X + this.Component.MenuWidth,
-                            this.Component.Position.Y + (MenuSettings.ContainerHeight / 2f)).ToVector2(),
+                            this.Component.Position.Y + (MenuSettings.ContainerHeight / 2f)),
                     },
                 MenuSettings.HoverColor);
             Line.End();
@@ -149,12 +144,12 @@ namespace LeagueSharp.SDK.UI.Skins.Default
             Line.Draw(
                 new[]
                     {
-                        new SerializableVector2(
+                        new Vector2(
                             this.Component.Position.X + this.Component.MenuWidth - buttonTextWidth - (2 * TextGap) + 2,
-                            this.Component.Position.Y + (MenuSettings.ContainerHeight / 2f)).ToVector2(),
-                        new SerializableVector2(
+                            this.Component.Position.Y + (MenuSettings.ContainerHeight / 2f)),
+                        new Vector2(
                             this.Component.Position.X + this.Component.MenuWidth - 2,
-                            this.Component.Position.Y + (MenuSettings.ContainerHeight / 2f)).ToVector2(),
+                            this.Component.Position.Y + (MenuSettings.ContainerHeight / 2f)),
                     },
                 this.Component.Hovering ? this.buttonHoverColor : this.buttonColor);
             Line.End();

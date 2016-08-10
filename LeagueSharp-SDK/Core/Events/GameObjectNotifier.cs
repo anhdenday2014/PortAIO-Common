@@ -1,7 +1,8 @@
 ﻿namespace LeagueSharp.SDK
 {
-    using System;
     using EloBuddy;
+    using System;
+
     /// <summary>
     ///     Raises events when a type of <see cref="GameObject" /> is created.
     ///     <example>

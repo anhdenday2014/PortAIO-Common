@@ -29,6 +29,7 @@ namespace LeagueSharp.SDK.UI.Skins.Colored
 
     using SharpDX;
     using SharpDX.Direct3D9;
+    using EloBuddy;
 
     /// <summary>
     ///     Implements <see cref="ADrawable{MenuSeperator}" /> as a default skin.
@@ -40,7 +41,7 @@ namespace LeagueSharp.SDK.UI.Skins.Colored
         /// <summary>
         ///     The line.
         /// </summary>
-        private static readonly Line Line = new Line(EloBuddy.Drawing.Direct3DDevice) { GLLines = true };
+        private static readonly Line Line = new Line(Drawing.Direct3DDevice) { GLLines = true };
 
         /// <summary>
         ///     Offset.

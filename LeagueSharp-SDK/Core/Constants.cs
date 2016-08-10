@@ -39,6 +39,16 @@ namespace LeagueSharp.SDK
                 "EloBuddy");
 
         /// <summary>
+        ///     LeagueSharp SDK Log directory.
+        /// </summary>
+        public static readonly string LogDirectory = Path.Combine(LeagueSharpAppData, "Logs", "SDK");
+
+        /// <summary>
+        ///     LeagueSharp SDK Session Log file name.
+        /// </summary>
+        public static readonly string LogFileName = DateTime.Now.ToString("d").Replace('/', '-') + ".log";
+
+        /// <summary>
         ///     LeagueSharp SDK Font.
         /// </summary>
         private static Font leagueSharpFont;
@@ -62,7 +72,7 @@ namespace LeagueSharp.SDK
                 return
                     leagueSharpFont =
                     new Font(
-                        EloBuddy.Drawing.Direct3DDevice,
+                        Drawing.Direct3DDevice,
                         14,
                         0,
                         FontWeight.DoNotCare,

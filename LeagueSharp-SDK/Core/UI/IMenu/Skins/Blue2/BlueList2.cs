@@ -30,6 +30,7 @@ namespace LeagueSharp.SDK.UI.Skins.Blue2
 
     using SharpDX;
     using SharpDX.Direct3D9;
+    using EloBuddy;
 
     /// <summary>
     ///     A default implementation of a <see cref="ADrawable{MenuList}" />
@@ -55,7 +56,7 @@ namespace LeagueSharp.SDK.UI.Skins.Blue2
         /// <summary>
         ///     The line.
         /// </summary>
-        private static readonly Line Line = new Line(EloBuddy.Drawing.Direct3DDevice);
+        private static readonly Line Line = new Line(Drawing.Direct3DDevice);
 
         #endregion
 
@@ -276,7 +277,7 @@ namespace LeagueSharp.SDK.UI.Skins.Blue2
         /// </summary>
         /// <param name="component">The <see cref="MenuList" /></param>
         /// <returns>The <see cref="Rectangle" /></returns>
-        public new Rectangle DropDownBoundaries(MenuList component)
+        public Rectangle DropDownBoundaries(MenuList component)
         {
             return
                 new Rectangle(
@@ -293,7 +294,7 @@ namespace LeagueSharp.SDK.UI.Skins.Blue2
         /// </summary>
         /// <param name="component">The <see cref="MenuList" /></param>
         /// <returns>The <see cref="Rectangle" /></returns>
-        public new Rectangle DropDownExpandedBoundaries(MenuList component)
+        public Rectangle DropDownExpandedBoundaries(MenuList component)
         {
             return
                 new Rectangle(
@@ -310,7 +311,7 @@ namespace LeagueSharp.SDK.UI.Skins.Blue2
         /// </summary>
         /// <param name="component">The <see cref="MenuList" /></param>
         /// <returns>List of <see cref="Rectangle" /></returns>
-        public new List<Rectangle> DropDownListBoundaries(MenuList component)
+        public List<Rectangle> DropDownListBoundaries(MenuList component)
         {
             var rectangles = new List<Rectangle>();
             for (var i = 0; i < component.Count; i++)

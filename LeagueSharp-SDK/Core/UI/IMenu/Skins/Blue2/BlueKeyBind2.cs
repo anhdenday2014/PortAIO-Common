@@ -23,6 +23,7 @@
 namespace LeagueSharp.SDK.UI.Skins.Blue2
 {
     using LeagueSharp.SDK.UI.Skins.Blue;
+    using EloBuddy;
 
     /// <summary>
     ///     A default implementation of <see cref="ADrawable{MenuKeyBind}" />

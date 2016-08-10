@@ -22,10 +22,10 @@ namespace LeagueSharp.SDK
     using System.Linq;
     using System.Reflection;
 
-    using EloBuddy;
     using LeagueSharp.Data;
     using LeagueSharp.Data.DataTypes;
     using LeagueSharp.Data.Enumerations;
+    using EloBuddy;
 
     /// <summary>
     ///     Provides events for interrupting spells.

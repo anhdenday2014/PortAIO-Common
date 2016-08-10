@@ -8447,7 +8447,7 @@ namespace LeagueSharp.SDK.Clipper
     /// <summary>
     ///     Clipper Exception.
     /// </summary>
-    [Serializable()]
+    [Serializable]
     public class ClipperException : Exception
     {
         #region Constructors and Destructors

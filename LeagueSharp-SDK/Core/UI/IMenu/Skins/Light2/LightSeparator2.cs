@@ -27,6 +27,7 @@ namespace LeagueSharp.SDK.UI.Skins.Light2
     using LeagueSharp.SDK.Utils;
 
     using SharpDX;
+    using EloBuddy;
 
     /// <summary>
     ///     Implements <see cref="ADrawable{MenuSeperator}" /> as a default skin.

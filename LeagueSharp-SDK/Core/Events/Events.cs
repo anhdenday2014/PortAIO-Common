@@ -19,6 +19,7 @@ namespace LeagueSharp.SDK
 {
     using System;
     using EloBuddy;
+
     /// <summary>
     ///     The provided events by the kit.
     /// </summary>
@@ -32,7 +33,7 @@ namespace LeagueSharp.SDK
         static Events()
         {
             Game.OnUpdate += OnUpdate;
-            Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
+            Obj_AI_Base.OnSpellCast += OnProcessSpellCast;
             Obj_AI_Base.OnNewPath += OnNewPath;
             Spellbook.OnStopCast += OnStopCast;
             GameObject.OnCreate += OnCreate;

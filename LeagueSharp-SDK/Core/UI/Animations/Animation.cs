@@ -15,10 +15,10 @@
 //    along with this program.  If not, see http://www.gnu.org/licenses/
 // </copyright>
 
+using EloBuddy;
+
 namespace LeagueSharp.SDK.Core.UI.Animations
 {
-    using EloBuddy;
-
     /// <summary>
     ///     Animation base
     /// </summary>

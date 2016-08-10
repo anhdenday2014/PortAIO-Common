@@ -19,8 +19,6 @@ namespace LeagueSharp.SDK.UI
 {
     using LeagueSharp.SDK.UI.Skins;
     using LeagueSharp.SDK.Utils;
-    using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     ///     A Button designed to perform an action when clicked
@@ -28,11 +26,6 @@ namespace LeagueSharp.SDK.UI
     public class MenuButton : MenuItem
     {
         #region Constructors and Destructors
-
-        public MenuButton()
-        {
-
-        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MenuButton" /> class, with a specified button text.
@@ -62,7 +55,6 @@ namespace LeagueSharp.SDK.UI
         /// <summary>
         ///     The action
         /// </summary>
-        /// 
         public delegate void ButtonAction();
 
         #endregion
@@ -72,7 +64,6 @@ namespace LeagueSharp.SDK.UI
         /// <summary>
         ///     Gets or sets the action to be performed when the button is clicked
         /// </summary>
-
         public ButtonAction Action { get; set; }
 
         /// <summary>

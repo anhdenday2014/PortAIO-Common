@@ -24,9 +24,9 @@ namespace LeagueSharp.SDK
     using LeagueSharp.SDK.Enumerations;
     using LeagueSharp.SDK.UI;
     using LeagueSharp.SDK.Utils;
-    using EloBuddy;
 
     using SharpDX;
+    using EloBuddy;
 
     /// <summary>
     ///     The TargetSelector system.

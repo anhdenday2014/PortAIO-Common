@@ -10,7 +10,7 @@
         /// <summary>
         ///     The menu instance.
         /// </summary>
-        internal static Menu Instance = new Menu("PortAIO.Common", "LeagueSharp.Common", true);
+        internal static Menu Instance = new Menu("LeagueSharp.Common", "LeagueSharp.Common", true);
 
         #endregion
 

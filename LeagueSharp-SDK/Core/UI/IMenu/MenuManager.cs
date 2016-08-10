@@ -30,10 +30,10 @@ namespace LeagueSharp.SDK.UI
 
     using SharpDX.Direct3D9;
     using EloBuddy;
+
     /// <summary>
     ///     Menu Interface class, used to control the menu.
     /// </summary>
-    [Serializable()]
     public class MenuManager
     {
         #region Static Fields
@@ -41,7 +41,12 @@ namespace LeagueSharp.SDK.UI
         /// <summary>
         ///     The configuration folder
         /// </summary>
-        public static readonly DirectoryInfo ConfigFolder = Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),"EloBuddy", "MenuConfigSDK"));
+        public static readonly DirectoryInfo ConfigFolder =
+            Directory.CreateDirectory(
+                Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "EloBuddy",
+                    "MenuConfigSDK"));
 
         /// <summary>
         ///     The Instance.
@@ -217,7 +222,7 @@ namespace LeagueSharp.SDK.UI
                         menuToggleKeybind = (Keys)SandboxConfig.MenuToggleKey;
                         if (menuToggleKeybind == Keys.None)
                         {
-                            menuToggleKeybind = Keys.Insert;
+                            menuToggleKeybind = Keys.F9;
                         }
                         menuToggleKeybind = FixVirtualKey(menuToggleKeybind);
                     }
@@ -344,6 +349,7 @@ namespace LeagueSharp.SDK.UI
                 }
 
                 ThemeManager.Current.Draw();
+
                 if (this.ppSpriteDrawnProtection)
                 {
                     this.Sprite.End();
@@ -386,7 +392,8 @@ namespace LeagueSharp.SDK.UI
 
             if (!this.ForcedOpen)
             {
-                if (keys.SingleKey == MenuPressKeybind || (MenuPressKeybind == Keys.ShiftKey && keys.Key == (Keys.Return | Keys.Shift)))
+                if (keys.SingleKey == MenuPressKeybind
+                    || (MenuPressKeybind == Keys.ShiftKey && keys.Key == (Keys.Return | Keys.Shift)))
                 {
                     var keyDown = keys.Msg == WindowsMessages.KEYDOWN;
                     var keyUp = keys.Msg == WindowsMessages.KEYUP || keys.Msg == WindowsMessages.CHAR;

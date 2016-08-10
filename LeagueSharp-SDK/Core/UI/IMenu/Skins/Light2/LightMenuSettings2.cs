@@ -28,6 +28,7 @@ namespace LeagueSharp.SDK.UI.Skins.Light2
 
     using SharpDX;
     using SharpDX.Direct3D9;
+    using EloBuddy;
 
     /// <summary>
     ///     Default Skin Settings.
@@ -47,7 +48,7 @@ namespace LeagueSharp.SDK.UI.Skins.Light2
             ContainerSelectedColor = new ColorBGRA(1, 149, 255, 255);
 
             FontCaption = new Font(
-                EloBuddy.Drawing.Direct3DDevice,
+                Drawing.Direct3DDevice,
                 14,
                 0,
                 FontWeight.DoNotCare,

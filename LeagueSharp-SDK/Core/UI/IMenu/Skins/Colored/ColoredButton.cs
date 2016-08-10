@@ -26,6 +26,7 @@ namespace LeagueSharp.SDK.UI.Skins.Colored
     using LeagueSharp.SDK.Utils;
 
     using SharpDX;
+    using EloBuddy;
 
     /// <summary>
     ///     A default implementation of <see cref="ADrawable{MenuButton}" />

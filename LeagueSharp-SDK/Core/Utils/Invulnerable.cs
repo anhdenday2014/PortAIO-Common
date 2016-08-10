@@ -23,7 +23,7 @@ namespace LeagueSharp.SDK.Utils
     using System.Linq;
     using EloBuddy;
 
-
+    
 
     /// <summary>
     ///     Invulnerable utility class

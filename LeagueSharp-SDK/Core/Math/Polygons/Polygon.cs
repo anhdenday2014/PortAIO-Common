@@ -23,9 +23,9 @@ namespace LeagueSharp.SDK.Polygons
     using LeagueSharp.SDK.Clipper;
 
     using SharpDX;
+    using EloBuddy;
 
     using Color = System.Drawing.Color;
-    using EloBuddy;
 
     /// <summary>
     ///     Base class representing a polygon.

@@ -20,12 +20,12 @@ namespace LeagueSharp.SDK.Utils
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using EloBuddy;
 
     using LeagueSharp.SDK.Clipper;
     using LeagueSharp.SDK.Polygons;
 
     using SharpDX;
-    using EloBuddy;
 
     /// <summary>
     ///     Provides helpful extension and methods concerning Geometry.

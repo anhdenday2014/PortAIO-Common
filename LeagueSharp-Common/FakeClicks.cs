@@ -1,32 +1,11 @@
-#region LICENSE
-
-/*
- Copyright 2014 - 2014 LeagueSharp
- FakeClicks.cs is part of LeagueSharp.Common.
- 
- LeagueSharp.Common is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
- 
- LeagueSharp.Common is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- GNU General Public License for more details.
- 
- You should have received a copy of the GNU General Public License
- along with LeagueSharp.Common. If not, see <http://www.gnu.org/licenses/>.
-*/
-
-#endregion
-
-using System;
-using System.Linq;
-using SharpDX;
-using EloBuddy;
-
 namespace LeagueSharp.Common
 {
+    using System;
+    using System.Linq;
+
+    using SharpDX;
+    using EloBuddy;
+
     /// <summary>
     ///     Simulates clicks.
     /// </summary>
@@ -35,15 +14,19 @@ namespace LeagueSharp.Common
         #region Static Fields
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="FakeClicks"/> is enabled.
+        ///     The delta t for click frequency
         /// </summary>
-        /// <value>
-        ///   <c>true</c> if enabled; otherwise, <c>false</c>.
-        /// </value>
-        public static bool Enabled
-        {
-            get { return root.Item("Enable").IsActive(); }
-        }
+        private static readonly float deltaT = 0.15f;
+
+        /// <summary>
+        ///     The Random number generator
+        /// </summary>
+        private static readonly Random r = new Random();
+
+        /// <summary>
+        ///     The root menu.
+        /// </summary>
+        private static readonly Menu root = new Menu("FakeClicks", "Fake Clicks");
 
         /// <summary>
         ///     If the user is attacking
@@ -52,16 +35,19 @@ namespace LeagueSharp.Common
         private static bool attacking;
 
         /// <summary>
-        ///     The delta t for click frequency
+        ///     The last direction of the player
         /// </summary>
-        private static readonly float deltaT = 0.15f;
-
+        private static Vector3 direction;
 
         /// <summary>
         ///     The last endpoint the player was moving to.
         /// </summary>
         private static Vector3 lastEndpoint;
 
+        /// <summary>
+        ///     The last order the player had.
+        /// </summary>
+        private static GameObjectOrder lastOrder;
 
         /// <summary>
         ///     The time of the last order the player had.
@@ -78,15 +64,47 @@ namespace LeagueSharp.Common
         /// </summary>
         private static AIHeroClient player;
 
-        /// <summary>
-        ///     The Random number generator
-        /// </summary>
-        private static readonly Random r = new Random();
+        #endregion
+
+        #region Public Properties
 
         /// <summary>
-        ///     The root menu.
+        ///     Gets a value indicating whether this <see cref="FakeClicks" /> is enabled.
         /// </summary>
-        private static readonly Menu root = new Menu("FakeClicks", "Fake Clicks");
+        /// <value>
+        ///     <c>true</c> if enabled; otherwise, <c>false</c>.
+        /// </value>
+        public static bool Enabled
+        {
+            get
+            {
+                return root.Item("Enable").IsActive();
+            }
+        }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        /// <summary>
+        ///     Initializes this instance.
+        /// </summary>
+        public static void Initialize()
+        {
+            CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
+        }
+
+        public static void Shutdown()
+        {
+            CustomEvents.Game.OnGameLoad -= Game_OnGameLoad;
+            Obj_AI_Base.OnNewPath -= DrawFake;
+            Orbwalking.BeforeAttack -= BeforeAttackFake;
+            Spellbook.OnCastSpell -= BeforeSpellCast;
+            Orbwalking.AfterAttack -= AfterAttack;
+            Player.OnIssueOrder -= OnIssueOrder;
+
+            Menu.Remove(root);
+        }
 
         #endregion
 
@@ -145,9 +163,9 @@ namespace LeagueSharp.Common
                 return;
             }
 
-            if (target.Position.LSDistance(player.Position) >= 5f)
+            if (target.Position.Distance(player.Position) >= 5f)
             {
-               ShowClick(args.Target.Position, ClickType.Attack);
+                ShowClick(args.Target.Position, ClickType.Attack);
             }
         }
 
@@ -163,10 +181,9 @@ namespace LeagueSharp.Common
         /// </param>
         private static void DrawFake(Obj_AI_Base sender, GameObjectNewPathEventArgs args)
         {
-            if (sender.IsMe && lastTime + deltaT < Game.Time && args.Path.LastOrDefault() != lastEndpoint &&
-                args.Path.LastOrDefault().LSDistance(player.ServerPosition) >= 5f &&
-                root.Item("Enable").IsActive() &&
-                root.Item("Click Mode").GetValue<StringList>().SelectedIndex == 1)
+            if (sender.IsMe && lastTime + deltaT < Game.Time && args.Path.LastOrDefault() != lastEndpoint
+                && args.Path.LastOrDefault().Distance(player.ServerPosition) >= 5f && root.Item("Enable").IsActive()
+                && root.Item("Click Mode").GetValue<StringList>().SelectedIndex == 1)
             {
                 lastEndpoint = args.Path.LastOrDefault();
                 if (!attacking)
@@ -183,51 +200,9 @@ namespace LeagueSharp.Common
         }
 
         /// <summary>
-        ///     The OnIssueOrder event delegate.
-        ///     Currently used for the first style of fake clicks
+        ///     Fired when the game loads.
         /// </summary>
-        /// <param name="sender">
-        ///     The sender.
-        /// </param>
-        /// <param name="args">
-        ///     The args.
-        /// </param>
-        private static void OnIssueOrder(Obj_AI_Base sender, PlayerIssueOrderEventArgs args)
-        {
-            if (sender.IsMe &&
-                (args.Order == GameObjectOrder.MoveTo || args.Order == GameObjectOrder.AttackUnit ||
-                 args.Order == GameObjectOrder.AttackTo) &&
-                lastOrderTime + r.NextFloat(deltaT, deltaT + .2f) < Game.Time &&
-                root.Item("Enable").IsActive() &&
-                root.Item("Click Mode").GetValue<StringList>().SelectedIndex == 0)
-            {
-                var vect = args.TargetPosition;
-                vect.Z = player.Position.Z;
-                if (args.Order == GameObjectOrder.AttackUnit || args.Order == GameObjectOrder.AttackTo)
-                {
-                    ShowClick(RandomizePosition(vect), ClickType.Attack);
-                }
-                else
-                {
-                    ShowClick(vect, ClickType.Move);
-                }
-
-                lastOrderTime = Game.Time;
-            }
-        }
-
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        public static void Initialize()
-        {
-            CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
-        }
-
-        /// <summary>
-        /// Fired when the game loads.
-        /// </summary>
-        /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         private static void Game_OnGameLoad(EventArgs args)
         {
             root.AddItem(new MenuItem("Enable", "Enable").SetValue(false));
@@ -242,22 +217,40 @@ namespace LeagueSharp.Common
             Orbwalking.BeforeAttack += BeforeAttackFake;
             Spellbook.OnCastSpell += BeforeSpellCast;
             Orbwalking.AfterAttack += AfterAttack;
-            EloBuddy.Player.OnIssueOrder += OnIssueOrder;
+            Player.OnIssueOrder += OnIssueOrder;
         }
 
         /// <summary>
-        /// Shows the click.
+        ///     The OnIssueOrder event delegate.
+        ///     Currently used for the first style of fake clicks
         /// </summary>
-        /// <param name="position">The position.</param>
-        /// <param name="type">The type.</param>
-        private static void ShowClick(Vector3 position, ClickType type)
+        /// <param name="sender">
+        ///     The sender.
+        /// </param>
+        /// <param name="args">
+        ///     The args.
+        /// </param>
+        private static void OnIssueOrder(Obj_AI_Base sender, PlayerIssueOrderEventArgs args)
         {
-            if (!Enabled)
+            if (sender.IsMe
+                && (args.Order == GameObjectOrder.MoveTo || args.Order == GameObjectOrder.AttackUnit
+                    || args.Order == GameObjectOrder.AttackTo)
+                && lastOrderTime + r.NextFloat(deltaT, deltaT + .2f) < Game.Time && root.Item("Enable").IsActive()
+                && root.Item("Click Mode").GetValue<StringList>().SelectedIndex == 0)
             {
-                return;
-            }
+                var vect = args.TargetPosition;
+                vect.Z = player.Position.Z;
+                if (args.Order == GameObjectOrder.AttackUnit || args.Order == GameObjectOrder.AttackTo)
+                {
+                    ShowClick(RandomizePosition(vect), ClickType.Attack);
+                }
+                else
+                {
+                    ShowClick(vect, ClickType.Move);
+                }
 
-            Hud.ShowClick(type, position);
+                lastOrderTime = Game.Time;
+            }
         }
 
         /// <summary>
@@ -283,18 +276,21 @@ namespace LeagueSharp.Common
             return input;
         }
 
-        #endregion
-
-        public static void Shutdown()
+        /// <summary>
+        ///     Shows the click.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        /// <param name="type">The type.</param>
+        private static void ShowClick(Vector3 position, ClickType type)
         {
-            CustomEvents.Game.OnGameLoad -= Game_OnGameLoad;
-            Obj_AI_Base.OnNewPath -= DrawFake;
-            Orbwalking.BeforeAttack -= BeforeAttackFake;
-            Spellbook.OnCastSpell -= BeforeSpellCast;
-            Orbwalking.AfterAttack -= AfterAttack;
-            EloBuddy.Player.OnIssueOrder -= OnIssueOrder;
+            if (!Enabled)
+            {
+                return;
+            }
 
-            Menu.Remove(root);
+            Hud.ShowClick(type, position);
         }
+
+        #endregion
     }
 }

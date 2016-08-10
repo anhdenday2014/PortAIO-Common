@@ -18,18 +18,19 @@ namespace LeagueSharp.SDK
     using System.Diagnostics;
     using System.Globalization;
     using System.Reflection;
+    using System.Runtime.InteropServices;
     using System.Security.Permissions;
     using System.Threading;
 
     using LeagueSharp.SDK.UI;
     using LeagueSharp.SDK.UI.Skins;
     using LeagueSharp.SDK.Utils;
+    using EloBuddy;
 
     /// <summary>
     ///     Bootstrap is an initialization pointer for the AppDomainManager to initialize the library correctly once loaded in
     ///     game.
     /// </summary>
-    
     public class Bootstrap
     {
         #region Static Fields
@@ -48,8 +49,8 @@ namespace LeagueSharp.SDK
         /// </summary>
         /// <param name="args">Not currently used or needed.</param>
         /// <returns>true if SDK is loaded, false if it is not</returns>
- //       [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
-        public static bool Init()
+//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        public static bool Init(string[] args = null)
         {
             if (initialized)
             {
@@ -59,40 +60,31 @@ namespace LeagueSharp.SDK
             initialized = true;
 
             // Initial notification.
-            //logger.Info("SDKEx Loading");
 
             // Load Resource Content.
             ResourceLoader.Initialize();
-            //logger.Info("Resources Initialized.");
 
             // Load GameObjects.
             GameObjects.Initialize();
-            //logger.Info("GameObjects Initialized.");
 
             // Create L# menu
             Variables.LeagueSharpMenu = new Menu("LeagueSharp", "LeagueSharp", true).Attach();
             MenuCustomizer.Initialize(Variables.LeagueSharpMenu);
-            //logger.Info("LeagueSharp Menu Created.");
 
             // Load the Orbwalker
             Variables.Orbwalker = new Orbwalker(Variables.LeagueSharpMenu);
-            //logger.Info("Orbwalker Initialized.");
 
             // Load the TargetSelector.
             Variables.TargetSelector = new TargetSelector(Variables.LeagueSharpMenu);
-            //logger.Info("TargetSelector Initialized.");
 
             // Load the Notifications
             Notifications.Initialize(Variables.LeagueSharpMenu);
-            //logger.Info("Notifications Initialized.");
 
             // Load the ThemeManager
             ThemeManager.Initialize(Variables.LeagueSharpMenu);
-            //logger.Info("ThemeManager Initialized.");
 
             // Load Damages.
             Damage.Initialize();
-            //logger.Info("Damage Library Initialized.");
 
             // Tell the developer everything succeeded
             return initialized;

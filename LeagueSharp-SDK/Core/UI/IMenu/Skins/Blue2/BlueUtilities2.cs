@@ -23,6 +23,7 @@
 namespace LeagueSharp.SDK.UI.Skins.Blue2
 {
     using SharpDX;
+    using EloBuddy;
 
     /// <summary>
     ///     Provides a set of functions used in the Default theme.

@@ -24,8 +24,6 @@ namespace LeagueSharp.SDK.UI.Skins.Default
     using PortAIO.Common.Properties;
 
     using SharpDX.Direct3D9;
-    using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     ///     The Default Texture Types.
@@ -41,9 +39,6 @@ namespace LeagueSharp.SDK.UI.Skins.Default
     /// <summary>
     ///     The Default Textures.
     /// </summary>
-    /// 
-    [Serializable()]
-    [KnownType(typeof(DefaultTextures))]
     internal class DefaultTextures
     {
         #region Static Fields

@@ -15,15 +15,11 @@
 //    along with this program.  If not, see http://www.gnu.org/licenses/
 // </copyright>
 
-using System;
-
 namespace LeagueSharp.SDK.UI.Skins
 {
     /// <summary>
     ///     Defines a Theme used to draw components of the menu.
     /// </summary>
-    /// 
-    //
     public interface ITheme
     {
         #region Public Methods and Operators

@@ -1,9 +1,10 @@
 ﻿namespace LeagueSharp.Common
 {
+    using EloBuddy;
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using EloBuddy;
+
     /// <summary>
     ///     Provides cached game objects.
     /// </summary>

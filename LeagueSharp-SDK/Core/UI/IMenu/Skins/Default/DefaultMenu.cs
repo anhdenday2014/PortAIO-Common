@@ -24,16 +24,10 @@ namespace LeagueSharp.SDK.UI.Skins.Default
 
     using SharpDX;
     using SharpDX.Direct3D9;
-    using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     ///     Provides a default implementation of <see cref="ADrawable{Menu}" />
     /// </summary>
-    /// 
-    [Serializable()]
-    [KnownType(typeof(DefaultMenu))]
-    [DataContract(IsReference = true)]
     public class DefaultMenu : ADrawable<Menu>
     {
         #region Static Fields
@@ -114,10 +108,10 @@ namespace LeagueSharp.SDK.UI.Skins.Default
                 Line.Draw(
                     new[]
                         {
-                            new SerializableVector2(position.X, position.Y + (MenuSettings.ContainerHeight / 2f)).ToVector2(),
-                            new SerializableVector2(
+                            new Vector2(position.X, position.Y + (MenuSettings.ContainerHeight / 2f)),
+                            new Vector2(
                                 position.X + this.Component.MenuWidth,
-                                position.Y + (MenuSettings.ContainerHeight / 2f)).ToVector2()
+                                position.Y + (MenuSettings.ContainerHeight / 2f))
                         },
                     MenuSettings.HoverColor);
                 Line.End();
@@ -156,10 +150,10 @@ namespace LeagueSharp.SDK.UI.Skins.Default
                 Line.Draw(
                     new[]
                         {
-                            new SerializableVector2(position.X + (this.Component.MenuWidth / 2f), position.Y).ToVector2(),
-                            new SerializableVector2(
+                            new Vector2(position.X + (this.Component.MenuWidth / 2f), position.Y),
+                            new Vector2(
                                 position.X + (this.Component.MenuWidth / 2f),
-                                position.Y + MenuSettings.ContainerHeight).ToVector2()
+                                position.Y + MenuSettings.ContainerHeight)
                         },
                     MenuSettings.ContainerSelectedColor);
                 Line.End();
@@ -176,8 +170,8 @@ namespace LeagueSharp.SDK.UI.Skins.Default
                 Line.Draw(
                     new[]
                         {
-                            new SerializableVector2((position.X + this.Component.MenuWidth) + (width / 2), position.Y).ToVector2(),
-                            new SerializableVector2((position.X + this.Component.MenuWidth) + (width / 2), position.Y + height).ToVector2()
+                            new Vector2((position.X + this.Component.MenuWidth) + (width / 2), position.Y),
+                            new Vector2((position.X + this.Component.MenuWidth) + (width / 2), position.Y + height)
                         },
                     MenuSettings.RootContainerColor);
                 Line.End();
@@ -187,9 +181,9 @@ namespace LeagueSharp.SDK.UI.Skins.Default
                     var childComponent = this.Component.Components.Values.ToList()[i];
                     if (childComponent != null)
                     {
-                        var childPos = new SerializableVector2(
+                        var childPos = new Vector2(
                             position.X + this.Component.MenuWidth,
-                            position.Y + (i * MenuSettings.ContainerHeight)).ToVector2();
+                            position.Y + (i * MenuSettings.ContainerHeight));
 
                         if (i < this.Component.Components.Count - 1)
                         {
@@ -198,10 +192,10 @@ namespace LeagueSharp.SDK.UI.Skins.Default
                             Line.Draw(
                                 new[]
                                     {
-                                        new SerializableVector2(childPos.X, childPos.Y + MenuSettings.ContainerHeight).ToVector2(),
-                                        new SerializableVector2(
+                                        new Vector2(childPos.X, childPos.Y + MenuSettings.ContainerHeight),
+                                        new Vector2(
                                             childPos.X + childComponent.MenuWidth,
-                                            childPos.Y + MenuSettings.ContainerHeight).ToVector2()
+                                            childPos.Y + MenuSettings.ContainerHeight)
                                     },
                                 MenuSettings.ContainerSeparatorColor);
                             Line.End();
@@ -218,29 +212,29 @@ namespace LeagueSharp.SDK.UI.Skins.Default
                 Line.Draw(
                     new[]
                         {
-                            new SerializableVector2(position.X + this.Component.MenuWidth, position.Y).ToVector2(),
-                            new SerializableVector2(position.X + this.Component.MenuWidth + width, position.Y).ToVector2()
+                            new Vector2(position.X + this.Component.MenuWidth, position.Y),
+                            new Vector2(position.X + this.Component.MenuWidth + width, position.Y)
                         },
                     contourColor);
                 Line.Draw(
                     new[]
                         {
-                            new SerializableVector2(position.X + this.Component.MenuWidth, position.Y + height).ToVector2(),
-                            new SerializableVector2(position.X + this.Component.MenuWidth + width, position.Y + height).ToVector2()
+                            new Vector2(position.X + this.Component.MenuWidth, position.Y + height),
+                            new Vector2(position.X + this.Component.MenuWidth + width, position.Y + height)
                         },
                     contourColor);
                 Line.Draw(
                     new[]
                         {
-                            new SerializableVector2(position.X + this.Component.MenuWidth, position.Y).ToVector2(),
-                            new SerializableVector2(position.X + this.Component.MenuWidth, position.Y + height).ToVector2()
+                            new Vector2(position.X + this.Component.MenuWidth, position.Y),
+                            new Vector2(position.X + this.Component.MenuWidth, position.Y + height)
                         },
                     contourColor);
                 Line.Draw(
                     new[]
                         {
-                            new SerializableVector2(position.X + this.Component.MenuWidth + width, position.Y).ToVector2(),
-                            new SerializableVector2(position.X + this.Component.MenuWidth + width, position.Y + height).ToVector2()
+                            new Vector2(position.X + this.Component.MenuWidth + width, position.Y),
+                            new Vector2(position.X + this.Component.MenuWidth + width, position.Y + height)
                         },
                     contourColor);
                 Line.End();
@@ -263,9 +257,9 @@ namespace LeagueSharp.SDK.UI.Skins.Default
                 Line.Draw(
                     new[]
                         {
-                            new SerializableVector2(x - 1, y + 1).ToVector2(), new SerializableVector2(x - 1 + dragTexture.Width, y + 1).ToVector2(),
-                            new SerializableVector2(x - 1 + dragTexture.Width, y + dragTexture.Width + 2).ToVector2(),
-                            new SerializableVector2(x - 2, y + dragTexture.Width + 2).ToVector2(), new SerializableVector2(x - 2, y).ToVector2(),
+                            new Vector2(x - 1, y + 1), new Vector2(x - 1 + dragTexture.Width, y + 1),
+                            new Vector2(x - 1 + dragTexture.Width, y + dragTexture.Width + 2),
+                            new Vector2(x - 2, y + dragTexture.Width + 2), new Vector2(x - 2, y),
                         },
                     MenuSettings.ContainerSeparatorColor);
                 Line.End();
@@ -285,7 +279,7 @@ namespace LeagueSharp.SDK.UI.Skins.Default
                 if (args.Msg == WindowsMessages.MOUSEMOVE && this.dragging
                     && !MenuCustomizer.Instance.LockPosition.Value)
                 {
-                    MenuSettings.Position = new SerializableVector2(args.Cursor.X - this.xd, args.Cursor.Y - this.yd).ToVector2();
+                    MenuSettings.Position = new Vector2(args.Cursor.X - this.xd, args.Cursor.Y - this.yd);
                     this.hasDragged = true;
                 }
 

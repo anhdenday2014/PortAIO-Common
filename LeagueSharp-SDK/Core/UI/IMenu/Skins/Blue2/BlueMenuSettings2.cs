@@ -27,6 +27,7 @@ namespace LeagueSharp.SDK.UI.Skins.Blue2
     using LeagueSharp.SDK.UI.Skins.Blue;
 
     using SharpDX;
+    using EloBuddy;
 
     /// <summary>
     ///     Default Skin Settings.
@@ -51,7 +52,7 @@ namespace LeagueSharp.SDK.UI.Skins.Blue2
         /// <summary>
         ///     Gets or sets the Global Container Selected Color.
         /// </summary>
-        public static new ColorBGRA ContainerSelectedColor { get; set; }
+        public static ColorBGRA ContainerSelectedColor { get; set; }
 
         #endregion
 
@@ -60,7 +61,7 @@ namespace LeagueSharp.SDK.UI.Skins.Blue2
         /// <summary>
         ///     Used to load the menu settings.
         /// </summary>
-        public static new void LoadSettings()
+        public static void LoadSettings()
         {
             BlueMenuSettings.LoadSettings();
         }

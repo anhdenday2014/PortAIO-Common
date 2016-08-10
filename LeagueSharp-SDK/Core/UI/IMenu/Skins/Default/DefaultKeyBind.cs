@@ -25,14 +25,10 @@ namespace LeagueSharp.SDK.UI.Skins.Default
     using SharpDX;
     using SharpDX.Direct3D9;
     using EloBuddy;
-    using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     ///     A default implementation of <see cref="ADrawable{MenuKeyBind}" />
     /// </summary>
-    [Serializable()]
-    [KnownType(typeof(DefaultKeyBind))]
     public class DefaultKeyBind : ADrawable<MenuKeyBind>
     {
         #region Static Fields
@@ -118,14 +114,14 @@ namespace LeagueSharp.SDK.UI.Skins.Default
             Line.Draw(
                 new[]
                     {
-                        new SerializableVector2(
+                        new Vector2(
                             (this.Component.Position.X + this.Component.MenuWidth - MenuSettings.ContainerHeight)
                             + (MenuSettings.ContainerHeight / 2f),
-                            this.Component.Position.Y + 1).ToVector2(),
-                        new SerializableVector2(
+                            this.Component.Position.Y + 1),
+                        new Vector2(
                             (this.Component.Position.X + this.Component.MenuWidth - MenuSettings.ContainerHeight)
                             + (MenuSettings.ContainerHeight / 2f),
-                            this.Component.Position.Y + MenuSettings.ContainerHeight).ToVector2()
+                            this.Component.Position.Y + MenuSettings.ContainerHeight)
                     },
                 this.Component.Active ? new ColorBGRA(0, 100, 0, 255) : new ColorBGRA(255, 0, 0, 255));
             Line.End();

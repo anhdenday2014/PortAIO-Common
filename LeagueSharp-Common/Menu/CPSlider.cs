@@ -2,9 +2,9 @@
 {
     using System;
 
+    using PortAIO.Common.Properties;
 
     using SharpDX;
-    using PortAIO.Common.Properties;
 
     /// <summary>
     ///     The color picker slider.

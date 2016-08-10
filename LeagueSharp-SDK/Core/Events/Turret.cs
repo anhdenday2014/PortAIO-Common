@@ -17,11 +17,11 @@
 
 namespace LeagueSharp.SDK
 {
-    using EloBuddy;
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
+    using EloBuddy;
     using EloBuddy.SDK;
     /// <summary>
     ///     Turret tracker and event handler.
@@ -102,12 +102,12 @@ namespace LeagueSharp.SDK
         private static void EventTurretConstruct()
         {
             OnLoad += (sender, args) =>
-            {
-                foreach (var turret in GameObjects.Turrets)
                 {
-                    Turrets.Add(turret.NetworkId, new TurretArgs { Turret = turret });
-                }
-            };
+                    foreach (var turret in GameObjects.Turrets)
+                    {
+                        Turrets.Add(turret.NetworkId, new TurretArgs { Turret = turret });
+                    }
+                };
         }
 
         #endregion

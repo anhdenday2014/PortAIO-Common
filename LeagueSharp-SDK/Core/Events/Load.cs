@@ -21,7 +21,9 @@ namespace LeagueSharp.SDK
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using EloBuddy;   
+    using EloBuddy;
+
+    
 
     /// <summary>
     ///     Provides an event for when the game starts.

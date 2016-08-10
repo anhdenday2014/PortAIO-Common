@@ -1,17 +1,17 @@
 ﻿namespace LeagueSharp.SDK
 {
     using System;
-    //using System.Security.Permissions;
+    using System.Security.Permissions;
 
     using LeagueSharp.Data.DataTypes;
     using LeagueSharp.Data.Enumerations;
     using LeagueSharp.SDK.Enumerations;
     using LeagueSharp.SDK.Utils;
-    using EloBuddy;
 
-
+    
 
     using SharpDX;
+    using EloBuddy;
 
     public class Detector
     {
@@ -119,7 +119,7 @@
                 Variables.TickCount - Game.Ping / 2);
         }
 
-//        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
+        //[PermissionSet(SecurityAction.Assert, Unrestricted = true)]
         private static void TriggerOnDetectSkillshot(
             SpellDatabaseEntry spellDatabaseEntry,
             Obj_AI_Base caster,

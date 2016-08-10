@@ -43,7 +43,7 @@ namespace LeagueSharp.SDK
         /// </summary>
         static LastCast()
         {
-            Obj_AI_Base.OnProcessSpellCast += AIHeroClient_OnProcessSpellCast;
+            Obj_AI_Base.OnSpellCast += AIHeroClient_OnProcessSpellCast;
             Spellbook.OnCastSpell += OnCastSpell;
         }
 

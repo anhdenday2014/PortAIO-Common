@@ -19,9 +19,9 @@ namespace LeagueSharp.SDK.TSModes
 {
     using System.Collections.Generic;
     using System.Linq;
-    using EloBuddy;
 
     using LeagueSharp.SDK.UI;
+    using EloBuddy;
 
     /// <summary>
     ///     The closest Mode.

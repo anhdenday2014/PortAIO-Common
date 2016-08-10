@@ -21,15 +21,10 @@ namespace LeagueSharp.SDK.UI.Skins.Default
 
     using SharpDX;
     using SharpDX.Direct3D9;
-    using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     ///     Implements a default ITheme.
     /// </summary>
-    /// 
-    [Serializable()]
-    [KnownType(typeof(DefaultTheme))]
     public class DefaultTheme : ITheme
     {
         #region Static Fields
@@ -152,15 +147,15 @@ namespace LeagueSharp.SDK.UI.Skins.Default
             Line.Draw(
                 new[]
                     {
-                        new SerializableVector2(position.X + (width / 2f), position.Y).ToVector2(),
-                        new SerializableVector2(position.X + (width / 2), position.Y + height).ToVector2()
+                        new Vector2(position.X + (width / 2f), position.Y),
+                        new Vector2(position.X + (width / 2), position.Y + height)
                     },
                 MenuSettings.RootContainerColor);
             Line.End();
 
             for (var i = 0; i < menuManager.Menus.Count; ++i)
             {
-                var childPos = new SerializableVector2(position.X, position.Y + (i * MenuSettings.ContainerHeight)).ToVector2();
+                var childPos = new Vector2(position.X, position.Y + (i * MenuSettings.ContainerHeight));
 
                 if (i < menuManager.Menus.Count - 1)
                 {
@@ -169,10 +164,10 @@ namespace LeagueSharp.SDK.UI.Skins.Default
                     Line.Draw(
                         new[]
                             {
-                                new SerializableVector2(childPos.X, childPos.Y + MenuSettings.ContainerHeight).ToVector2(),
-                                new SerializableVector2(
+                                new Vector2(childPos.X, childPos.Y + MenuSettings.ContainerHeight),
+                                new Vector2(
                                     childPos.X + menuManager.Menus[i].MenuWidth,
-                                    childPos.Y + MenuSettings.ContainerHeight).ToVector2()
+                                    childPos.Y + MenuSettings.ContainerHeight)
                             },
                         MenuSettings.ContainerSeparatorColor);
                     Line.End();
@@ -186,9 +181,9 @@ namespace LeagueSharp.SDK.UI.Skins.Default
             Line.Draw(
                 new[]
                     {
-                        new SerializableVector2(position.X, position.Y).ToVector2(), new SerializableVector2(position.X + width, position.Y).ToVector2(),
-                        new SerializableVector2(position.X + width, position.Y + height).ToVector2(), new SerializableVector2(position.X, position.Y + height).ToVector2(),
-                        new SerializableVector2(position.X, position.Y).ToVector2()
+                        new Vector2(position.X, position.Y), new Vector2(position.X + width, position.Y),
+                        new Vector2(position.X + width, position.Y + height), new Vector2(position.X, position.Y + height),
+                        new Vector2(position.X, position.Y)
                     },
                 Color.Black);
             Line.End();

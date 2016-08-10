@@ -22,6 +22,7 @@
 
 namespace LeagueSharp.SDK.UI.Skins.Tech
 {
+    using EloBuddy;
     using LeagueSharp.SDK.Enumerations;
     using LeagueSharp.SDK.Utils;
 
@@ -47,7 +48,7 @@ namespace LeagueSharp.SDK.UI.Skins.Tech
         /// <summary>
         ///     The line.
         /// </summary>
-        private static readonly Line Line = new Line(EloBuddy.Drawing.Direct3DDevice) { GLLines = true };
+        private static readonly Line Line = new Line(Drawing.Direct3DDevice) { GLLines = true };
 
         #endregion
 

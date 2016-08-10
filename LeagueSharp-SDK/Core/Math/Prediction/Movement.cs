@@ -531,9 +531,11 @@ namespace LeagueSharp.SDK
 
             if (wayPoints.Count == 1)
             {
-                return hero.Spellbook.IsAutoAttacking || UnitTracker.GetLastStopTick(hero) < 0.8d ? HitChance.High : HitChance.VeryHigh;
+                return hero.Spellbook.IsAutoAttacking || UnitTracker.GetLastStopTick(hero) < 0.8d
+                           ? HitChance.High
+                           : HitChance.VeryHigh;
             }
-
+// LOI LOI LOI
             if (UnitTracker.IsSpamSamePos(hero))
             {
                 return HitChance.VeryHigh;

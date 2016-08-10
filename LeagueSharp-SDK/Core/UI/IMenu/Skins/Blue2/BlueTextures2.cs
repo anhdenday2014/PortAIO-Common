@@ -25,6 +25,7 @@ namespace LeagueSharp.SDK.UI.Skins.Blue2
     using System.Collections.Generic;
     using System.Drawing;
     using System.Linq;
+    using EloBuddy;
 
     using PortAIO.Common.Properties;
 
@@ -89,7 +90,7 @@ namespace LeagueSharp.SDK.UI.Skins.Blue2
         {
             var resized = new Bitmap(bmp, width, height);
             var texture = Texture.FromMemory(
-                EloBuddy.Drawing.Direct3DDevice,
+                Drawing.Direct3DDevice,
                 (byte[])new ImageConverter().ConvertTo(resized, typeof(byte[])),
                 resized.Width,
                 resized.Height,

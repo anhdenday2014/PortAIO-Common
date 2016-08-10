@@ -26,7 +26,7 @@ namespace LeagueSharp.SDK.MoreLinq
     ///     The exception that is thrown for a sequence that fails a condition.
     /// </summary>
 #if !NO_EXCEPTION_SERIALIZATION
-    [Serializable()]
+    [Serializable]
 #endif
     public class SequenceException : Exception
     {

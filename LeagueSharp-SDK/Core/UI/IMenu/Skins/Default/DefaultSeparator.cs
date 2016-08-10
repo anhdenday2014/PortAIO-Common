@@ -19,14 +19,10 @@ namespace LeagueSharp.SDK.UI.Skins.Default
 {
     using LeagueSharp.SDK.Enumerations;
     using LeagueSharp.SDK.Utils;
-    using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     ///     Implements <see cref="ADrawable{MenuSeperator}" /> as a default skin.
     /// </summary>
-    [Serializable()]
-    [KnownType(typeof(DefaultSeparator))]
     public class DefaultSeparator : ADrawable<MenuSeparator>
     {
         #region Constructors and Destructors

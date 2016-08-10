@@ -29,6 +29,7 @@ namespace LeagueSharp.SDK.UI.Skins.Tech
     using PortAIO.Common.Properties;
 
     using SharpDX.Direct3D9;
+    using EloBuddy;
 
     internal enum TechTexture
     {
@@ -95,7 +96,7 @@ namespace LeagueSharp.SDK.UI.Skins.Tech
         {
             var resized = new Bitmap(bmp, width, height);
             var texture = Texture.FromMemory(
-                EloBuddy.Drawing.Direct3DDevice,
+                Drawing.Direct3DDevice,
                 (byte[])new ImageConverter().ConvertTo(resized, typeof(byte[])),
                 resized.Width,
                 resized.Height,

@@ -17,21 +17,16 @@
 
 namespace LeagueSharp.SDK.UI
 {
+    using EloBuddy;
     using LeagueSharp.SDK.UI.Skins;
 
     using SharpDX;
     using SharpDX.Direct3D9;
-    using EloBuddy;
-    using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     ///     This menu allows the user to modify several properties in <see cref="MenuSettings" />.
     /// </summary>
-    /// 
-    [Serializable]
-    [KnownType(typeof(MenuCustomizer))]
-    internal class MenuCustomizer : Menu
+    public sealed class MenuCustomizer : Menu
     {
         #region Static Fields
 
@@ -44,12 +39,8 @@ namespace LeagueSharp.SDK.UI
 
         #region Constructors and Destructors
 
-        public MenuCustomizer()
-        {
-
-        }
-
-        private MenuCustomizer(Menu parentMenu) : base("menucustomizer", "Menu", false, string.Empty)
+        private MenuCustomizer(Menu parentMenu)
+            : base("menucustomizer", "Menu", false, string.Empty)
         {
             parentMenu.Add(this);
             this.BuildCustomizer();
@@ -132,7 +123,7 @@ namespace LeagueSharp.SDK.UI
 
         private void ApplyChanges()
         {
-            MenuSettings.Position = new SerializableVector2(this.PositionX.Value, this.PositionY.Value).ToVector2();
+            MenuSettings.Position = new Vector2(this.PositionX.Value, this.PositionY.Value);
             MenuSettings.ContainerHeight = this.ContainerHeight.Value;
             var oldFont = MenuSettings.Font;
             MenuSettings.Font = new Font(

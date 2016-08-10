@@ -52,7 +52,7 @@ namespace LeagueSharp.SDK
         static Health()
         {
             Game.OnUpdate += OnGameUpdate;
-            Obj_AI_Base.OnSpellCast += ObjAiBaseOnSpellCast;
+            Obj_AI_Base.OnSpellCast += OnObjAiBaseProcessSpellCast;
             Spellbook.OnStopCast += OnSpellbookStopCast;
             GameObject.OnDelete += OnGameObjectDelete;
             Obj_AI_Base.OnSpellCast += OnObjAiBaseDoCast;
@@ -331,7 +331,7 @@ namespace LeagueSharp.SDK
         /// </summary>
         /// <param name="sender"><see cref="Obj_AI_Base" /> sender</param>
         /// <param name="args">Processed Spell Cast Data</param>
-        private static void ObjAiBaseOnSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        private static void OnObjAiBaseProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             if (!sender.IsValidTarget(2000, false) || !AutoAttack.IsAutoAttack(args.SData.Name) || !sender.IsAlly)
             {

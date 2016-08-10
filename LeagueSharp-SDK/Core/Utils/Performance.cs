@@ -24,7 +24,7 @@ namespace LeagueSharp.SDK.Utils
     using LeagueSharp.SDK.Enumerations;
     using EloBuddy;
 
-
+    
 
     /// <summary>
     ///     Performance block class, for block method performance logging.

@@ -1,8 +1,8 @@
 ﻿namespace LeagueSharp.Common
 {
-    using System;
-//    using System.Security.Permissions;
     using EloBuddy;
+    using System;
+    //using System.Security.Permissions;
 
     /// <summary>
     ///     The windows event message composition, gives indepth information from a <see cref="WndEventArgs" />.

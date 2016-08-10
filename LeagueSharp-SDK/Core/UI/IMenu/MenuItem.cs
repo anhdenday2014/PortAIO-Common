@@ -21,36 +21,16 @@ namespace LeagueSharp.SDK.UI
     using System.Diagnostics.CodeAnalysis;
     using System.IO;
     using System.Reflection;
-    //    using System.Runtime.Serialization;
+    using System.Runtime.Serialization;
     using System.Runtime.Serialization.Formatters.Binary;
-    using System.Collections.Generic;
 
     using LeagueSharp.SDK.Utils;
-    using EloBuddy;
+
     using SharpDX;
-    using System.Runtime.Serialization;
-    using System.Xml.Serialization;
-    using Newtonsoft.Json;
-    using System.Runtime.Serialization.Json;
-    using SharpDX.Text;
 
     /// <summary>
     ///     Menu Item
     /// </summary>
-    /// .
-    /// 
-    [Serializable()]
-    [KnownType(typeof(MenuItem))]
-    [KnownType(typeof(MenuSeparator))]
-    [KnownType(typeof(MenuBool))]
-    [KnownType(typeof(MenuList))]
-    [KnownType(typeof(MenuKeyBind))]
-    [KnownType(typeof(MenuColor))]
-    [KnownType(typeof(MenuSliderButton))]
-    [KnownType(typeof(MenuButton))]
-    [KnownType(typeof(MenuSlider))]
-    [KnownType(typeof(MenuList<List<string>>))]
-    [DataContract(IsReference = false)]
     public abstract class MenuItem : AMenuComponent
     {
         #region Constructors and Destructors
@@ -116,10 +96,12 @@ namespace LeagueSharp.SDK.UI
             get
             {
                 var fileName = this.Name + this.UniqueString + "." + this.GetType().Name + ".bin";
-
                 if (this.Parent == null)
                 {
-                    return System.IO.Path.Combine(MenuManager.ConfigFolder.CreateSubdirectory(this.AssemblyName).FullName, fileName);
+                    return
+                        System.IO.Path.Combine(
+                            MenuManager.ConfigFolder.CreateSubdirectory(this.AssemblyName).FullName,
+                            fileName);
                 }
 
                 return System.IO.Path.Combine(this.Parent.Path, fileName);
@@ -215,32 +197,13 @@ namespace LeagueSharp.SDK.UI
                 this.SettingsLoaded = true;
                 try
                 {
-                    //File.ReadAllBytes(this.Path), typeof(MenuItem)
-                    var obj2 = BinarySerializer.Deserialize<MenuItem>(File.ReadAllBytes(this.Path));
-                    this.Extract(obj2);
+                    var newValue = Deserialize<MenuItem>(File.ReadAllBytes(this.Path));
+                    this.Extract(newValue);
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e.ToString());
                 }
-            }
-        }
-
-        public BinarySerializer Serializer;
-
-        /// <summary>
-        ///     Saves this instance.
-        /// </summary>
-        public override void Save()
-        {
-            if (this.GetType().IsSerializable)
-            {
-                //var a = Serializer.Serialize(this, typeof(MenuItem));
-
-                var stream = new MemoryStream();
-                //Serializer = new BinarySerializer();
-
-                File.WriteAllBytes(this.Path, BinarySerializer.Serialize(this));
             }
         }
 
@@ -250,7 +213,7 @@ namespace LeagueSharp.SDK.UI
         /// <param name="position">
         ///     The position.
         /// </param>
-        public override void OnDraw(SerializableVector2 position)
+        public override void OnDraw(Vector2 position)
         {
             if (this.Visible)
             {
@@ -306,6 +269,17 @@ namespace LeagueSharp.SDK.UI
         }
 
         /// <summary>
+        ///     Saves this instance.
+        /// </summary>
+        public override void Save()
+        {
+            if (this.GetType().IsSerializable)
+            {
+                File.WriteAllBytes(this.Path, Serialize(this));
+            }
+        }
+
+        /// <summary>
         ///     Windows Process Messages callback.
         /// </summary>
         /// <param name="args"><see cref="WindowsKeys" /> data</param>
@@ -320,6 +294,85 @@ namespace LeagueSharp.SDK.UI
         ///     Item PostReset callback.
         /// </summary>
         public abstract void PostReset();
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///     Convert a byte array to an Object.
+        /// </summary>
+        /// <param name="arrBytes">
+        ///     Byte array
+        /// </param>
+        /// <typeparam name="T3">
+        ///     Object casting type
+        /// </typeparam>
+        /// <returns>
+        ///     Object from the byte array as given type.
+        /// </returns>
+        internal static T3 Deserialize<T3>(byte[] arrBytes)
+        {
+            var memStream = new MemoryStream();
+            var binForm = new BinaryFormatter { Binder = new AllowAllAssemblyVersionsDeserializationBinder() };
+            memStream.Write(arrBytes, 0, arrBytes.Length);
+            memStream.Seek(0, SeekOrigin.Begin);
+            return (T3)binForm.Deserialize(memStream);
+        }
+
+        /// <summary>
+        ///     Convert an Object to a byte array.
+        /// </summary>
+        /// <param name="obj">
+        ///     The Object
+        /// </param>
+        /// <returns>
+        ///     Byte array from the given Object.
+        /// </returns>
+        internal static byte[] Serialize(object obj)
+        {
+            if (obj == null)
+            {
+                return null;
+            }
+
+            var bf = new BinaryFormatter();
+            var ms = new MemoryStream();
+            bf.Serialize(ms, obj);
+            return ms.ToArray();
+        }
+
+        #endregion
+    }
+
+    /// <summary>
+    ///     Allow all assembly versions deserialization binder.
+    /// </summary>
+    internal sealed class AllowAllAssemblyVersionsDeserializationBinder : SerializationBinder
+    {
+        #region Public Methods and Operators
+
+        /// <summary>
+        ///     The bind to type.
+        /// </summary>
+        /// <param name="assemblyName">
+        ///     The assembly name
+        /// </param>
+        /// <param name="typeName">
+        ///     The type name
+        /// </param>
+        /// <returns>
+        ///     The type which has been bind.
+        /// </returns>
+        [SuppressMessage("ReSharper", "RedundantAssignment", Justification = "Overriden for memory purposes.")]
+        public override Type BindToType(string assemblyName, string typeName)
+        {
+            // In this case we are always using the current assembly
+            assemblyName = Assembly.GetExecutingAssembly().FullName;
+
+            // Get the type using the typeName and assemblyName
+            return Type.GetType($"{typeName}, {assemblyName}");
+        }
 
         #endregion
     }

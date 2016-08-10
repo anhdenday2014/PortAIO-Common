@@ -25,6 +25,7 @@ namespace LeagueSharp.SDK.UI.Skins.Blue2
     using LeagueSharp.SDK.UI.Skins.Blue;
 
     using SharpDX.Direct3D9;
+    using EloBuddy;
 
     /// <summary>
     ///     A blue implementation of a <see cref="ADrawable{MenuBool}" />

@@ -224,7 +224,7 @@ namespace LeagueSharp.SDK
             #endregion
 
             #region Constructors and Destructors
-            /*
+
             /// <summary>
             ///     Initializes a new instance of the <see cref="Item" /> class.
             /// </summary>
@@ -234,7 +234,7 @@ namespace LeagueSharp.SDK
             /// <param name="range">
             ///     The Range
             /// </param>
-            public Item(int id, float range)
+       /*     public Item(int id, float range)
             {
                 var item = ItemData.Entries.FirstOrDefault(i => (int)i.Id == id);
 
@@ -368,7 +368,7 @@ namespace LeagueSharp.SDK
             public void Buy()
             {
             //    GameObjects.Player.BuyItem((ItemId)this.Id);
-            
+                Shop.BuyItem((ItemId)this.Id);
             }
 
             /// <summary>

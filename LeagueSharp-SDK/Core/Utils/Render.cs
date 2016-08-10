@@ -7,9 +7,9 @@
     using System.IO;
     using System.Linq;
     using System.Threading;
-
-
     using EloBuddy;
+
+    
 
     using SharpDX;
     using SharpDX.Direct3D9;
@@ -54,7 +54,7 @@
         ///     Gets the device.
         /// </summary>
         /// <value>The device.</value>
-        public static Device Device => EloBuddy.Drawing.Direct3DDevice;
+        public static Device Device => Drawing.Direct3DDevice;
 
         #endregion
 

@@ -22,15 +22,10 @@ namespace LeagueSharp.SDK.UI.Skins.Default
 
     using SharpDX;
     using SharpDX.Direct3D9;
-    using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     ///     A default implementation of a <see cref="ADrawable{MenuBool}" />
     /// </summary>
-    /// 
-    [Serializable()]
-    [KnownType(typeof(DefaultBool))]
     public class DefaultBool : ADrawable<MenuBool>
     {
         #region Static Fields
@@ -66,7 +61,11 @@ namespace LeagueSharp.SDK.UI.Skins.Default
         /// <returns>The <see cref="Rectangle" /></returns>
         public Rectangle ButtonBoundaries(MenuBool component)
         {
-            return new Rectangle((int)(component.Position.X + component.MenuWidth - MenuSettings.ContainerHeight), (int)component.Position.Y, MenuSettings.ContainerHeight, MenuSettings.ContainerHeight);
+            return new Rectangle(
+                (int)(component.Position.X + component.MenuWidth - MenuSettings.ContainerHeight),
+                (int)component.Position.Y,
+                MenuSettings.ContainerHeight,
+                MenuSettings.ContainerHeight);
         }
 
         /// <summary>
@@ -104,14 +103,14 @@ namespace LeagueSharp.SDK.UI.Skins.Default
             Line.Draw(
                 new[]
                     {
-                        new SerializableVector2(
+                        new Vector2(
                             (this.Component.Position.X + this.Component.MenuWidth - MenuSettings.ContainerHeight)
                             + (MenuSettings.ContainerHeight / 2f),
-                            this.Component.Position.Y + 1).ToVector2(),
-                        new SerializableVector2(
+                            this.Component.Position.Y + 1),
+                        new Vector2(
                             (this.Component.Position.X + this.Component.MenuWidth - MenuSettings.ContainerHeight)
                             + (MenuSettings.ContainerHeight / 2f),
-                            this.Component.Position.Y + MenuSettings.ContainerHeight).ToVector2()
+                            this.Component.Position.Y + MenuSettings.ContainerHeight)
                     },
                 this.Component.Value ? new ColorBGRA(0, 100, 0, 255) : new ColorBGRA(255, 0, 0, 255));
             Line.End();

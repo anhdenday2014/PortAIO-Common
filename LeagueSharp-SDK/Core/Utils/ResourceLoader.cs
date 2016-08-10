@@ -23,7 +23,7 @@ namespace LeagueSharp.SDK.Utils
     using System.Reflection;
     using EloBuddy;
 
-
+    
 
     internal static class ResourceLoader
     {

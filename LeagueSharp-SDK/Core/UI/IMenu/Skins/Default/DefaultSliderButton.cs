@@ -25,14 +25,10 @@ namespace LeagueSharp.SDK.UI.Skins.Default
 
     using SharpDX;
     using SharpDX.Direct3D9;
-    using System.Runtime.Serialization;
 
     /// <summary>
     ///     A default implementation of an <see cref="ADrawable{MenuSliderButton}" />
     /// </summary>
-    /// 
-    [Serializable()]
-    [KnownType(typeof(DefaultSliderButton))]
     public class DefaultSliderButton : ADrawable<MenuSliderButton>
     {
         #region Static Fields
@@ -107,7 +103,7 @@ namespace LeagueSharp.SDK.UI.Skins.Default
             Line.Width = 2;
             Line.Begin();
             Line.Draw(
-                new[] { new SerializableVector2(x, position.Y + 1).ToVector2(), new SerializableVector2(x, position.Y + MenuSettings.ContainerHeight).ToVector2() },
+                new[] { new Vector2(x, position.Y + 1), new Vector2(x, position.Y + MenuSettings.ContainerHeight) },
                 this.Component.Interacting ? new ColorBGRA(255, 0, 0, 255) : new ColorBGRA(50, 154, 205, 255));
             Line.End();
 
@@ -120,11 +116,11 @@ namespace LeagueSharp.SDK.UI.Skins.Default
 
             var measureText = MenuSettings.Font.MeasureText(
                 null,
-                this.Component.SValue.ToString(),
+                this.Component.SValue.ToString(CultureInfo.InvariantCulture),
                 0);
             MenuSettings.Font.DrawText(
                 MenuManager.Instance.Sprite,
-                this.Component.SValue.ToString(),
+                this.Component.SValue.ToString(CultureInfo.InvariantCulture),
                 (int)(position.X + this.Component.MenuWidth - 5 - measureText.Width - MenuSettings.ContainerHeight),
                 centeredY,
                 MenuSettings.TextColor);
@@ -134,8 +130,8 @@ namespace LeagueSharp.SDK.UI.Skins.Default
             Line.Draw(
                 new[]
                     {
-                        new SerializableVector2(position.X, position.Y + (MenuSettings.ContainerHeight / 2f)).ToVector2(),
-                        new SerializableVector2(x, position.Y + (MenuSettings.ContainerHeight / 2f)).ToVector2()
+                        new Vector2(position.X, position.Y + (MenuSettings.ContainerHeight / 2f)),
+                        new Vector2(x, position.Y + (MenuSettings.ContainerHeight / 2f))
                     },
                 MenuSettings.HoverColor);
             Line.End();
@@ -147,14 +143,14 @@ namespace LeagueSharp.SDK.UI.Skins.Default
             Line.Draw(
                 new[]
                     {
-                        new SerializableVector2(
+                        new Vector2(
                             (this.Component.Position.X + this.Component.MenuWidth - MenuSettings.ContainerHeight)
                             + (MenuSettings.ContainerHeight / 2f),
-                            this.Component.Position.Y + 1).ToVector2(),
-                        new SerializableVector2(
+                            this.Component.Position.Y + 1),
+                        new Vector2(
                             (this.Component.Position.X + this.Component.MenuWidth - MenuSettings.ContainerHeight)
                             + (MenuSettings.ContainerHeight / 2f),
-                            this.Component.Position.Y + MenuSettings.ContainerHeight).ToVector2()
+                            this.Component.Position.Y + MenuSettings.ContainerHeight)
                     },
                 this.Component.BValue ? new ColorBGRA(0, 100, 0, 255) : new ColorBGRA(255, 0, 0, 255));
             Line.End();

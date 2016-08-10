@@ -22,7 +22,7 @@ namespace LeagueSharp.SDK.Utils
     using System.Runtime.CompilerServices;
     using EloBuddy;
 
-
+    
 
     /// <summary>
     ///     Performance class, measures how much time does a function takes to execute.
@@ -131,11 +131,13 @@ namespace LeagueSharp.SDK.Utils
                 stopwatch.Stop();
 
                 //LogManager.GetCurrentClassLogger().Info($"{memberName} has taken {stopwatch.Elapsed} elapsed time span to execute, and was executed successfuly.");
+
                 return stopwatch.Elapsed;
             }
             catch (Exception e)
             {
                 //LogManager.GetCurrentClassLogger().Error(e, $"{memberName} had an error during execution and was unable to be measured.");
+
                 return TimeSpan.Zero;
             }
         }

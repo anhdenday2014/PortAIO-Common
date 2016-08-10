@@ -19,19 +19,19 @@ namespace LeagueSharp.SDK.UI
 {
     using System;
     using System.Runtime.Serialization;
-    using System.Security.Permissions;
+    //using System.Security.Permissions;
     using System.Windows.Forms;
 
     using LeagueSharp.SDK.Enumerations;
     using LeagueSharp.SDK.UI.Skins;
     using LeagueSharp.SDK.Utils;
     using EloBuddy;
+
     /// <summary>
     ///     Menu KeyBind.
     /// </summary>
-    [Serializable()]
-    [KnownType(typeof(MenuKeyBind))]
-    public class MenuKeyBind : MenuItem/*, ISerializable//*/
+    [Serializable]
+    public class MenuKeyBind : MenuItem, ISerializable
     {
         #region Fields
 
@@ -53,11 +53,6 @@ namespace LeagueSharp.SDK.UI
         #endregion
 
         #region Constructors and Destructors
-
-        public MenuKeyBind()
-        {
-
-        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MenuKeyBind" /> class.
@@ -97,7 +92,7 @@ namespace LeagueSharp.SDK.UI
             this.original = (Keys)info.GetValue("original", typeof(Keys));
             this.Active = (bool)info.GetValue("active", typeof(bool));
         }
-//*/
+
         #endregion
 
         #region Public Properties
@@ -233,7 +228,7 @@ namespace LeagueSharp.SDK.UI
         ///     serialization.
         /// </param>
         /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
-  /*      [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+        //[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
@@ -245,7 +240,7 @@ namespace LeagueSharp.SDK.UI
             info.AddValue("original", this.original, typeof(Keys));
             info.AddValue("active", this.active, typeof(bool));
         }
-        //*/
+
         #endregion
 
         #region Methods
@@ -274,14 +269,14 @@ namespace LeagueSharp.SDK.UI
         ///     serialization.
         /// </param>
         /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
-        // [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-        void GetObjectData(SerializationInfo info, StreamingContext context)
+        //[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+        protected virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("key", this.Key, typeof(Keys));
             info.AddValue("original", this.original, typeof(Keys));
             info.AddValue("active", this.active, typeof(bool));
         }
-        //*/
+
         private void Game_OnWndProc(WndEventArgs args)
         {
             this.Handler.OnWndProc(new WindowsKeys(args));

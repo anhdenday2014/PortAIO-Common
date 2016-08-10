@@ -18,6 +18,7 @@
 namespace LeagueSharp.SDK
 {
     using EloBuddy;
+
     /// <summary>
     ///     Holds information about the last casted spell a unit did.
     /// </summary>

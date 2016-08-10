@@ -33,6 +33,7 @@ namespace LeagueSharp.SDK.UI.Skins.Colored
     using Color = SharpDX.Color;
     using Rectangle = SharpDX.Rectangle;
     using Utilities = LeagueSharp.SDK.UI.Utilities;
+    using EloBuddy;
 
     internal class ColoredColorPicker : ADrawable<MenuColor>
     {
@@ -120,7 +121,7 @@ namespace LeagueSharp.SDK.UI.Skins.Colored
         /// <summary>
         ///     The line.
         /// </summary>
-        private static readonly Line Line = new Line(EloBuddy.Drawing.Direct3DDevice) { GLLines = true };
+        private static readonly Line Line = new Line(Drawing.Direct3DDevice) { GLLines = true };
 
         #endregion
 

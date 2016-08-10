@@ -5,12 +5,13 @@
     using System.Drawing;
     using System.Linq;
     using System.Reflection;
-    using EloBuddy;
+
     using SharpDX;
     using SharpDX.Direct3D9;
 
     using Color = SharpDX.Color;
     using Rectangle = SharpDX.Rectangle;
+    using EloBuddy;
 
     /// <summary>
     ///     The menu.
@@ -269,7 +270,7 @@
         {
             get
             {
-                return MenuDrawHelper.Font.MeasureText(this.DisplayName).Width + 25;
+                return MenuDrawHelper.Font.MeasureText((this.DisplayName)).Width + 25;
             }
         }
 
@@ -605,7 +606,7 @@
 
             font.DrawText(
                 null,
-                this.DisplayName,
+                (this.DisplayName),
                 new Rectangle((int)this.Position.X + 5, (int)this.Position.Y, this.Width, this.Height),
                 FontDrawFlags.VerticalCenter,
                 this.Color);
@@ -616,7 +617,7 @@
                 FontDrawFlags.Right | FontDrawFlags.VerticalCenter,
                 this.Color);
 
-            var textWidth = font.MeasureText(null, this.DisplayName);
+            var textWidth = font.MeasureText(null, (this.DisplayName));
             if ((this.Style & FontStyle.Strikeout) != 0)
             {
                 Drawing.DrawLine(

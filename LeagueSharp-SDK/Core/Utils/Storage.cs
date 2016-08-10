@@ -24,9 +24,9 @@ namespace LeagueSharp.SDK.Utils
     using System.Linq;
     using System.Reflection;
     using System.Runtime.Serialization;
+
+    
     using EloBuddy;
-
-
 
     /// <summary>
     ///     The storage, main purpose is to save share-able settings between assemblies.

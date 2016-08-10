@@ -157,27 +157,27 @@ namespace LeagueSharp.SDK.UI.Skins.Blue
         {
             Hsl tempHsl;
             this.ColorBox = new ColorBox(new Size(200, 200), true)
-            { Hsl = Utilities.RgbToHsl(this.Component.Color.ToSystemColor()) };
+                                { Hsl = Utilities.RgbToHsl(this.Component.Color.ToSystemColor()) };
 
             this.VerticalColorSlider = new VerticalColorSlider(new Size(40, 200), true)
-            { CbHsl = Utilities.RgbToHsl(this.Component.Color.ToSystemColor()) };
+                                           { CbHsl = Utilities.RgbToHsl(this.Component.Color.ToSystemColor()) };
             this.VerticalColorSlider.ColorSliderScroll += () =>
-            {
-                tempHsl = this.ColorBox.Hsl;
-                tempHsl.H = this.VerticalColorSlider.CbHsl.H;
-                this.ColorBox.Hsl = tempHsl;
-            };
+                {
+                    tempHsl = this.ColorBox.Hsl;
+                    tempHsl.H = this.VerticalColorSlider.CbHsl.H;
+                    this.ColorBox.Hsl = tempHsl;
+                };
 
             this.VerticalAlphaSlider = new VerticalAlphaSlider(new Size(40, 200));
             tempHsl = this.VerticalAlphaSlider.CbHsl;
             tempHsl.L = this.ColorBox.Hsl.L;
             this.VerticalAlphaSlider.CbHsl = tempHsl;
             this.VerticalAlphaSlider.AlphaSliderScroll += () =>
-            {
-                tempHsl = this.ColorBox.Hsl;
-                tempHsl.L = this.VerticalAlphaSlider.CbHsl.L;
-                this.ColorBox.Hsl = tempHsl;
-            };
+                {
+                    tempHsl = this.ColorBox.Hsl;
+                    tempHsl.L = this.VerticalAlphaSlider.CbHsl.L;
+                    this.ColorBox.Hsl = tempHsl;
+                };
         }
 
         #endregion
@@ -220,7 +220,7 @@ namespace LeagueSharp.SDK.UI.Skins.Blue
                 .GetCenteredText(
                     null,
                     MenuSettings.Font,
-                    this.Component.DisplayName,
+                    (this.Component.DisplayName),
                     CenteredFlags.VerticalCenter);
 
             MenuSettings.Font.DrawText(
@@ -265,104 +265,104 @@ namespace LeagueSharp.SDK.UI.Skins.Blue
             {
                 MenuManager.Instance.DrawDelayed(
                     delegate
-                    {
-                        Line.Width = this.ColorPickerBoundaries().Width;
-                        Line.Begin();
-                        Line.Draw(
-                            new[]
-                                {
+                        {
+                            Line.Width = this.ColorPickerBoundaries().Width;
+                            Line.Begin();
+                            Line.Draw(
+                                new[]
+                                    {
                                         new Vector2(this.ColorPickerBoundaries().X + 165, this.ColorPickerBoundaries().Y),
                                         new Vector2(
                                             this.ColorPickerBoundaries().X + 165,
                                             this.ColorPickerBoundaries().Y + this.ColorPickerBoundaries().Height)
-                                },
-                            MenuSettings.RootContainerColor);
-                        Line.End();
+                                    },
+                                MenuSettings.RootContainerColor);
+                            Line.End();
 
-                        this.ColorBox.DrawControl(
-                            new Vector2(this.ColorBoxBoundaries().X, this.ColorBoxBoundaries().Y));
-                        this.VerticalColorSlider.DrawControl(
-                            new Vector2(
-                                this.VerticalColorSliderBoundaries().X,
-                                this.VerticalColorSliderBoundaries().Y));
-                        this.VerticalAlphaSlider.DrawControl(
-                            new Vector2(
-                                this.VerticalAlphaSliderBoundaries().X,
-                                this.VerticalAlphaSliderBoundaries().Y));
+                            this.ColorBox.DrawControl(
+                                new Vector2(this.ColorBoxBoundaries().X, this.ColorBoxBoundaries().Y));
+                            this.VerticalColorSlider.DrawControl(
+                                new Vector2(
+                                    this.VerticalColorSliderBoundaries().X,
+                                    this.VerticalColorSliderBoundaries().Y));
+                            this.VerticalAlphaSlider.DrawControl(
+                                new Vector2(
+                                    this.VerticalAlphaSliderBoundaries().X,
+                                    this.VerticalAlphaSliderBoundaries().Y));
 
-                        Utils.DrawBoxFilled(
-                            this.PreviewBoundaries().X,
-                            this.PreviewBoundaries().Y,
-                            this.PreviewBoundaries().Width,
-                            this.PreviewBoundaries().Height,
-                            Color.Black);
+                            Utils.DrawBoxFilled(
+                                this.PreviewBoundaries().X,
+                                this.PreviewBoundaries().Y,
+                                this.PreviewBoundaries().Width,
+                                this.PreviewBoundaries().Height,
+                                Color.Black);
 
-                        Utils.DrawBoxFilled(
-                            this.PreviewBoundaries().X,
-                            this.PreviewBoundaries().Y,
-                            this.PreviewBoundaries().Width,
-                            this.PreviewBoundaries().Height,
-                            this.ColorBox.Rgb.ToSharpDxColor());
+                            Utils.DrawBoxFilled(
+                                this.PreviewBoundaries().X,
+                                this.PreviewBoundaries().Y,
+                                this.PreviewBoundaries().Width,
+                                this.PreviewBoundaries().Height,
+                                this.ColorBox.Rgb.ToSharpDxColor());
 
-                        var applyButtonTextWidth =
-                            MenuSettings.Font.MeasureText(MenuManager.Instance.Sprite, "Apply", 0).Width;
-                        var cancelButtonTextWidth =
-                            MenuSettings.Font.MeasureText(MenuManager.Instance.Sprite, "Cancel", 0).Width;
+                            var applyButtonTextWidth =
+                                MenuSettings.Font.MeasureText(MenuManager.Instance.Sprite, "Apply", 0).Width;
+                            var cancelButtonTextWidth =
+                                MenuSettings.Font.MeasureText(MenuManager.Instance.Sprite, "Cancel", 0).Width;
 
-                        Line.Width = this.ApplyButtonBoundaries().Width;
-                        Line.Begin();
-                        Line.Draw(
-                            new[]
-                                {
+                            Line.Width = this.ApplyButtonBoundaries().Width;
+                            Line.Begin();
+                            Line.Draw(
+                                new[]
+                                    {
                                         new Vector2(this.ApplyButtonBoundaries().X + 25, this.ApplyButtonBoundaries().Y),
                                         new Vector2(
                                             this.ApplyButtonBoundaries().X + 25,
                                             this.ApplyButtonBoundaries().Y + this.ApplyButtonBoundaries().Height)
-                                },
-                            new ColorBGRA(4, 187, 255, 255));
-                        Line.End();
+                                    },
+                                new ColorBGRA(4, 187, 255, 255));
+                            Line.End();
 
-                        MenuSettings.Font.DrawText(
-                            MenuManager.Instance.Sprite,
-                            ("Apply"),
-                            this.ApplyButtonBoundaries().X - applyButtonTextWidth / 2 + 25,
-                            (int)
-                            this.CancelButtonBoundaries()
-                                .GetCenteredText(
-                                    null,
-                                    MenuSettings.Font,
-                                    ("Apply"),
-                                    CenteredFlags.VerticalCenter)
-                                .Y,
-                            new ColorBGRA(0, 27, 41, 255));
+                            MenuSettings.Font.DrawText(
+                                MenuManager.Instance.Sprite,
+                                ("Apply"),
+                                this.ApplyButtonBoundaries().X - applyButtonTextWidth / 2 + 25,
+                                (int)
+                                this.CancelButtonBoundaries()
+                                    .GetCenteredText(
+                                        null,
+                                        MenuSettings.Font,
+                                        ("Apply"),
+                                        CenteredFlags.VerticalCenter)
+                                    .Y,
+                                new ColorBGRA(0, 27, 41, 255));
 
-                        Line.Width = this.CancelButtonBoundaries().Width;
-                        Line.Begin();
-                        Line.Draw(
-                            new[]
-                                {
+                            Line.Width = this.CancelButtonBoundaries().Width;
+                            Line.Begin();
+                            Line.Draw(
+                                new[]
+                                    {
                                         new Vector2(this.CancelButtonBoundaries().X + 25, this.CancelButtonBoundaries().Y),
                                         new Vector2(
                                             this.CancelButtonBoundaries().X + 25,
                                             this.CancelButtonBoundaries().Y + this.CancelButtonBoundaries().Height)
-                                },
-                            new ColorBGRA(4, 187, 255, 255));
-                        Line.End();
+                                    },
+                                new ColorBGRA(4, 187, 255, 255));
+                            Line.End();
 
-                        MenuSettings.Font.DrawText(
-                            MenuManager.Instance.Sprite,
-                            ("Cancel"),
-                            this.CancelButtonBoundaries().X - cancelButtonTextWidth / 2 + 25,
-                            (int)
-                            this.CancelButtonBoundaries()
-                                .GetCenteredText(
-                                    null,
-                                    MenuSettings.Font,
-                                    ("Cancel"),
-                                    CenteredFlags.VerticalCenter)
-                                .Y,
-                            new ColorBGRA(0, 27, 41, 255));
-                    });
+                            MenuSettings.Font.DrawText(
+                                MenuManager.Instance.Sprite,
+                                ("Cancel"),
+                                this.CancelButtonBoundaries().X - cancelButtonTextWidth / 2 + 25,
+                                (int)
+                                this.CancelButtonBoundaries()
+                                    .GetCenteredText(
+                                        null,
+                                        MenuSettings.Font,
+                                        ("Cancel"),
+                                        CenteredFlags.VerticalCenter)
+                                    .Y,
+                                new ColorBGRA(0, 27, 41, 255));
+                        });
             }
         }
 

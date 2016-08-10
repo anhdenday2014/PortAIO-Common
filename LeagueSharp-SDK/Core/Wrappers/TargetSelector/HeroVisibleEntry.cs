@@ -18,6 +18,7 @@
 namespace LeagueSharp.SDK
 {
     using EloBuddy;
+
     /// <summary>
     ///     The hero visible entry container.
     /// </summary>

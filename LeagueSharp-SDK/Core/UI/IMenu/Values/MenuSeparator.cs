@@ -19,21 +19,13 @@ namespace LeagueSharp.SDK.UI
 {
     using LeagueSharp.SDK.UI.Skins;
     using LeagueSharp.SDK.Utils;
-    using System;
-    using System.Runtime.Serialization;
 
     /// <summary>
     ///     A menu separator.
     /// </summary>
-    [Serializable()]
-    [KnownType(typeof(MenuSeparator))]
     public class MenuSeparator : MenuItem
     {
         #region Constructors and Destructors
-        public MenuSeparator()
-        {
-
-        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MenuSeparator" /> class.

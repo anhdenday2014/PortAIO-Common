@@ -11,11 +11,10 @@
     using LeagueSharp.SDK.Utils;
 
     using SharpDX;
-    using EloBuddy;
 
     using Color = System.Drawing.Color;
     using Menu = LeagueSharp.SDK.UI.Menu;
-
+    using EloBuddy;
     /// <summary>
     ///     The orbwalking action event data.
     /// </summary>
@@ -83,7 +82,7 @@
         ///     Initializes a new instance of the <see cref="Orbwalk" /> class.
         /// </summary>
         /// <param name="menu">The menu.</param>
-        public Orbwalker(Menu menu)
+        internal Orbwalker(Menu menu)
         {
             var drawing = new Menu("drawings", "Drawings");
             drawing.Add(new MenuBool("drawAARange", "Auto-Attack Range", true));
@@ -105,6 +104,10 @@
             advanced.Add(new MenuSlider("delayMovement", "Movement", 100, 0, 500));
             advanced.Add(new MenuSlider("delayWindup", "Windup", 60, 0, 200));
             advanced.Add(new MenuSlider("delayFarm", "Farm", 30, 0, 200));
+
+            //            advanced.Add(new MenuSlider("delayMove", "Delay Move", 100, 0, 200));
+            //            advanced.Add(new MenuSlider("delayAttack", "Delay Attack", 100, 0, 200));
+            //            advanced.Add(new MenuSlider("delayAttack2", "Delay Attack2", 100, 0, 200));
 
             advanced.Add(new MenuSeparator("separatorPrioritization", "Prioritization"));
             advanced.Add(new MenuBool("prioritizeFarm", "Farm Over Harass", true));
@@ -128,14 +131,14 @@
             this.mainMenu.Add(new MenuBool("enabledOption", "Enabled", true));
 
             this.mainMenu.MenuValueChanged += (sender, args) =>
-                {
-                    var boolean = sender as MenuBool;
+            {
+                var boolean = sender as MenuBool;
 
-                    if (boolean != null && boolean.Name.Equals("enabledOption"))
-                    {
-                        this.Enabled = boolean.Value;
-                    }
-                };
+                if (boolean != null && boolean.Name.Equals("enabledOption"))
+                {
+                    this.Enabled = boolean.Value;
+                }
+            };
 
             menu.Add(this.mainMenu);
             this.selector = new OrbwalkerSelector(this);
@@ -223,7 +226,9 @@
                         }
                         break;
                 }
-                return GameObjects.Player.CanAttack && !GameObjects.Player.IsCastingInterruptableSpell() && !GameObjects.Player.IsDashing() && Variables.TickCount - this.lastAutoAttackOrderTick > 70 + Math.Min(60, Game.Ping) && (!this.isStartAttack || Variables.TickCount + 25 >= this.LastAutoAttackTick + this.AttackDelay * 1000);
+                return GameObjects.Player.CanAttack && !GameObjects.Player.IsCastingInterruptableSpell() && !GameObjects.Player.IsDashing() && Variables.TickCount - this.lastAutoAttackOrderTick > 135 + Game.Ping && (!this.isStartAttack || Variables.TickCount + 90 >= this.LastAutoAttackTick + EloBuddy.SDK.Orbwalker.AttackDelay * 1000);
+                //      return GameObjects.Player.CanAttack && !GameObjects.Player.IsCastingInterruptableSpell() && !GameObjects.Player.IsDashing() && Variables.TickCount - this.lastAutoAttackOrderTick > 100 + Game.Ping && ((!this.isStartAttack) || (float)(Variables.TickCount - this.LastAutoAttackTick + 60) >= this.AttackDelay * 1000f);
+                //return Variables.TickCount - this.lastAutoAttackOrderTick > Game.Ping / 2 + 5;// && (!this.isStartAttack || Variables.TickCount + 60 >= this.LastAutoAttackTick + EloBuddy.SDK.Orbwalker.AttackDelay * 1000);
             }
             private set
             {
@@ -238,8 +243,8 @@
                     this.isStartAttack = true;
                     this.isFinishAttack = false;
                     this.LastAutoAttackTick = Variables.TickCount;
-                    this.lastAutoAttackOrderTick += 70 + Math.Min(60, Game.Ping) - 5;
-                    this.lastMovementOrderTick += Math.Max(0, this.mainMenu["advanced"]["delayMovement"] - 5);
+                    this.lastAutoAttackOrderTick += 100 + Game.Ping;
+                    this.lastMovementOrderTick += Math.Max(0, this.mainMenu["advanced"]["delayMovement"]);
                 }
             }
         }
@@ -247,8 +252,14 @@
         /// <summary>
         ///     Indicates whether the orbwalker can issue moving.
         /// </summary>
-        public bool CanMove => GameObjects.Player.CanMove && (!GameObjects.Player.IsCastingInterruptableSpell() || !GameObjects.Player.IsCastingInterruptableSpell(true)) && Variables.TickCount - this.lastAutoAttackOrderTick > 70 + Math.Min(60, Game.Ping) && this.CanCancelAttack;
+        public bool CanMove => GameObjects.Player.CanMove && (!GameObjects.Player.IsCastingInterruptableSpell() || !GameObjects.Player.IsCastingInterruptableSpell(true)) && Variables.TickCount - this.lastAutoAttackOrderTick > 140 + Game.Ping && this.CanCancelAttack;
 
+        //        public bool CanMove2 => (UnabortableAutoDatabase.Contains(Player.Instance.Hero) && Variables.TickCount - LastAutoAttackTick >= Math.Min(this.mainMenu["advanced"]["delayMovement"], 100)) || GameObjects.Player.CanMove && (!GameObjects.Player.IsCastingInterruptableSpell() || !GameObjects.Player.IsCastingInterruptableSpell(true)) && (Variables.TickCount - lastAutoAttackOrderTick > 100 + Game.Ping && this.CanCancelAttack && (!Player.Instance.Spellbook.IsChanneling || (EloBuddy.SDK.Orbwalker.AllowedMovementBuffs.ContainsKey(Player.Instance.Hero) && Player.Instance.HasBuff(EloBuddy.SDK.Orbwalker.AllowedMovementBuffs[Player.Instance.Hero]))));
+        //public bool CanMove => Variables.TickCount - this.lastAutoAttackOrderTick > Game.Ping/2 && this.CanCancelAttack;
+        internal static readonly HashSet<Champion> UnabortableAutoDatabase = new HashSet<Champion>
+        {
+            Champion.Kalista
+        };
         /// <summary>
         ///     Gets a value indicating whether this <see cref="Orbwalker" /> is enabled.
         /// </summary>
@@ -264,12 +275,13 @@
                 {
                     if (value)
                     {
-                        Obj_AI_Base.OnBasicAttack += this.OnProcessSpellCast;
-                        Obj_AI_Base.OnSpellCast += this.OnDoCast;                       
+                        Obj_AI_Base.OnSpellCast += this.OnDoCast;
+                        Obj_AI_Base.OnSpellCast += this.OnDoCast2;
+                        Obj_AI_Base.OnProcessSpellCast += this.OnProcessSpellCast;
+                        Spellbook.OnStopCast += this.OnStopCast;
 
                         Drawing.OnEndScene += this.OnEndScene;
-                        GameObject.OnDelete += this.OnDelete;                       
-                        Spellbook.OnStopCast += this.OnStopCast;                       
+                        GameObject.OnDelete += this.OnDelete;
                         Obj_AI_Base.OnBuffGain += this.OnBuffAdd;
                         Game.OnUpdate += this.OnUpdate;
                         switch (GameObjects.Player.ChampionName)
@@ -292,12 +304,13 @@
                     }
                     else
                     {
-                        Obj_AI_Base.OnBasicAttack -= this.OnProcessSpellCast;
                         Obj_AI_Base.OnSpellCast -= this.OnDoCast;
+                        Obj_AI_Base.OnSpellCast -= this.OnDoCast2;
+                        Obj_AI_Base.OnProcessSpellCast += this.OnProcessSpellCast;
+                        Spellbook.OnStopCast -= this.OnStopCast;
 
                         Drawing.OnEndScene -= this.OnEndScene;
-                        GameObject.OnDelete -= this.OnDelete;                       
-                        Spellbook.OnStopCast -= this.OnStopCast;                       
+                        GameObject.OnDelete -= this.OnDelete;
                         Obj_AI_Base.OnBuffGain -= this.OnBuffAdd;
                         Game.OnUpdate -= this.OnUpdate;
                         switch (GameObjects.Player.ChampionName)
@@ -356,11 +369,21 @@
 
         #region Properties
 
-        private float AttackDelay
-            =>
-                GameObjects.Player.ChampionName == "Graves"
-                    ? 1.0740296828f * GameObjects.Player.AttackDelay - 0.7162381256175f
-                    : GameObjects.Player.AttackDelay;
+        private float AttackDelay1 => GameObjects.Player.ChampionName == "Graves" ? 1.0740296828f * GameObjects.Player.AttackDelay - 0.7162381256175f : GameObjects.Player.AttackDelay;
+        // Token: 0x1700022E RID: 558
+        public static float AttackDelay2
+        {
+            // Token: 0x06000869 RID: 2153 RVA: 0x00023408 File Offset: 0x00021608
+            get
+            {
+                Champion hero = Player.Instance.Hero;
+                if (hero == Champion.Graves && Player.Instance.HasBuff(""))
+                {
+                    return 1.07402968f * Player.Instance.AttackDelay - 0.716238141f;
+                }
+                return Player.Instance.AttackDelay;
+            }
+        }
 
         private bool CanCancelAttack
         {
@@ -387,7 +410,7 @@
                         break;
                 }
 
-                if (this.mainMenu["advanced"]["movementHighAS"] && (this.AttackDelay <= 1 / 2.5f)
+                if (this.mainMenu["advanced"]["movementHighAS"] && (EloBuddy.SDK.Orbwalker.AttackDelay <= 1 / 2.5f)
                     && this.countAutoAttack % 2 != 0)
                 {
                     extraWindUp = this.random.Next(100, 200);
@@ -456,7 +479,7 @@
             }
 
             var eventArgs = new OrbwalkingActionArgs
-                                { Target = gTarget, Process = true, Type = OrbwalkingType.BeforeAttack };
+            { Target = gTarget, Process = true, Type = OrbwalkingType.BeforeAttack };
             this.InvokeAction(eventArgs);
 
             if (!eventArgs.Process)
@@ -487,8 +510,7 @@
         /// <param name="position"></param>
         public void Move(Vector3 position)
         {
-            if (!position.IsValid() || !this.CanMove
-                || Variables.TickCount - this.lastMovementOrderTick < this.mainMenu["advanced"]["delayMovement"])
+            if (!position.IsValid() || !this.CanMove || Variables.TickCount - this.lastMovementOrderTick < this.mainMenu["advanced"]["delayMovement"])
             {
                 return;
             }
@@ -498,10 +520,11 @@
                 if (GameObjects.Player.Path.Length > 0)
                 {
                     var eventStopArgs = new OrbwalkingActionArgs
-                                            {
-                                                Position = GameObjects.Player.ServerPosition, Process = true,
-                                                Type = OrbwalkingType.StopMovement
-                                            };
+                    {
+                        Position = GameObjects.Player.ServerPosition,
+                        Process = true,
+                        Type = OrbwalkingType.StopMovement
+                    };
                     this.InvokeAction(eventStopArgs);
 
                     if (eventStopArgs.Process)
@@ -564,7 +587,7 @@
             }
 
             var eventArgs = new OrbwalkingActionArgs
-                                { Position = position, Process = true, Type = OrbwalkingType.Movement };
+            { Position = position, Process = true, Type = OrbwalkingType.Movement };
             this.InvokeAction(eventArgs);
 
             if (!eventArgs.Process)
@@ -606,6 +629,7 @@
         public void ResetSwingTimer()
         {
             this.CanAttack = true;
+            EloBuddy.SDK.Orbwalker.ResetAutoAttack();
         }
 
         #endregion
@@ -710,100 +734,77 @@
             }
         }
 
-        private void OnDoCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
-        {
-            if (!sender.IsMe)
-            {
-                return;
-            }
-
-            if (AutoAttack.IsAutoAttack(args.SData.Name))
-            {
-                this.InvokeActionAfterAttack();
-            }
-            if (AutoAttack.IsAutoAttackReset(args.SData.Name) && !this.isRengarJumping)
-            {
-                DelayAction.Add(30, this.ResetSwingTimer);
-            }
-            else if (AutoAttack.IsAutoAttackReset(args.SData.Name))
-            {
-                DelayAction.Add(30, this.ResetSwingTimer);
-            }
-        }
-
         private void OnEndScene(EventArgs args)
         {
-            if (GameObjects.Player.IsDead)
-            {
-                return;
-            }
+            /*         if (GameObjects.Player.IsDead)
+                     {
+                         return;
+                     }
+                     if (this.mainMenu["drawings"]["drawAARange"] && GameObjects.Player.Position.IsOnScreen(GameObjects.Player.GetRealAutoAttackRange()))
+                     {
+                         Render.Circle.DrawCircle(
+                             GameObjects.Player.Position,
+                             GameObjects.Player.GetRealAutoAttackRange(),
+                             Color.PaleGreen);
+                     }
 
-            if (this.mainMenu["drawings"]["drawAARange"]
-                && GameObjects.Player.Position.IsOnScreen(GameObjects.Player.GetRealAutoAttackRange()))
-            {
-                Render.Circle.DrawCircle(
-                    GameObjects.Player.Position,
-                    GameObjects.Player.GetRealAutoAttackRange(),
-                    Color.PaleGreen);
-            }
+                     if (this.mainMenu["drawings"]["drawExtraHoldPosition"]
+                         && GameObjects.Player.Position.IsOnScreen(this.HoldRadius))
+                     {
+                         Render.Circle.DrawCircle(GameObjects.Player.Position, this.HoldRadius, Color.Purple);
+                     }
 
-            if (this.mainMenu["drawings"]["drawExtraHoldPosition"]
-                && GameObjects.Player.Position.IsOnScreen(this.HoldRadius))
-            {
-                Render.Circle.DrawCircle(GameObjects.Player.Position, this.HoldRadius, Color.Purple);
-            }
+                     if (this.mainMenu["drawings"]["drawAARangeEnemy"])
+                     {
+                         foreach (var enemy in
+                             GameObjects.EnemyHeroes.Where(
+                                 e => e.IsValidTarget() && e.Position.IsOnScreen(e.GetRealAutoAttackRange(GameObjects.Player))))
+                         {
+                             Render.Circle.DrawCircle(
+                                 enemy.Position,
+                                 enemy.GetRealAutoAttackRange(GameObjects.Player),
+                                 Color.PaleVioletRed);
+                         }
+                     }
 
-            if (this.mainMenu["drawings"]["drawAARangeEnemy"])
-            {
-                foreach (var enemy in
-                    GameObjects.EnemyHeroes.Where(
-                        e => e.IsValidTarget() && e.Position.IsOnScreen(e.GetRealAutoAttackRange(GameObjects.Player))))
-                {
-                    Render.Circle.DrawCircle(
-                        enemy.Position,
-                        enemy.GetRealAutoAttackRange(GameObjects.Player),
-                        Color.PaleVioletRed);
-                }
-            }
-
-            if (this.mainMenu["drawings"]["drawKillableMinion"])
-            {
-                if (this.mainMenu["drawings"]["drawKillableMinionFade"])
-                {
-                    var minions =
-                        this.selector.GetEnemyMinions(GameObjects.Player.GetRealAutoAttackRange() * 2f)
-                            .Where(
-                                m =>
-                                m.Position.IsOnScreen() && m.Health < ObjectManager.Player.CalculateDamage(m, DamageType.Mixed, GameObjects.Player.GetAutoAttackDamage(m)) * 2f);
-                    foreach (var minion in minions)
-                    {
-                        Render.Circle.DrawCircle(
-                            minion.Position,
-                            minion.BoundingRadius * 2f,
-                            Color.FromArgb(
-                                255,
-                                0,
-                                255,
-                                (byte)(255 - Math.Max(Math.Min(255 - minion.Health * 2, 255), 0))));
-                    }
-                }
-                else
-                {
-                    var minions =
-                        this.selector.GetEnemyMinions(GameObjects.Player.GetRealAutoAttackRange() * 2f)
-                            .Where(m => m.Position.IsOnScreen() && m.Health < ObjectManager.Player.CalculateDamage(m, DamageType.Mixed, GameObjects.Player.GetAutoAttackDamage(m)));
-                    foreach (var minion in minions)
-                    {
-                        Render.Circle.DrawCircle(
-                            minion.Position,
-                            minion.BoundingRadius * 2f,
-                            Color.FromArgb(255, 0, 255, 0));
-                    }
-                }
-            }
+                     if (this.mainMenu["drawings"]["drawKillableMinion"])
+                     {
+                         if (this.mainMenu["drawings"]["drawKillableMinionFade"])
+                         {
+                             var minions =
+                                 this.selector.GetEnemyMinions(GameObjects.Player.GetRealAutoAttackRange() * 2f)
+                                     .Where(
+                                         m =>
+                                         m.Position.IsOnScreen() && m.Health < GameObjects.Player.GetAutoAttackDamage(m) * 2f);
+                             foreach (var minion in minions)
+                             {
+                                 Render.Circle.DrawCircle(
+                                     minion.Position,
+                                     minion.BoundingRadius * 2f,
+                                     Color.FromArgb(
+                                         255,
+                                         0,
+                                         255,
+                                         (byte)(255 - Math.Max(Math.Min(255 - minion.Health * 2, 255), 0))));
+                             }
+                         }
+                         else
+                         {
+                             var minions =
+                                 this.selector.GetEnemyMinions(GameObjects.Player.GetRealAutoAttackRange() * 2f)
+                                     .Where(m => m.Position.IsOnScreen() && m.Health < GameObjects.Player.GetAutoAttackDamage(m));
+                             foreach (var minion in minions)
+                             {
+                                 Render.Circle.DrawCircle(
+                                     minion.Position,
+                                     minion.BoundingRadius * 2f,
+                                     Color.FromArgb(255, 0, 255, 0));
+                             }
+                         }
+                     }//*/
         }
 
-        private void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        private void OnDoCast2(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             if (!sender.IsMe)
             {
@@ -821,6 +822,30 @@
             }
         }
 
+        private void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (!sender.IsMe)
+            {
+                return;
+            }
+            if (AutoAttack.IsAutoAttackReset(args.SData.Name) && !this.isRengarJumping)
+            {
+                DelayAction.Add(0, this.ResetSwingTimer);
+            }
+        }
+
+        private void OnDoCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (!sender.IsMe)
+            {
+                return;
+            }
+            if (AutoAttack.IsAutoAttack(args.SData.Name))
+            {
+                this.InvokeActionAfterAttack();
+            }
+        }
+
         private void OnStopCast(Obj_AI_Base spellbook, SpellbookStopCastEventArgs args)
         {
             if (!spellbook.IsMe)
@@ -828,7 +853,7 @@
                 return;
             }
 
-            if (args.DestroyMissile && args.StopAnimation)
+            if (args.DestroyMissile && args.StopAnimation && !this.CanCancelAttack)
             {
                 this.ResetSwingTimer();
             }
@@ -846,7 +871,7 @@
                 this.isFinishAttack = true;
             }
 
-            if (GameObjects.Player.IsDead || Shop.IsOpen || this.ActiveMode == OrbwalkingMode.None)
+            if (GameObjects.Player.IsDead || MenuGUI.IsChatOpen || this.ActiveMode == OrbwalkingMode.None)
             {
                 return;
             }
@@ -894,12 +919,13 @@
                 DelayAction.Add(
                     args.Animation.EndsWith("c") ? 380 : 285,
                     () =>
-                        {
-                            //      Game.SendEmote(Emote.Dance);
-                            Player.DoEmote(Emote.Dance);
-                            this.ResetSwingTimer();
-                            Player.IssueOrder(GameObjectOrder.MoveTo, GameObjects.Player.Position.Extend(Game.CursorPos, -10));
-                        });
+                    {
+                        Player.DoEmote(Emote.Dance);
+                        this.ResetSwingTimer();
+                        EloBuddy.Player.IssueOrder(
+                            GameObjectOrder.MoveTo,
+                            GameObjects.Player.Position.Extend(Game.CursorPos, -10));
+                    });
             }
         }
 
@@ -909,7 +935,7 @@
         {
             #region Constants
 
-            private const float LaneClearWaitTime = 2f;
+            private const float LaneClearWaitTime = 1f;
 
             #endregion
 
@@ -1150,22 +1176,22 @@
                                                         + (turretAttackCount + 1) * (int)(turret.AttackDelay * 1000)
                                                         - Variables.TickCount;
                                     var timeUntilAttackReady = this.orbwalk.LastAutoAttackTick
-                                                               + (int)(this.orbwalk.AttackDelay * 1000)
+                                                               + (int)(EloBuddy.SDK.Orbwalker.AttackDelay * 1000)
                                                                > Variables.TickCount + 60
                                                                    ? this.orbwalk.LastAutoAttackTick
-                                                                     + (int)(this.orbwalk.AttackDelay * 1000)
+                                                                     + (int)(EloBuddy.SDK.Orbwalker.AttackDelay * 1000)
                                                                      - (Variables.TickCount + 60)
                                                                    : 0;
                                     var timeToLandAttack = turretMinion.GetTimeToHit();
 
                                     if (hits >= 1
-                                        && hits * this.orbwalk.AttackDelay * 1000 + timeUntilAttackReady
+                                        && hits * EloBuddy.SDK.Orbwalker.AttackDelay * 1000 + timeUntilAttackReady
                                         + timeToLandAttack < timeBeforeDie)
                                     {
                                         farmUnderTurretMinion = turretMinion;
                                     }
                                     else if (hits >= 1
-                                             && hits * this.orbwalk.AttackDelay * 1000 + timeUntilAttackReady
+                                             && hits * EloBuddy.SDK.Orbwalker.AttackDelay * 1000 + timeUntilAttackReady
                                              + timeToLandAttack > timeBeforeDie)
                                     {
                                         noneKillableMinion = turretMinion;
@@ -1235,7 +1261,7 @@
 
                             var predHealth = Health.GetPrediction(
                                 this.orbwalk.laneClearMinion,
-                                (int)(this.orbwalk.AttackDelay * 1000 * LaneClearWaitTime),
+                                (int)(EloBuddy.SDK.Orbwalker.AttackDelay * 1000 * LaneClearWaitTime),
                                 this.FarmDelay,
                                 HealthPredictionType.Simulated);
 
@@ -1256,7 +1282,7 @@
 
                             var predHealth = Health.GetPrediction(
                                 minion,
-                                (int)(this.orbwalk.AttackDelay * 1000 * LaneClearWaitTime),
+                                (int)(EloBuddy.SDK.Orbwalker.AttackDelay * 1000 * LaneClearWaitTime),
                                 this.FarmDelay,
                                 HealthPredictionType.Simulated);
 
@@ -1403,7 +1429,7 @@
                             m =>
                             Health.GetPrediction(
                                 m,
-                                (int)(this.orbwalk.AttackDelay * 1000 * LaneClearWaitTime),
+                                (int)(EloBuddy.SDK.Orbwalker.AttackDelay * 1000 * LaneClearWaitTime),
                                 this.FarmDelay,
                                 HealthPredictionType.Simulated) < GameObjects.Player.GetAutoAttackDamage(m));
             }
@@ -1418,7 +1444,7 @@
                             && m.InAutoAttackRange()
                             && Health.GetPrediction(
                                 m,
-                                (int)(this.orbwalk.AttackDelay * 1000 + m.GetTimeToHit()),
+                                (int)(EloBuddy.SDK.Orbwalker.AttackDelay * 1000 + m.GetTimeToHit()),
                                 this.FarmDelay,
                                 HealthPredictionType.Simulated) < GameObjects.Player.GetAutoAttackDamage(m));
             }

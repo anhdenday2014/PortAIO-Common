@@ -23,6 +23,7 @@
 namespace LeagueSharp.SDK.UI.Skins.Light2
 {
     using LeagueSharp.SDK.UI.Skins.Light;
+    using EloBuddy;
 
     /// <summary>
     ///     A blue implementation of a <see cref="ADrawable{MenuBool}" />

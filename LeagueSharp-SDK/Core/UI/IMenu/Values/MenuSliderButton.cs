@@ -19,17 +19,16 @@ namespace LeagueSharp.SDK.UI
 {
     using System;
     using System.Runtime.Serialization;
-    using System.Security.Permissions;
+    //using System.Security.Permissions;
 
     using LeagueSharp.SDK.UI.Skins;
     using LeagueSharp.SDK.Utils;
-    using EloBuddy.Sandbox;
+
     /// <summary>
     ///     Menu Slider.
     /// </summary>
-    [Serializable()]
-    [KnownType(typeof(MenuSliderButton))]
-    public class MenuSliderButton : MenuItem/*, ISerializable//*/
+    [Serializable]
+    public class MenuSliderButton : MenuItem, ISerializable
     {
         #region Fields
 
@@ -56,11 +55,6 @@ namespace LeagueSharp.SDK.UI
         #endregion
 
         #region Constructors and Destructors
-
-        public MenuSliderButton()
-        {
-
-        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MenuSlider" /> class.
@@ -114,7 +108,7 @@ namespace LeagueSharp.SDK.UI
             this.value = (int)info.GetValue("value", typeof(int));
             this.bValue = (bool)info.GetValue("bValue", typeof(bool));
         }
-//*/
+
         #endregion
 
         #region Public Properties
@@ -251,7 +245,7 @@ namespace LeagueSharp.SDK.UI
         ///     serialization.
         /// </param>
         /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
-/*        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+        //[SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
@@ -262,7 +256,7 @@ namespace LeagueSharp.SDK.UI
             info.AddValue("value", this.SValue, typeof(int));
             info.AddValue("bValue", this.BValue, typeof(bool));
         }
-//*/
+
         #endregion
 
         #region Methods
@@ -291,13 +285,13 @@ namespace LeagueSharp.SDK.UI
         ///     serialization.
         /// </param>
         /// <exception cref="T:System.Security.SecurityException">The caller does not have the required permission. </exception>
-       // [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
-        void GetObjectData(SerializationInfo info, StreamingContext context)
+        //[SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+        protected virtual void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             info.AddValue("value", this.SValue, typeof(int));
             info.AddValue("bValue", this.BValue, typeof(bool));
         }
-//*/
+
         #endregion
     }
 }

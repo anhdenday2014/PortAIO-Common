@@ -21,8 +21,9 @@ namespace LeagueSharp.SDK
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-    using EloBuddy;
+
     using SharpDX;
+    using EloBuddy;
 
     /// <summary>
     ///     Dash class, contains the OnDash event for tracking for Dash events of a champion.

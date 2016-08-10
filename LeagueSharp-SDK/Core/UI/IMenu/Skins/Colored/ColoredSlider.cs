@@ -30,6 +30,7 @@ namespace LeagueSharp.SDK.UI.Skins.Colored
 
     using SharpDX;
     using SharpDX.Direct3D9;
+    using EloBuddy;
 
     /// <summary>
     ///     A default implementation of an <see cref="ADrawable{MenuSlider}" />
@@ -41,7 +42,7 @@ namespace LeagueSharp.SDK.UI.Skins.Colored
         /// <summary>
         ///     The line.
         /// </summary>
-        private static readonly Line Line = new Line(EloBuddy.Drawing.Direct3DDevice) { GLLines = true };
+        private static readonly Line Line = new Line(Drawing.Direct3DDevice) { GLLines = true };
 
         /// <summary>
         ///     Offset.
@@ -138,11 +139,11 @@ namespace LeagueSharp.SDK.UI.Skins.Colored
 
             var measureText = MenuSettings.Font.MeasureText(
                 null,
-                this.Component.Value.ToString(),
+                this.Component.Value.ToString(CultureInfo.InvariantCulture),
                 0);
             MenuSettings.Font.DrawText(
                 MenuManager.Instance.Sprite,
-                this.Component.Value.ToString(),
+                this.Component.Value.ToString(CultureInfo.InvariantCulture),
                 (int)(position.X + this.Component.MenuWidth - measureText.Width - Offset),
                 (int)(position.Y + (centeredY - position.Y) / 2),
                 MenuSettings.TextColor);
