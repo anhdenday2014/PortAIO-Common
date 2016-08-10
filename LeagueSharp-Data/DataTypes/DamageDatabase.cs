@@ -11,7 +11,7 @@
     using EloBuddy;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
-    using Berb.Common.Properties;
+    using PortAIO.Common.Properties;
 
     /// <summary>
     ///     Gets damages. Only loads damages for champions in the game.

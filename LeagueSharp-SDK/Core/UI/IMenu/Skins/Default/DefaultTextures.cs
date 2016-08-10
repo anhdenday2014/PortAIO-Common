@@ -21,7 +21,7 @@ namespace LeagueSharp.SDK.UI.Skins.Default
     using System.Drawing;
     using System.Linq;
 
-    using Berb.Common.Properties;
+    using PortAIO.Common.Properties;
 
     using SharpDX.Direct3D9;
     using System;

@@ -6,7 +6,7 @@
     using SharpDX;
 
     using Color = System.Drawing.Color;
-    using Berb.Common.Properties;
+    using PortAIO.Common.Properties;
 
     /// <summary>
     ///     The color picker.

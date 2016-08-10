@@ -7,8 +7,8 @@
     <ProjectGuid>{621BDC7A-FBCE-42C1-9BFE-F17648D7173E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Berb.Common</RootNamespace>
-    <AssemblyName>Berb.Common</AssemblyName>
+    <RootNamespace>PortAIO.Common</RootNamespace>
+    <AssemblyName>PortAIO.Common</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />

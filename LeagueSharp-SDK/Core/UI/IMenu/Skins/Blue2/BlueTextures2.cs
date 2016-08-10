@@ -26,7 +26,7 @@ namespace LeagueSharp.SDK.UI.Skins.Blue2
     using System.Drawing;
     using System.Linq;
 
-    using Berb.Common.Properties;
+    using PortAIO.Common.Properties;
 
     using SharpDX.Direct3D9;
 

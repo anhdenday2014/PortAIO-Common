@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.Resources;
 using System.Web.Script.Serialization;
 using EloBuddy;
-using Berb.Common.Properties;
+using PortAIO.Common.Properties;
 #endregion
 
 namespace LeagueSharp.Common

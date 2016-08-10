@@ -4,7 +4,7 @@
 
 
     using SharpDX;
-    using Berb.Common.Properties;
+    using PortAIO.Common.Properties;
 
     /// <summary>
     ///     The color picker slider.

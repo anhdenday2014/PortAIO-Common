@@ -22,7 +22,7 @@ namespace LeagueSharp.SDK
     using System.Drawing;
 
     using LeagueSharp.SDK.Enumerations;
-    using Berb.Common.Properties;
+    using PortAIO.Common.Properties;
     using LeagueSharp.SDK.Utils;
 
     using SharpDX;
