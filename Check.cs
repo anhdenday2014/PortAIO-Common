@@ -30,7 +30,7 @@ namespace PortAIO.Common
             {
                 isLoaded = "LOADED";
                 Console.WriteLine("PortAIO-Common loaded.");
-                Chat.Print("PortAIO-Common has successfully loaded.");
+                Chat.Print("PortAIO-Common has successfully loaded.", System.Drawing.Color.Red);
             }
             else
             {

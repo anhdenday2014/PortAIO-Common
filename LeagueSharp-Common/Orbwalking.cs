@@ -331,7 +331,7 @@ namespace LeagueSharp.Common
         /// <summary>
         ///     Returns if the player's auto-attack is ready.
         /// </summary>
-        /// <returns><c>true</c> if this instance can attack; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if this instance can attack; sssherwise, <c>false</c>.</returns>
         public static bool CanAttack()
         {
             if (Player.ChampionName == "Graves")

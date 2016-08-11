@@ -143,19 +143,26 @@
         /// </param>
         public MenuItem(string name, string displayName, bool championUnique = false)
         {
-            if (championUnique)
+            if (PortAIO.Common.Init.isLoaded == "LOADED")
             {
-                name = ObjectManager.Player.ChampionName + name;
-            }
+                if (championUnique)
+                {
+                    name = ObjectManager.Player.ChampionName + name;
+                }
 
-            this.Name = name;
-            this.DisplayName = MenuGlobals.Function001(displayName);
-            this.FontStyle = FontStyle.Regular;
-            this.FontColor = Color.White;
-            this.ShowItem = true;
-            this.Tag = 0;
-            this.configName = Assembly.GetCallingAssembly().GetName().Name
-                              + Assembly.GetCallingAssembly().GetType().GUID;
+                this.Name = name;
+                this.DisplayName = MenuGlobals.Function001(displayName);
+                this.FontStyle = FontStyle.Regular;
+                this.FontColor = Color.White;
+                this.ShowItem = true;
+                this.Tag = 0;
+                this.configName = Assembly.GetCallingAssembly().GetName().Name
+                                  + Assembly.GetCallingAssembly().GetType().GUID;
+            }
+            else
+            {
+                Chat.Print("Unable to load menu. (Reason : Common is not initialized)");
+            }
         }
 
         #endregion

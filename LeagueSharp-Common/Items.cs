@@ -352,7 +352,7 @@
             /// <returns></returns>
             public bool IsReady()
             {
-                return CanUseItem(this.Id);
+                return CanUseItem(this.Id) && HasItem(this.Id);
             }
 
             #endregion

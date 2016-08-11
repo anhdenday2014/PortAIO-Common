@@ -626,33 +626,40 @@
         /// <summary>
         ///     Returns if the target is valid (not dead, targetable, visible...).
         /// </summary>
-        public static bool IsValidTarget(this AttackableUnit unit, float range = float.MaxValue, bool checkTeam = true, Vector3 from = new Vector3())
+        public static bool IsValidTarget(
+            this AttackableUnit target,
+            float? range = null,
+            bool onlyEnemyTeam = true,
+            Vector3? rangeCheckFrom = null)
         {
-            if (unit == null || !unit.IsValid || !unit.IsVisible || unit.IsDead || !unit.IsTargetable || unit.IsInvulnerable)
+            if (target == null || !target.IsValid || target.IsDead || !target.IsVisible || !target.IsTargetable || target.IsInvulnerable)
             {
                 return false;
             }
-
-            if (checkTeam && unit.Team == HeroManager.Player.Team)
+            if (onlyEnemyTeam && Player.Instance.Team == target.Team)
             {
                 return false;
             }
-
-            if (unit.Name == "WardCorpse")
-            {
-                return false;
-            }
-
-            Obj_AI_Base obj_AI_Base = unit as Obj_AI_Base;
+            Obj_AI_Base obj_AI_Base = target as Obj_AI_Base;
             if (obj_AI_Base != null && !obj_AI_Base.IsHPBarRendered)
             {
                 return false;
             }
-
-            var @base = unit as Obj_AI_Base;
-
-            return !(range < float.MaxValue) || !(Vector2.DistanceSquared((@from.To2D().IsValid() ? @from : HeroManager.Player.ServerPosition).To2D(),
-                       (@base != null ? @base.ServerPosition : unit.Position).To2D()) > range * range);
+            if (!range.HasValue)
+            {
+                return true;
+            }
+            range = new float?(range.Value.Pow());
+            Vector3 pos = (obj_AI_Base != null) ? obj_AI_Base.ServerPosition : target.Position;
+            if (!rangeCheckFrom.HasValue)
+            {
+                float num = HeroManager.Player.ServerPosition.DistanceSquared(pos);
+                float? num2 = range;
+                return num < num2.GetValueOrDefault() && num2.HasValue;
+            }
+            float num3 = rangeCheckFrom.Value.Distance(pos, true);
+            float? num4 = range;
+            return num3 < num4.GetValueOrDefault() && num4.HasValue;
         }
 
         // Token: 0x0600077E RID: 1918 RVA: 0x00020F94 File Offset: 0x0001F194
