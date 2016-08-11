@@ -626,11 +626,7 @@
         /// <summary>
         ///     Returns if the target is valid (not dead, targetable, visible...).
         /// </summary>
-        public static bool IsValidTarget(
-            this AttackableUnit unit,
-            float range = float.MaxValue,
-            bool checkTeam = true,
-            Vector3 from = new Vector3())
+        public static bool IsValidTarget(this AttackableUnit unit, float range = float.MaxValue, bool checkTeam = true, Vector3 from = new Vector3())
         {
             if (unit == null || !unit.IsValid || !unit.IsVisible || unit.IsDead || !unit.IsTargetable || unit.IsInvulnerable)
             {
@@ -643,6 +639,12 @@
             }
 
             if (unit.Name == "WardCorpse")
+            {
+                return false;
+            }
+
+            Obj_AI_Base obj_AI_Base = unit as Obj_AI_Base;
+            if (obj_AI_Base != null && !obj_AI_Base.IsHPBarRendered)
             {
                 return false;
             }

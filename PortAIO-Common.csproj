@@ -73,6 +73,7 @@
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Check.cs" />
     <Compile Include="LeagueSharp-Common\Alerter.cs" />
     <Compile Include="LeagueSharp-Common\AntiGapcloser.cs" />
     <Compile Include="LeagueSharp-Common\AutoLevel.cs" />

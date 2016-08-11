@@ -1,4 +1,6 @@
-﻿namespace LeagueSharp.Common
+﻿using EloBuddy;
+
+namespace LeagueSharp.Common
 {
     /// <summary>
     ///     The LeagueSharp.Common official menu.
@@ -21,7 +23,14 @@
         /// </summary>
         static CommonMenu()
         {
-            Initialize();
+            if (PortAIO.Common.Init.isLoaded == "LOADED")
+            {
+                Initialize();
+            }
+            else
+            {
+                Chat.Print("Unable to load menu. (Reason : Common is not initialized)");
+            }
         }
 
         public static void Initialize()

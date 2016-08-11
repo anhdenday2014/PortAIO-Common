@@ -1238,7 +1238,7 @@
 
             ~RenderObject()
             {
-                this.OnPreReset();
+                //this.OnPreReset();
             }
 
             #endregion
