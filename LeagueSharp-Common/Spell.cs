@@ -540,7 +540,7 @@
         /// <returns><c>true</c> if the spell was sucessfully casted, <c>false</c> otherwise.</returns>
         public bool Cast(Vector2 fromPosition, Vector2 toPosition)
         {
-            return this.Cast(fromPosition.To3D(), toPosition.To3D());
+            return this.Cast(toPosition.To3D(), fromPosition.To3D());
         }
 
         /// <summary>
@@ -555,7 +555,7 @@
             {
                 return false;
             }
-            return this.Slot.IsReady() && ObjectManager.Player.Spellbook.CastSpell(this.Slot, fromPosition, toPosition);
+            return this.Slot.IsReady() && ObjectManager.Player.Spellbook.CastSpell(this.Slot, toPosition, fromPosition);
         }
 
         /// <summary>
