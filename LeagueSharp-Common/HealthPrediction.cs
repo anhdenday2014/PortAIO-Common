@@ -31,7 +31,7 @@
             Spellbook.OnStopCast += SpellbookOnStopCast;
             GameObject.OnDelete += MissileClient_OnDelete;
             Obj_AI_Base.OnSpellCast += Obj_AI_Base_OnDoCast;
-            Obj_AI_Base.OnSpellCast += ObjAiBaseOnOnProcessSpellCast;
+            Obj_AI_Base.OnBasicAttack += ObjAiBaseOnOnProcessSpellCast;
         }
 
         #endregion
