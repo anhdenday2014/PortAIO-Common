@@ -795,7 +795,7 @@ namespace LeagueSharp.Common
         /// <param name="args">The <see cref="SpellbookStopCastEventArgs" /> instance containing the event data.</param>
         private static void SpellbookOnStopCast(Obj_AI_Base spellbook, SpellbookStopCastEventArgs args)
         {
-            if (spellbook.IsValid && spellbook.IsMe && args.DestroyMissile && args.StopAnimation)
+            if (spellbook.IsMe && EloBuddy.SDK.Orbwalker.IsRanged && (args.DestroyMissile && args.StopAnimation) && !EloBuddy.SDK.Orbwalker.CanBeAborted)
             {
                 ResetAutoAttackTimer();
             }
