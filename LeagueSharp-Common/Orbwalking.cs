@@ -283,6 +283,16 @@ namespace LeagueSharp.Common
             Freeze,
 
             /// <summary>
+            ///     The orbwalker will only attack the target.
+            /// </summary>
+            Burst,
+
+            /// <summary>
+            ///     The orbwalker will only move.
+            /// </summary>
+            Flee,
+
+            /// <summary>
             ///     The orbwalker will only move.
             /// </summary>
             CustomMode,
@@ -984,7 +994,7 @@ namespace LeagueSharp.Common
                 _config.AddItem(
                     new MenuItem("LastHit", "Last hit").SetShared().SetValue(new KeyBind('X', KeyBindType.Press)));
 
-                _config.AddItem(new MenuItem("Farm", "Mixed").SetShared().SetValue(new KeyBind('C', KeyBindType.Press)));
+                _config.AddItem(new MenuItem("Farm", "Mixed/Harass").SetShared().SetValue(new KeyBind('C', KeyBindType.Press)));
 
                 _config.AddItem(
                     new MenuItem("Freeze", "Freeze").SetShared().SetValue(new KeyBind('N', KeyBindType.Press)));
@@ -996,6 +1006,12 @@ namespace LeagueSharp.Common
                     new MenuItem("Orbwalk", "Combo").SetShared().SetValue(new KeyBind(32, KeyBindType.Press)));
 
                 _config.AddItem(
+                    new MenuItem("Flee", "Flee").SetShared().SetValue(new KeyBind('K', KeyBindType.Press)));
+
+                _config.AddItem(
+                    new MenuItem("Burst", "Burst").SetShared().SetValue(new KeyBind('T', KeyBindType.Press)));
+
+                _config.AddItem(
                     new MenuItem("StillCombo", "Combo without moving").SetShared()
                         .SetValue(new KeyBind('N', KeyBindType.Press)));
                 _config.Item("StillCombo").ValueChanged +=
@@ -1004,7 +1020,16 @@ namespace LeagueSharp.Common
                 this.Player = ObjectManager.Player;
                 Game.OnUpdate += this.GameOnOnGameUpdate;
                 Drawing.OnDraw += this.DrawingOnOnDraw;
+                EloBuddy.Player.OnIssueOrder += Player_OnIssueOrder; ;
                 Instances.Add(this);
+            }
+
+            private void Player_OnIssueOrder(Obj_AI_Base sender, PlayerIssueOrderEventArgs args)
+            {
+                if (this.ActiveMode == OrbwalkingMode.Flee && args.Order == GameObjectOrder.AttackUnit)
+                {
+                    args.Process = false;
+                }
             }
 
             #endregion
@@ -1072,6 +1097,15 @@ namespace LeagueSharp.Common
                     if (_config.Item("LastHit").GetValue<KeyBind>().Active)
                     {
                         return OrbwalkingMode.LastHit;
+                    }
+
+                    if (_config.Item("Burst").GetValue<KeyBind>().Active)
+                    {
+                        return OrbwalkingMode.Burst;
+                    }
+                    if (_config.Item("Flee").GetValue<KeyBind>().Active)
+                    {
+                        return OrbwalkingMode.Burst;
                     }
 
                     if (_config.Item(this.CustomModeName) != null
