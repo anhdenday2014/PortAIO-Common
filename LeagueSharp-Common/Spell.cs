@@ -994,7 +994,7 @@
             this.ChargeDuration = (int)(deltaT * 1000);
             this._chargedCastedT = 0;
 
-            Obj_AI_Base.OnProcessSpellCast += this.AIHeroClient_OnProcessSpellCast;
+            Obj_AI_Base.OnSpellCast += this.AIHeroClient_OnProcessSpellCast;
             Spellbook.OnUpdateChargeableSpell += this.Spellbook_OnUpdateChargedSpell;
             Spellbook.OnCastSpell += this.SpellbookOnCastSpell;
         }

@@ -1226,7 +1226,7 @@ namespace LeagueSharp.Common
         /// </summary>
         static Collision()
         {
-            Obj_AI_Base.OnProcessSpellCast += AIHeroClient_OnProcessSpellCast;
+            Obj_AI_Base.OnSpellCast += AIHeroClient_OnProcessSpellCast;
         }
 
         #endregion

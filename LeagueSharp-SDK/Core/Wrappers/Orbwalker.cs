@@ -277,7 +277,7 @@
                     {
                         Obj_AI_Base.OnSpellCast += this.OnDoCast;
                         Obj_AI_Base.OnSpellCast += this.OnDoCast2;
-                        Obj_AI_Base.OnProcessSpellCast += this.OnProcessSpellCast;
+                        Obj_AI_Base.OnSpellCast += this.OnProcessSpellCast;
                         Spellbook.OnStopCast += this.OnStopCast;
 
                         Drawing.OnEndScene += this.OnEndScene;
@@ -306,7 +306,7 @@
                     {
                         Obj_AI_Base.OnSpellCast -= this.OnDoCast;
                         Obj_AI_Base.OnSpellCast -= this.OnDoCast2;
-                        Obj_AI_Base.OnProcessSpellCast += this.OnProcessSpellCast;
+                        Obj_AI_Base.OnSpellCast += this.OnProcessSpellCast;
                         Spellbook.OnStopCast -= this.OnStopCast;
 
                         Drawing.OnEndScene -= this.OnEndScene;
