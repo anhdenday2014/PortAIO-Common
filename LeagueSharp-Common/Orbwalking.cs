@@ -1368,8 +1368,9 @@ namespace LeagueSharp.Common
                     || mode == OrbwalkingMode.Freeze)
                 {
                     var closestTower =
-                        ObjectManager.Get<Obj_AI_Turret>()
-                            .MinOrDefault(t => t.IsAlly && !t.IsDead ? this.Player.Distance(t, true) : float.MaxValue);
+                        ObjectManager.Get<Obj_AI_Turret>().MinOrDefault(t => t.IsAlly &&
+                        (t.Name.Contains("L_03_A") || t.Name.Contains("L_02_A") || t.Name.Contains("C_04_A") || t.Name.Contains("C_05_A") || t.Name.Contains("R_02_A") || t.Name.Contains("R_03_A"))
+                         && !t.IsDead ? Player.Distance(t, true) : float.MaxValue);
 
                     if (closestTower != null && this.Player.Distance(closestTower, true) < 1500 * 1500)
                     {
