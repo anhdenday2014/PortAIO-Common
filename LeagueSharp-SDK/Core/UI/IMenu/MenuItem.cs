@@ -27,6 +27,7 @@ namespace LeagueSharp.SDK.UI
     using LeagueSharp.SDK.Utils;
 
     using SharpDX;
+    using EloBuddy;
 
     /// <summary>
     ///     Menu Item
@@ -192,18 +193,25 @@ namespace LeagueSharp.SDK.UI
         /// </summary>
         public override void Load()
         {
-            if (!this.SettingsLoaded && File.Exists(this.Path) && this.GetType().IsSerializable)
+            if (PortAIO.Common.Init.isLoaded == "LOADED")
             {
-                this.SettingsLoaded = true;
-                try
+                if (!this.SettingsLoaded && File.Exists(this.Path) && this.GetType().IsSerializable)
                 {
-                    var newValue = Deserialize<MenuItem>(File.ReadAllBytes(this.Path));
-                    this.Extract(newValue);
+                    this.SettingsLoaded = true;
+                    try
+                    {
+                        var newValue = Deserialize<MenuItem>(File.ReadAllBytes(this.Path));
+                        this.Extract(newValue);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.ToString());
+                    }
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                }
+            }
+            else
+            {
+                Chat.Print("PortAIO failed to load. Error : Wrong Key");
             }
         }
 
