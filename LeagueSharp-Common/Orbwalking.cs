@@ -159,8 +159,9 @@ namespace LeagueSharp.Common
             _championName = Player.ChampionName;
             Obj_AI_Base.OnSpellCast += new Obj_AI_BaseDoCastSpell(Obj_AI_Base_OnDoCast);
             Obj_AI_Base.OnBasicAttack += new Obj_AI_BaseOnBasicAttack(OnBasicAttack);
-            Spellbook.OnStopCast += new SpellbookStopCast(SpellbookOnStopCast);
             Obj_AI_Base.OnProcessSpellCast += new Obj_AI_ProcessSpellCast(OnProcessSpellCast);
+            if (Player.ChampionName!= "Jinx")
+             Spellbook.OnStopCast += new SpellbookStopCast(SpellbookOnStopCast);
 
 
             if (_championName == "Rengar")
