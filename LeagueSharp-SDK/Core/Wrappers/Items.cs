@@ -234,9 +234,9 @@ namespace LeagueSharp.SDK
             /// <param name="range">
             ///     The Range
             /// </param>
-       /*     public Item(int id, float range)
+            public Item(int id, float range)
             {
-                var item = ItemData.Entries.FirstOrDefault(i => (int)i.Id == id);
+                var item = new EloBuddy.SDK.Item(id, range);
 
                 if (item == null)
                 {
@@ -244,13 +244,13 @@ namespace LeagueSharp.SDK
                 }
 
                 this.Id = (int)item.Id;
-                this.Name = item.DisplayName;
+                this.Name = item.ItemInfo.Name;
                 this.Range = range;
-                this.BasePrice = item.Price;
-                this.SellPrice = (int)(item.Price * item.SellBackModifier);
-                this.Purchaseable = item.CanBeSold;
-                this.Stacks = item.MaxStack;
-                this.HideFromAll = !item.UsableInStore;
+                //this.BasePrice = item.GoldRequired;
+                //this.SellPrice = (int)(item.Price * item.gol);
+                //this.Purchaseable = item.;
+                this.Stacks = (int)item.ItemInfo.Stacks;
+                //this.HideFromAll = !item.UsableInStore;
             }
 
             /// <summary>
@@ -261,7 +261,7 @@ namespace LeagueSharp.SDK
             /// <exception cref="MissingMemberException">Thrown when we were unable to find the item with same id.</exception>
             public Item(ItemId id, float range)
             {
-                var item = ItemData.Entries.FirstOrDefault(x => x.Id == id);
+                var item = new EloBuddy.SDK.Item(id, range);
 
                 if (item == null)
                 {
@@ -269,15 +269,14 @@ namespace LeagueSharp.SDK
                 }
 
                 this.Id = (int)item.Id;
-                this.Name = item.DisplayName;
+                this.Name = item.ItemInfo.Name;
                 this.Range = range;
-                this.BasePrice = item.Price;
-                this.SellPrice = (int)(item.Price * item.SellBackModifier);
-                this.Purchaseable = item.CanBeSold;
-                this.Stacks = item.MaxStack;
-                this.HideFromAll = !item.UsableInStore;
+                //this.BasePrice = item.Price;
+                //this.SellPrice = (int)(item.Price * item.SellBackModifier);
+                //this.Purchaseable = item.CanBeSold;
+                this.Stacks = (int)item.ItemInfo.Stacks;
+                //this.HideFromAll = !item.UsableInStore;
             }
-            //*/
             #endregion
 
             #region Public Properties

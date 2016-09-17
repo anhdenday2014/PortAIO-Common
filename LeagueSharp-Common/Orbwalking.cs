@@ -1154,6 +1154,18 @@ namespace LeagueSharp.Common
                 Instances.Remove(this);
             }
 
+            public void Enable()
+            {
+                Game.OnUpdate += GameOnOnGameUpdate;
+                Drawing.OnDraw += DrawingOnOnDraw;
+            }
+
+            public void Disable()
+            {
+                Game.OnUpdate -= GameOnOnGameUpdate;
+                Drawing.OnDraw -= DrawingOnOnDraw;
+            }
+
             /// <summary>
             ///     Forces the orbwalker to attack the set target if valid and in range.
             /// </summary>
@@ -1337,7 +1349,7 @@ namespace LeagueSharp.Common
                     if (mode != OrbwalkingMode.LaneClear || !this.ShouldWait())
                     {
                         var target = TargetSelector.GetTarget(-1, TargetSelector.DamageType.Physical);
-                        if (target.IsValidTarget() && this.InAutoAttackRange(target))
+                        if (target.IsValidTarget() && this.InAutoAttackRange(target) && target != null)
                         {
                             return target;
                         }
@@ -1559,7 +1571,7 @@ namespace LeagueSharp.Common
                 {
                     if (!this.ShouldWait())
                     {
-                        if (this._prevMinion.IsValidTarget() && this.InAutoAttackRange(this._prevMinion))
+                        if (this._prevMinion.IsValidTarget() && _prevMinion != null && this.InAutoAttackRange(this._prevMinion))
                         {
                             var predHealth = HealthPrediction.LaneClearHealthPrediction(
                                 this._prevMinion,
@@ -1576,7 +1588,7 @@ namespace LeagueSharp.Common
                                       ObjectManager.Get<Obj_AI_Minion>()
                                       .Where(
                                           minion =>
-                                          minion.IsValidTarget() && this.InAutoAttackRange(minion)
+                                          minion.IsValidTarget() && minion != null && this.InAutoAttackRange(minion)
                                           && this.ShouldAttackMinion(minion))
                                   let predHealth =
                                       HealthPrediction.LaneClearHealthPrediction(

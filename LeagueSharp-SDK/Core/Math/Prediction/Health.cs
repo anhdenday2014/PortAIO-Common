@@ -52,7 +52,7 @@ namespace LeagueSharp.SDK
         static Health()
         {
             Game.OnUpdate += OnGameUpdate;
-            Obj_AI_Base.OnSpellCast += OnObjAiBaseProcessSpellCast;
+            Obj_AI_Base.OnBasicAttack += OnObjAiBaseProcessSpellCast;
             Spellbook.OnStopCast += OnSpellbookStopCast;
             GameObject.OnDelete += OnGameObjectDelete;
             Obj_AI_Base.OnSpellCast += OnObjAiBaseDoCast;

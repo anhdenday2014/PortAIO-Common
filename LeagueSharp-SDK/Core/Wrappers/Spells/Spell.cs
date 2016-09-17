@@ -557,7 +557,7 @@ namespace LeagueSharp.SDK
         /// </returns>
         public bool Cast(Vector2 fromPosition, Vector2 toPosition)
         {
-            return this.Cast(fromPosition.ToVector3(), toPosition.ToVector3());
+            return this.Cast(toPosition.ToVector3(), fromPosition.ToVector3());
         }
 
         /// <summary>
@@ -591,7 +591,7 @@ namespace LeagueSharp.SDK
 
             this.LastCastAttemptT = Variables.TickCount;
 
-            return GameObjects.Player.Spellbook.CastSpell(this.Slot, fromPosition, toPosition);
+            return GameObjects.Player.Spellbook.CastSpell(this.Slot, toPosition, fromPosition);
         }
 
         /// <summary>
