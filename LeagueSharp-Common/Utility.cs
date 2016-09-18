@@ -8,6 +8,7 @@
 
     using Color = System.Drawing.Color;
     using EloBuddy;
+    using EloBuddy.SDK.Rendering;
 
     /// <summary>
     ///     Game functions related utilities.
