@@ -31,7 +31,6 @@ namespace PortAIO.Common
             if (a.Equals("7E6CBFB7497BE722B8E286ECBDE88"))
             {
                 isLoaded = "LOADED";
-                Console.WriteLine("PortAIO-Common loaded.");
                 Chat.Print("<b><font color=\"#FFFFFF\">[</font></b><b><font color=\"#3366CC\">PortAIO-Common has successfully loaded.</font></b><b><b><font color=\"#FFFFFF\">]</font></b>");
             }
             else

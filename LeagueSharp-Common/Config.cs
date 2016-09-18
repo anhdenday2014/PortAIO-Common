@@ -95,7 +95,7 @@
                         _showMenuHotkey = (byte)SandboxConfig.MenuKey;
                         _showMenuHotkey = _showMenuHotkey == 0 ? (byte)16 : _showMenuHotkey;
                         _showMenuHotkey = Utils.FixVirtualKey(_showMenuHotkey);
-                        Console.WriteLine(@"Menu press key set to {0}", _showMenuHotkey);
+                        //Console.WriteLine(@"Menu press key set to {0}", _showMenuHotkey);
                     }
                     catch
                     {
@@ -125,7 +125,7 @@
                         _showMenuToggleHotkey = (byte)Keys.Insert;
                         _showMenuToggleHotkey = _showMenuToggleHotkey == 0 ? (byte)120 : _showMenuToggleHotkey;
                         _showMenuToggleHotkey = Utils.FixVirtualKey(_showMenuToggleHotkey);
-                        Console.WriteLine(@"Menu toggle key set to {0}", _showMenuToggleHotkey);
+                        //Console.WriteLine(@"Menu toggle key set to {0}", _showMenuToggleHotkey);
                     }
                     catch
                     {
