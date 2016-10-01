@@ -27,11 +27,11 @@
         /// </summary>
         static HealthPrediction()
         {            
-            Game.OnUpdate += Game_OnGameUpdate;
-            Spellbook.OnStopCast += SpellbookOnStopCast;
-            GameObject.OnDelete += MissileClient_OnDelete;
-            Obj_AI_Base.OnSpellCast += Obj_AI_Base_OnDoCast;
-            Obj_AI_Base.OnBasicAttack += ObjAiBaseOnOnProcessSpellCast; // Test
+            Obj_AI_Base.OnSpellCast += new Obj_AI_BaseDoCastSpell(Obj_AI_Base_OnDoCast);
+            Obj_AI_Base.OnBasicAttack += new Obj_AI_BaseOnBasicAttack(ObjAiBaseOnOnProcessSpellCast);
+            Spellbook.OnStopCast += new SpellbookStopCast(SpellbookOnStopCast);
+            Game.OnTick += new GameTick(Game_OnGameUpdate);
+            GameObject.OnDelete += new GameObjectDelete(MissileClient_OnDelete);
         }
 
         #endregion
