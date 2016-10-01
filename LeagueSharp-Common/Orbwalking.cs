@@ -158,11 +158,10 @@ namespace LeagueSharp.Common
         {
             Player = ObjectManager.Player;
             _championName = Player.ChampionName;
-            Obj_AI_Base.OnSpellCast += new Obj_AI_BaseDoCastSpell(Obj_AI_Base_OnDoCast);
-            Obj_AI_Base.OnBasicAttack += new Obj_AI_BaseOnBasicAttack(OnBasicAttack);
             Obj_AI_Base.OnProcessSpellCast += new Obj_AI_ProcessSpellCast(OnProcessSpellCast);
-            if (Player.ChampionName != "Jinx")
-                Spellbook.OnStopCast += new SpellbookStopCast(SpellbookOnStopCast);
+            Obj_AI_Base.OnBasicAttack += new Obj_AI_BaseOnBasicAttack(OnBasicAttack);
+            Obj_AI_Base.OnSpellCast += new Obj_AI_BaseDoCastSpell(Obj_AI_Base_OnDoCast);
+            Spellbook.OnStopCast += new SpellbookStopCast(SpellbookOnStopCast);
 
 
             if (_championName == "Rengar")
@@ -756,41 +755,30 @@ namespace LeagueSharp.Common
         /// </summary>
         /// <param name="unit">The unit.</param>
         /// <param name="Spell">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
-        private static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        private static void OnProcessSpellCast(Obj_AI_Base unit, GameObjectProcessSpellCastEventArgs Spell)
         {
-            if (sender.IsMe)
+            try
             {
-                if (IsAutoAttack(args.SData.Name))
-                {
-                    var target = args.Target as AttackableUnit;
+                var spellName = Spell.SData.Name;
 
-                    if (target != null && target.IsValid)
-                    {
-                        FireOnAttack(sender, _lastTarget);
-                    }
-                }
-                if (IsAutoAttackReset(args.SData.Name) && Math.Abs(args.SData.CastTime) < 1.401298E-45f)
+                if (unit.IsMe && IsAutoAttackReset(spellName) && Math.Abs(Spell.SData.CastTime) < 1.401298E-45f)
                 {
                     ResetAutoAttackTimer();
                 }
+
+                if (!IsAutoAttack(spellName))
+                {
+                    return;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
 
         private static void OnBasicAttack(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (sender.IsMe)
-            {
-                if (IsAutoAttack(args.SData.Name))
-                {
-                    var target = args.Target as AttackableUnit;
-
-                    if (target != null && target.IsValid)
-                    {
-                        FireOnAttack(sender, _lastTarget);
-                    }
-                }
-            }
-
             if (sender.IsMe && (args.Target is Obj_AI_Base || args.Target is Obj_BarracksDampener || args.Target is Obj_HQ))
             {
                 LastAATick = Utils.GameTimeTickCount - Game.Ping / 2;
@@ -807,12 +795,13 @@ namespace LeagueSharp.Common
                         _lastTarget = target;
                     }
                 }
-            }
 
-            if (sender is Obj_AI_Turret && args.Target is Obj_AI_Base)
-            {
-                LastTargetTurrets[sender.NetworkId] = (Obj_AI_Base)args.Target;
+                if (sender is Obj_AI_Turret && args.Target is Obj_AI_Base)
+                {
+                    LastTargetTurrets[sender.NetworkId] = (Obj_AI_Base)args.Target;
+                }
             }
+            FireOnAttack(sender, _lastTarget);
         }
 
         internal static readonly Dictionary<int, Obj_AI_Base> LastTargetTurrets = new Dictionary<int, Obj_AI_Base>();
@@ -822,9 +811,9 @@ namespace LeagueSharp.Common
         /// </summary>
         /// <param name="spellbook">The spellbook.</param>
         /// <param name="args">The <see cref="SpellbookStopCastEventArgs" /> instance containing the event data.</param>
-        private static void SpellbookOnStopCast(Obj_AI_Base sender, SpellbookStopCastEventArgs args)
+        private static void SpellbookOnStopCast(Obj_AI_Base spellbook, SpellbookStopCastEventArgs args)
         {
-            if (sender.IsValid && sender.IsMe && EloBuddy.SDK.Orbwalker.IsRanged && (args.DestroyMissile && args.StopAnimation))
+            if (spellbook.IsValid && spellbook.IsMe && EloBuddy.SDK.Orbwalker.IsRanged && args.DestroyMissile && args.StopAnimation && !EloBuddy.SDK.Orbwalker.CanBeAborted)
             {
                 ResetAutoAttackTimer();
             }
