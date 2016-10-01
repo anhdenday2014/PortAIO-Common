@@ -91,47 +91,44 @@ namespace LeagueSharp.SDK.UI.Skins
         /// </param>
         public static void Initialize(Menu menu)
         {
-            Events.OnLoad += (sender, args) =>
-            {
-                Menu = new Menu("thememanager", "Theme Manager");
+            Menu = new Menu("thememanager", "Theme Manager");
 
-                Menu.Add(
-                    new MenuList<string>(
-                        "themeID",
-                        "Theme",
-                        new[] { "Default", "Blue", "Blue 2", "Light", "Light 2", "Colored", "Tech" })).ValueChanged
-                    += (o, eventArgs) =>
-                    {
-                        Notifications.Add(new Notification("Theme Manager", "Please reload Menu !"));
-                    };
-
-                menu.Add(Menu);
-
-                switch (Menu["themeID"].GetValue<MenuList>().Index)
+            Menu.Add(
+                new MenuList<string>(
+                    "themeID",
+                    "Theme",
+                    new[] { "Default", "Blue", "Blue 2", "Light", "Light 2", "Colored", "Tech" })).ValueChanged
+                += (o, eventArgs) =>
                 {
-                    case 0:
-                        Current = new DefaultTheme();
-                        break;
-                    case 1:
-                        Current = new BlueTheme();
-                        break;
-                    case 2:
-                        Current = new BlueTheme2();
-                        break;
-                    case 3:
-                        Current = new LightTheme();
-                        break;
-                    case 4:
-                        Current = new LightTheme2();
-                        break;
-                    case 5:
-                        Current = new ColoredTheme();
-                        break;
-                    case 6:
-                        Current = new TechTheme();
-                        break;
-                }
-            };
+                    Notifications.Add(new Notification("Theme Manager", "Please reload Menu !"));
+                };
+
+            menu.Add(Menu);
+
+            switch (Menu["themeID"].GetValue<MenuList>().Index)
+            {
+                case 0:
+                    Current = new DefaultTheme();
+                    break;
+                case 1:
+                    Current = new BlueTheme();
+                    break;
+                case 2:
+                    Current = new BlueTheme2();
+                    break;
+                case 3:
+                    Current = new LightTheme();
+                    break;
+                case 4:
+                    Current = new LightTheme2();
+                    break;
+                case 5:
+                    Current = new ColoredTheme();
+                    break;
+                case 6:
+                    Current = new TechTheme();
+                    break;
+            }
         }
 
         #endregion

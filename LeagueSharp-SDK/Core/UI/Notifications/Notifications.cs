@@ -126,26 +126,23 @@ namespace LeagueSharp.SDK
         /// </param>
         public static void Initialize(Menu menu)
         {
-            Events.OnLoad += (sender, args) =>
-                {
-                    Menu = new Menu("notifications", "Notifications");
+            Menu = new Menu("notifications", "Notifications");
 
-                    Menu.Add(new MenuSeparator("editor", "Edit Options"));
-                    Menu.Add(new MenuBool("edit", "Edit Position"));
-                    Menu.Add(new MenuSeparator("animation", "Animation Options"));
-                    Menu.Add(new MenuBool("animations", "Enable Animations") { Value = true });
-                    Menu.Add(new MenuBool("flash", "Enable Flash-Animations") { Value = false });
-                    Menu.Add(new MenuSeparator("other", "Other Options"));
-                    Menu.Add(new MenuBool("autoOpen", "Open Notifications"));
-                    Menu.Add(new MenuBool("sticky", "Allow Notification Sticky"));
+            Menu.Add(new MenuSeparator("editor", "Edit Options"));
+            Menu.Add(new MenuBool("edit", "Edit Position"));
+            Menu.Add(new MenuSeparator("animation", "Animation Options"));
+            Menu.Add(new MenuBool("animations", "Enable Animations") { Value = true });
+            Menu.Add(new MenuBool("flash", "Enable Flash-Animations") { Value = false });
+            Menu.Add(new MenuSeparator("other", "Other Options"));
+            Menu.Add(new MenuBool("autoOpen", "Open Notifications"));
+            Menu.Add(new MenuBool("sticky", "Allow Notification Sticky"));
 
-                    menu.Add(Menu);
+            menu.Add(Menu);
 
-                    Position = new Vector2(Drawing.Width - 5f, 90f);
-                    Game.OnUpdate += OnUpdate;
-                    Drawing.OnDraw += OnDraw;
-                    Game.OnWndProc += OnWndProc;
-                };
+            Position = new Vector2(Drawing.Width - 5f, 90f);
+            Game.OnUpdate += OnUpdate;
+            Drawing.OnDraw += OnDraw;
+            Game.OnWndProc += OnWndProc;
         }
 
         /// <summary>

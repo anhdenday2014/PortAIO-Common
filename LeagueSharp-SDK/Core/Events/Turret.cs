@@ -101,13 +101,10 @@ namespace LeagueSharp.SDK
 
         private static void EventTurretConstruct()
         {
-            OnLoad += (sender, args) =>
-                {
-                    foreach (var turret in GameObjects.Turrets)
-                    {
-                        Turrets.Add(turret.NetworkId, new TurretArgs { Turret = turret });
-                    }
-                };
+            foreach (var turret in GameObjects.Turrets)
+            {
+                Turrets.Add(turret.NetworkId, new TurretArgs { Turret = turret });
+            }
         }
 
         #endregion

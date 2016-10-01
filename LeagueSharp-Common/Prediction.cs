@@ -401,7 +401,7 @@ namespace LeagueSharp.Common
             return
                 GetPrediction(
                     new PredictionInput
-                        { Unit = unit, Delay = delay, Radius = radius, Speed = speed, CollisionObjects = collisionable });
+                    { Unit = unit, Delay = delay, Radius = radius, Speed = speed, CollisionObjects = collisionable });
         }
 
         /// <summary>
@@ -419,13 +419,10 @@ namespace LeagueSharp.Common
         /// </summary>
         public static void Initialize()
         {
-            CustomEvents.Game.OnGameLoad += eventArgs =>
-                {
-                    _menu = new Menu("Prediction", "Prediction");
-                    var slider = new MenuItem("PredMaxRange", "Max Range %").SetValue(new Slider(100, 70, 100));
-                    _menu.AddItem(slider);
-                    CommonMenu.Instance.AddSubMenu(_menu);
-                };
+            _menu = new Menu("Prediction", "Prediction");
+            var slider = new MenuItem("PredMaxRange", "Max Range %").SetValue(new Slider(100, 70, 100));
+            _menu.AddItem(slider);
+            CommonMenu.Instance.AddSubMenu(_menu);
         }
 
         public static void Shutdown()
@@ -472,10 +469,11 @@ namespace LeagueSharp.Common
                         <= input.Unit.Distance(endP) / dashData.Speed + input.RealRadius / input.Unit.MoveSpeed)
                     {
                         return new PredictionOutput
-                                   {
-                                       CastPosition = endP.To3D(), UnitPosition = endP.To3D(),
-                                       Hitchance = HitChance.Dashing
-                                   };
+                        {
+                            CastPosition = endP.To3D(),
+                            UnitPosition = endP.To3D(),
+                            Hitchance = HitChance.Dashing
+                        };
                     }
                 }
 
@@ -501,18 +499,21 @@ namespace LeagueSharp.Common
             if (timeToReachTargetPosition <= remainingImmobileT + input.RealRadius / input.Unit.MoveSpeed)
             {
                 return new PredictionOutput
-                           {
-                               CastPosition = input.Unit.ServerPosition, UnitPosition = input.Unit.Position,
-                               Hitchance = HitChance.Immobile
-                           };
+                {
+                    CastPosition = input.Unit.ServerPosition,
+                    UnitPosition = input.Unit.Position,
+                    Hitchance = HitChance.Immobile
+                };
             }
 
             return new PredictionOutput
-                       {
-                           Input = input, CastPosition = input.Unit.ServerPosition,
-                           UnitPosition = input.Unit.ServerPosition, Hitchance = HitChance.High
-                           /*timeToReachTargetPosition - remainingImmobileT + input.RealRadius / input.Unit.MoveSpeed < 0.4d ? HitChance.High : HitChance.Medium*/
-                       };
+            {
+                Input = input,
+                CastPosition = input.Unit.ServerPosition,
+                UnitPosition = input.Unit.ServerPosition,
+                Hitchance = HitChance.High
+                /*timeToReachTargetPosition - remainingImmobileT + input.RealRadius / input.Unit.MoveSpeed < 0.4d ? HitChance.High : HitChance.Medium*/
+            };
         }
 
         /// <summary>
@@ -529,10 +530,12 @@ namespace LeagueSharp.Common
             if (path.Count <= 1)
             {
                 return new PredictionOutput
-                           {
-                               Input = input, UnitPosition = input.Unit.ServerPosition,
-                               CastPosition = input.Unit.ServerPosition, Hitchance = HitChance.VeryHigh
-                           };
+                {
+                    Input = input,
+                    UnitPosition = input.Unit.ServerPosition,
+                    CastPosition = input.Unit.ServerPosition,
+                    Hitchance = HitChance.VeryHigh
+                };
             }
 
             var pLength = path.PathLength();
@@ -561,13 +564,15 @@ namespace LeagueSharp.Common
                                        : (tDistance + input.RealRadius));
 
                         return new PredictionOutput
-                                   {
-                                       Input = input, CastPosition = cp.To3D(), UnitPosition = p.To3D(),
-                                       Hitchance =
+                        {
+                            Input = input,
+                            CastPosition = cp.To3D(),
+                            UnitPosition = p.To3D(),
+                            Hitchance =
                                            PathTracker.GetCurrentPath(input.Unit).Time < 0.1d
                                                ? HitChance.VeryHigh
                                                : HitChance.High
-                                   };
+                        };
                     }
 
                     tDistance -= d;
@@ -619,13 +624,15 @@ namespace LeagueSharp.Common
                         }
 
                         return new PredictionOutput
-                                   {
-                                       Input = input, CastPosition = pos.To3D(), UnitPosition = p.To3D(),
-                                       Hitchance =
+                        {
+                            Input = input,
+                            CastPosition = pos.To3D(),
+                            UnitPosition = p.To3D(),
+                            Hitchance =
                                            PathTracker.GetCurrentPath(input.Unit).Time < 0.1d
                                                ? HitChance.VeryHigh
                                                : HitChance.High
-                                   };
+                        };
                     }
                     tT += tB;
                 }
@@ -633,10 +640,12 @@ namespace LeagueSharp.Common
 
             var position = path.Last();
             return new PredictionOutput
-                       {
-                           Input = input, CastPosition = position.To3D(), UnitPosition = position.To3D(),
-                           Hitchance = HitChance.Medium
-                       };
+            {
+                Input = input,
+                CastPosition = position.To3D(),
+                UnitPosition = position.To3D(),
+                Hitchance = HitChance.Medium
+            };
         }
 
         /// <summary>
@@ -882,13 +891,14 @@ namespace LeagueSharp.Common
                         < input.Range * input.Range)
                     {
                         return new PredictionOutput
-                                   {
-                                       AoeTargetsHit = posibleTargets.Select(h => (AIHeroClient)h.Unit).ToList(),
-                                       CastPosition = mecCircle.Center.To3D(),
-                                       UnitPosition = mainTargetPrediction.UnitPosition,
-                                       Hitchance = mainTargetPrediction.Hitchance, Input = input,
-                                       _aoeTargetsHitCount = posibleTargets.Count
-                                   };
+                        {
+                            AoeTargetsHit = posibleTargets.Select(h => (AIHeroClient)h.Unit).ToList(),
+                            CastPosition = mecCircle.Center.To3D(),
+                            UnitPosition = mainTargetPrediction.UnitPosition,
+                            Hitchance = mainTargetPrediction.Hitchance,
+                            Input = input,
+                            _aoeTargetsHitCount = posibleTargets.Count
+                        };
                     }
 
                     float maxdist = -1;
@@ -982,11 +992,13 @@ namespace LeagueSharp.Common
                     if (bestCandidateHits > 1 && input.From.To2D().Distance(bestCandidate, true) > 50 * 50)
                     {
                         return new PredictionOutput
-                                   {
-                                       Hitchance = mainTargetPrediction.Hitchance, _aoeTargetsHitCount = bestCandidateHits,
-                                       UnitPosition = mainTargetPrediction.UnitPosition,
-                                       CastPosition = bestCandidate.To3D(), Input = input
-                                   };
+                        {
+                            Hitchance = mainTargetPrediction.Hitchance,
+                            _aoeTargetsHitCount = bestCandidateHits,
+                            UnitPosition = mainTargetPrediction.UnitPosition,
+                            CastPosition = bestCandidate.To3D(),
+                            Input = input
+                        };
                     }
                 }
                 return mainTargetPrediction;
@@ -1113,11 +1125,13 @@ namespace LeagueSharp.Common
                         }
 
                         return new PredictionOutput
-                                   {
-                                       Hitchance = mainTargetPrediction.Hitchance, _aoeTargetsHitCount = bestCandidateHits,
-                                       UnitPosition = mainTargetPrediction.UnitPosition,
-                                       CastPosition = ((p1 + p2) * 0.5f).To3D(), Input = input
-                                   };
+                        {
+                            Hitchance = mainTargetPrediction.Hitchance,
+                            _aoeTargetsHitCount = bestCandidateHits,
+                            UnitPosition = mainTargetPrediction.UnitPosition,
+                            CastPosition = ((p1 + p2) * 0.5f).To3D(),
+                            Input = input
+                        };
                     }
                 }
 

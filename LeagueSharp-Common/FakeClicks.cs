@@ -91,12 +91,11 @@ namespace LeagueSharp.Common
         /// </summary>
         public static void Initialize()
         {
-            CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
+            Game_OnGameLoad();
         }
 
         public static void Shutdown()
         {
-            CustomEvents.Game.OnGameLoad -= Game_OnGameLoad;
             Obj_AI_Base.OnNewPath -= DrawFake;
             /*
             Orbwalking.BeforeAttack -= BeforeAttackFake;
@@ -206,7 +205,7 @@ namespace LeagueSharp.Common
         ///     Fired when the game loads.
         /// </summary>
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private static void Game_OnGameLoad(EventArgs args)
+        private static void Game_OnGameLoad()
         {
             root.AddItem(new MenuItem("Enable", "Enable").SetValue(false));
             root.AddItem(new MenuItem("Click Mode", "Click Mode"))

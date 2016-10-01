@@ -41,34 +41,12 @@ namespace LeagueSharp.SDK
 
         #region Public Events
 
-        /// <summary>
-        ///     The load event, invoked when the system detects that the game has been fully loaded.
-        /// </summary>
-        public static event EventHandler OnLoad;
-
         #endregion
 
         #region Methods
 
         private static void EventLoad()
         {
-            if (OnLoad == null)
-            {
-                return;
-            }
-
-            foreach (var invocation in OnLoad.GetInvocationList().Where(i => LoadInvocationList.All(l => l != i)))
-            {
-                LoadInvocationList.Add(invocation);
-                try
-                {
-                    invocation.DynamicInvoke(MethodBase.GetCurrentMethod().DeclaringType, EventArgs.Empty);
-                }
-                catch (Exception e)
-                {
-                    //LogManager.GetCurrentClassLogger().Error(e);
-                }
-            }
         }
 
         #endregion

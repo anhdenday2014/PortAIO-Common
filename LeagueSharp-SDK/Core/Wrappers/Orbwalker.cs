@@ -140,7 +140,7 @@
             menu.Add(this.mainMenu);
             this.selector = new OrbwalkerSelector(this);
 
-            Events.OnLoad += (sender, args) => { this.Enabled = this.mainMenu["enabledOption"]; };
+            this.Enabled = this.mainMenu["enabledOption"];
         }
 
         #endregion

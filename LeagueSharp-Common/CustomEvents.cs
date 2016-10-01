@@ -55,12 +55,6 @@
             /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
             public delegate void OnGameEnded(EventArgs args);
 
-            /// <summary>
-            ///     The delegate for <see cref="Game.OnGameLoad" />
-            /// </summary>
-            /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
-            public delegate void OnGameLoaded(EventArgs args);
-
             #endregion
 
             #region Public Events
@@ -69,11 +63,6 @@
             ///     Occurs when the game ends. This is meant as a better replacement to <see cref="LeagueSharp.Game.OnEnd" />.
             /// </summary>
             public static event OnGameEnded OnGameEnd;
-
-            /// <summary>
-            ///     Occurs when the game loads. This will be fired if the game is already loaded.
-            /// </summary>
-            public static event OnGameLoaded OnGameLoad;
 
             #endregion
 
@@ -112,23 +101,6 @@
             private static void Game_OnGameStart(EventArgs args)
             {
                 EloBuddy.Game.OnUpdate += Game_OnGameUpdate;
-
-                if (OnGameLoad != null)
-                {
-                    foreach (
-                        var subscriber in OnGameLoad.GetInvocationList().Where(s => !NotifiedSubscribers.Contains(s)))
-                    {
-                        NotifiedSubscribers.Add(subscriber);
-                        try
-                        {
-                            subscriber.DynamicInvoke(new EventArgs());
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex);
-                        }
-                    }
-                }
             }
 
             /// <summary>
@@ -137,22 +109,6 @@
             /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
             private static void Game_OnGameUpdate(EventArgs args)
             {
-                if (OnGameLoad != null)
-                {
-                    foreach (
-                        var subscriber in OnGameLoad.GetInvocationList().Where(s => !NotifiedSubscribers.Contains(s)))
-                    {
-                        NotifiedSubscribers.Add(subscriber);
-                        try
-                        {
-                            subscriber.DynamicInvoke(new EventArgs());
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine(ex);
-                        }
-                    }
-                }
 
                 if (NexusList.Count == 0 || _endGameCalled)
                 {

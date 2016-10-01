@@ -304,72 +304,69 @@
 
         public static void Initialize()
         {
-            CustomEvents.Game.OnGameLoad += args =>
+            var config = new Menu("Target Selector", "TargetSelector");
+
+            _configMenu = config;
+
+            var focusMenu = new Menu("Focus Target Settings", "FocusTargetSettings");
+
+            focusMenu.AddItem(new MenuItem("FocusSelected", "Focus selected target").SetShared().SetValue(true));
+            focusMenu.AddItem(
+                new MenuItem("SelTColor", "Focus selected target color").SetShared()
+                    .SetValue(new Circle(true, Color.Red)));
+            focusMenu.AddItem(
+                new MenuItem("ForceFocusSelected", "Only attack selected target").SetShared().SetValue(false));
+            focusMenu.AddItem(new MenuItem("sep", ""));
+            focusMenu.AddItem(
+                new MenuItem("ForceFocusSelectedKeys", "Enable only attack selected Keys").SetShared()
+                    .SetValue(false));
+            focusMenu.AddItem(new MenuItem("ForceFocusSelectedK", "Only attack selected Key"))
+                .SetValue(new KeyBind(32, KeyBindType.Press));
+            focusMenu.AddItem(new MenuItem("ForceFocusSelectedK2", "Only attack selected Key 2"))
+                .SetValue(new KeyBind(32, KeyBindType.Press));
+            focusMenu.AddItem(new MenuItem("ResetOnRelease", "Reset selected target upon release"))
+                .SetValue(false);
+
+            config.AddSubMenu(focusMenu);
+
+            var autoPriorityItem =
+                new MenuItem("AutoPriority", "Auto arrange priorities").SetShared()
+                    .SetValue(true)
+                    .SetTooltip("5 = Highest Priority");
+            autoPriorityItem.ValueChanged += autoPriorityItem_ValueChanged;
+
+            foreach (var enemy in HeroManager.Enemies)
+            {
+                config.AddItem(
+                    new MenuItem("TargetSelector" + enemy.ChampionName + "Priority", enemy.ChampionName)
+                        .SetShared()
+                        .SetValue(
+                            new Slider(
+                                autoPriorityItem.GetValue<bool>() ? GetPriorityFromDb(enemy.ChampionName) : 1,
+                                5,
+                                1)));
+                if (autoPriorityItem.GetValue<bool>())
                 {
-                    var config = new Menu("Target Selector", "TargetSelector");
+                    config.Item("TargetSelector" + enemy.ChampionName + "Priority")
+                        .SetValue(
+                            new Slider(
+                                autoPriorityItem.GetValue<bool>() ? GetPriorityFromDb(enemy.ChampionName) : 1,
+                                5,
+                                1));
+                }
+            }
+            config.AddItem(autoPriorityItem);
+            config.AddItem(
+                new MenuItem("TargetingMode", "Target Mode").SetShared()
+                    .SetValue(new StringList(Enum.GetNames(typeof(TargetingMode)))));
 
-                    _configMenu = config;
+            CommonMenu.Instance.AddSubMenu(config);
+            Game.OnWndProc += GameOnOnWndProc;
 
-                    var focusMenu = new Menu("Focus Target Settings", "FocusTargetSettings");
-
-                    focusMenu.AddItem(new MenuItem("FocusSelected", "Focus selected target").SetShared().SetValue(true));
-                    focusMenu.AddItem(
-                        new MenuItem("SelTColor", "Focus selected target color").SetShared()
-                            .SetValue(new Circle(true, Color.Red)));
-                    focusMenu.AddItem(
-                        new MenuItem("ForceFocusSelected", "Only attack selected target").SetShared().SetValue(false));
-                    focusMenu.AddItem(new MenuItem("sep", ""));
-                    focusMenu.AddItem(
-                        new MenuItem("ForceFocusSelectedKeys", "Enable only attack selected Keys").SetShared()
-                            .SetValue(false));
-                    focusMenu.AddItem(new MenuItem("ForceFocusSelectedK", "Only attack selected Key"))
-                        .SetValue(new KeyBind(32, KeyBindType.Press));
-                    focusMenu.AddItem(new MenuItem("ForceFocusSelectedK2", "Only attack selected Key 2"))
-                        .SetValue(new KeyBind(32, KeyBindType.Press));
-                    focusMenu.AddItem(new MenuItem("ResetOnRelease", "Reset selected target upon release"))
-                        .SetValue(false);
-
-                    config.AddSubMenu(focusMenu);
-
-                    var autoPriorityItem =
-                        new MenuItem("AutoPriority", "Auto arrange priorities").SetShared()
-                            .SetValue(true)
-                            .SetTooltip("5 = Highest Priority");
-                    autoPriorityItem.ValueChanged += autoPriorityItem_ValueChanged;
-
-                    foreach (var enemy in HeroManager.Enemies)
-                    {
-                        config.AddItem(
-                            new MenuItem("TargetSelector" + enemy.ChampionName + "Priority", enemy.ChampionName)
-                                .SetShared()
-                                .SetValue(
-                                    new Slider(
-                                        autoPriorityItem.GetValue<bool>() ? GetPriorityFromDb(enemy.ChampionName) : 1,
-                                        5,
-                                        1)));
-                        if (autoPriorityItem.GetValue<bool>())
-                        {
-                            config.Item("TargetSelector" + enemy.ChampionName + "Priority")
-                                .SetValue(
-                                    new Slider(
-                                        autoPriorityItem.GetValue<bool>() ? GetPriorityFromDb(enemy.ChampionName) : 1,
-                                        5,
-                                        1));
-                        }
-                    }
-                    config.AddItem(autoPriorityItem);
-                    config.AddItem(
-                        new MenuItem("TargetingMode", "Target Mode").SetShared()
-                            .SetValue(new StringList(Enum.GetNames(typeof(TargetingMode)))));
-
-                    CommonMenu.Instance.AddSubMenu(config);
-                    Game.OnWndProc += GameOnOnWndProc;
-
-                    if (!CustomTS)
-                    {
-                        Drawing.OnDraw += DrawingOnOnDraw;
-                    }
-                };
+            if (!CustomTS)
+            {
+                Drawing.OnDraw += DrawingOnOnDraw;
+            }
         }
 
         public static bool IsInvulnerable(Obj_AI_Base target, DamageType damageType, bool ignoreShields = true)

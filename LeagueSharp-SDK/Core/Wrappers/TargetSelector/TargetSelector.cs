@@ -68,22 +68,19 @@ namespace LeagueSharp.SDK
 
             initialized = true;
 
-            Events.OnLoad += (sender, args) =>
-                {
-                    menu.Add(this.menu);
+            menu.Add(this.menu);
 
-                    this.Selected = new TargetSelectorSelected(this.menu);
-                    this.Humanizer = new TargetSelectorHumanizer(this.menu);
-                    this.Mode = new TargetSelectorMode(this.menu);
-                    this.Drawing = new TargetSelectorDrawing(this.menu, this.Selected, this.Mode);
-                    this.Locked = new TargetSelectorLockTarget(this.menu);
+            this.Selected = new TargetSelectorSelected(this.menu);
+            this.Humanizer = new TargetSelectorHumanizer(this.menu);
+            this.Mode = new TargetSelectorMode(this.menu);
+            this.Drawing = new TargetSelectorDrawing(this.menu, this.Selected, this.Mode);
+            this.Locked = new TargetSelectorLockTarget(this.menu);
 
-                    // Keep submenus at top
-                    this.menu.Components =
-                        this.menu.Components.OrderByDescending(c => c.Value is Menu && c.Key.Equals("drawing"))
-                            .ThenByDescending(c => c.Value is Menu)
-                            .ToDictionary(p => p.Key, p => p.Value);
-                };
+            // Keep submenus at top
+            this.menu.Components =
+                this.menu.Components.OrderByDescending(c => c.Value is Menu && c.Key.Equals("drawing"))
+                    .ThenByDescending(c => c.Value is Menu)
+                    .ToDictionary(p => p.Key, p => p.Value);
         }
 
         #endregion

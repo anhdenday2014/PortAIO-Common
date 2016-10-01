@@ -47,11 +47,8 @@ namespace LeagueSharp.SDK
         /// </summary>
         internal static void Initialize()
         {
-            Events.OnLoad += (sender, args) =>
-                {
-                    DamageCollection = Data.Get<DamageDatabase>().Damage;
-                    CreatePassives();
-                };
+            DamageCollection = Data.Get<DamageDatabase>().Damage;
+            CreatePassives();
         }
 
         /// <summary>
