@@ -8,7 +8,6 @@ namespace LeagueSharp.Common
     using EloBuddy;
 
     using Color = System.Drawing.Color;
-    using System.Reflection;
     using EloBuddy.SDK;
 
     /// <summary>
@@ -163,23 +162,22 @@ namespace LeagueSharp.Common
             Obj_AI_Base.OnSpellCast += new Obj_AI_BaseDoCastSpell(Obj_AI_Base_OnDoCast);
             Spellbook.OnStopCast += new SpellbookStopCast(SpellbookOnStopCast);
 
-
             if (_championName == "Rengar")
             {
-                Obj_AI_Base.OnPlayAnimation += delegate (Obj_AI_Base sender, GameObjectPlayAnimationEventArgs args)
-                {
-                    if (sender.IsMe && args.Animation == "Spell5")
+                Obj_AI_Base.OnPlayAnimation += delegate(Obj_AI_Base sender, GameObjectPlayAnimationEventArgs args)
                     {
-                        var t = 0;
-
-                        if (_lastTarget != null && _lastTarget.IsValid)
+                        if (sender.IsMe && args.Animation == "Spell5")
                         {
-                            t += (int)Math.Min(ObjectManager.Player.Distance(_lastTarget) / 1.5f, 0.6f);
-                        }
+                            var t = 0;
 
-                        LastAATick = Utils.GameTimeTickCount - Game.Ping / 2 + t;
-                    }
-                };
+                            if (_lastTarget != null && _lastTarget.IsValid)
+                            {
+                                t += (int)Math.Min(ObjectManager.Player.Distance(_lastTarget) / 1.5f, 0.6f);
+                            }
+
+                            LastAATick = Utils.GameTimeTickCount - Game.Ping / 2 + t;
+                        }
+                    };
             }
         }
 
@@ -284,19 +282,13 @@ namespace LeagueSharp.Common
             Freeze,
 
             /// <summary>
-            ///     The orbwalker will only attack the target.
-            /// </summary>
-            Burst,
-
-            /// <summary>
-            ///     The orbwalker will only move.
-            /// </summary>
-            Flee,
-
-            /// <summary>
             ///     The orbwalker will only move.
             /// </summary>
             CustomMode,
+
+            Flee,
+
+            Burst,
 
             /// <summary>
             ///     The orbwalker does nothing.
@@ -314,17 +306,15 @@ namespace LeagueSharp.Common
         /// <returns><c>true</c> if this instance can attack; otherwise, <c>false</c>.</returns>
         public static bool CanAttack()
         {
-            if (Player.ChampionName == "Graves")
+            /*if (Player.ChampionName == "Graves")
             {
                 var attackDelay = 1.0740296828d * 1000 * Player.AttackDelay - 716.2381256175d;
-                if (Utils.GameTimeTickCount + Game.Ping / 2 + 25 >= LastAATick + attackDelay
-                    && Player.HasBuff("GravesBasicAttackAmmo1"))
+                if (Utils.GameTimeTickCount + Game.Ping / 2 + 25 >= LastAATick + attackDelay && Player.HasBuff("GravesBasicAttackAmmo1"))
                 {
                     return true;
                 }
-
                 return false;
-            }
+            }//*/
 
             if (Player.ChampionName == "Jhin")
             {
@@ -360,9 +350,17 @@ namespace LeagueSharp.Common
                 localExtraWindup = 200;
             }
 
-            return NoCancelChamps.Contains(_championName)
-                   || (Utils.GameTimeTickCount + Game.Ping / 2
-                       >= LastAATick + Player.AttackCastDelay * 1000 + extraWindup + localExtraWindup);
+            return NoCancelChamps.Contains(_championName) || (Utils.GameTimeTickCount + Game.Ping / 2 >= LastAATick + Player.AttackCastDelay * 1000 + extraWindup + localExtraWindup);
+        }
+
+        public static bool CanMove1(float extraWindup, bool disableMissileCheck = false)
+        {
+            return EloBuddy.SDK.Orbwalker.CanMove;
+        }
+
+        public static bool CanAttack1()
+        {
+            return EloBuddy.SDK.Orbwalker.CanAutoAttack;
         }
 
         /// <summary>
@@ -449,6 +447,7 @@ namespace LeagueSharp.Common
                     Player.ServerPosition.To2D()) <= myRange * myRange;
         }
 
+
         /// <summary>
         ///     Returns true if the spellname is an auto-attack.
         /// </summary>
@@ -456,8 +455,7 @@ namespace LeagueSharp.Common
         /// <returns><c>true</c> if the name is an auto attack; otherwise, <c>false</c>.</returns>
         public static bool IsAutoAttack(string name)
         {
-            return (name.ToLower().Contains("attack") && !NoAttacks.Contains(name.ToLower()))
-                   || Attacks.Contains(name.ToLower());
+            return (name.ToLower().Contains("attack") && !NoAttacks.Contains(name.ToLower())) || Attacks.Contains(name.ToLower());
         }
 
         /// <summary>
@@ -512,9 +510,7 @@ namespace LeagueSharp.Common
 
             if (Player.Distance(point, true) < 150 * 150)
             {
-                point = playerPosition.Extend(
-                    position,
-                    randomizeMinDistance ? (_random.NextFloat(0.6f, 1) + 0.2f) * _minDistance : _minDistance);
+                point = playerPosition.Extend(position, randomizeMinDistance ? (_random.NextFloat(0.6f, 1) + 0.2f) * _minDistance : _minDistance);
             }
             var angle = 0f;
             var currentPath = Player.GetWaypoints();
@@ -536,8 +532,7 @@ namespace LeagueSharp.Common
                 }
             }
 
-            if (Utils.GameTimeTickCount - LastMoveCommandT < 70 + Math.Min(60, Game.Ping) && !overrideTimer
-                && angle < 60)
+            if (Utils.GameTimeTickCount - LastMoveCommandT < 70 + Math.Min(60, Game.Ping) /*&& !overrideTimer*/ && angle < 60)
             {
                 return;
             }
@@ -576,7 +571,7 @@ namespace LeagueSharp.Common
 
             try
             {
-                if (target.IsValidTarget() && CanAttack() && Attack)
+                if (target.IsValidTarget() && Attack && CanAttack() /*&& EloBuddy.SDK.Orbwalker.CanAutoAttack*/)
                 {
                     DisableNextAttack = false;
                     FireBeforeAttack(target);
@@ -598,10 +593,9 @@ namespace LeagueSharp.Common
                     }
                 }
 
-                if (CanMove(extraWindup) && Move)
+                if (/*EloBuddy.SDK.Orbwalker.CanMove*/ CanMove(extraWindup))// && Move)
                 {
-                    if (Orbwalker.LimitAttackSpeed && (Player.AttackDelay < 1 / 2.6f) && _autoattackCounter % 3 != 0
-                        && !CanMove(500, true))
+                    if (Orbwalker.LimitAttackSpeed && (Player.AttackDelay < 1 / 2.6f) && _autoattackCounter % 3 != 0)// && !CanMove(500, true))
                     {
                         return;
                     }
@@ -727,7 +721,7 @@ namespace LeagueSharp.Common
                     return;
                 }
 
-                Obj_AI_Base_OnDoCast_Delayed(sender, args); //InvokeActionAfterAttackDelay()
+                Obj_AI_Base_OnDoCast_Delayed(sender, args);
             }
         }
 
@@ -738,6 +732,7 @@ namespace LeagueSharp.Common
         /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
         private static void Obj_AI_Base_OnDoCast_Delayed(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
+            
             if (IsAutoAttackReset(args.SData.Name))
             {
                 ResetAutoAttackTimer();
@@ -777,7 +772,7 @@ namespace LeagueSharp.Common
             }
         }
 
-        private static void OnBasicAttack(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        internal static void OnBasicAttack(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             if (sender.IsMe && (args.Target is Obj_AI_Base || args.Target is Obj_BarracksDampener || args.Target is Obj_HQ))
             {
@@ -813,9 +808,10 @@ namespace LeagueSharp.Common
         /// <param name="args">The <see cref="SpellbookStopCastEventArgs" /> instance containing the event data.</param>
         private static void SpellbookOnStopCast(Obj_AI_Base spellbook, SpellbookStopCastEventArgs args)
         {
-            if (spellbook.IsValid && spellbook.IsMe && EloBuddy.SDK.Orbwalker.IsRanged && args.DestroyMissile && args.StopAnimation && !EloBuddy.SDK.Orbwalker.CanBeAborted)
+            if (spellbook.IsValid && spellbook.IsMe && EloBuddy.SDK.Orbwalker.IsRanged && args.DestroyMissile && args.StopAnimation && !EloBuddy.SDK.Orbwalker.CanBeAborted)// CanCancelAttack)
             {
                 ResetAutoAttackTimer();
+                //EloBuddy.SDK.Orbwalker.ResetAutoAttack();
             }
         }
 
@@ -983,9 +979,9 @@ namespace LeagueSharp.Common
 
                 /*Load the menu*/
                 _config.AddItem(
-                    new MenuItem("LastHit", "Last hit").SetShared().SetValue(new KeyBind('X', KeyBindType.Press)));
+                    new MenuItem("LastHit", "Last hit").SetShared().SetValue(new KeyBind('A', KeyBindType.Press)));
 
-                _config.AddItem(new MenuItem("Farm", "Mixed/Harass").SetShared().SetValue(new KeyBind('C', KeyBindType.Press)));
+                _config.AddItem(new MenuItem("Farm", "Mixed").SetShared().SetValue(new KeyBind('X', KeyBindType.Press)));
 
                 _config.AddItem(
                     new MenuItem("Freeze", "Freeze").SetShared().SetValue(new KeyBind('N', KeyBindType.Press)));
@@ -994,13 +990,13 @@ namespace LeagueSharp.Common
                     new MenuItem("LaneClear", "LaneClear").SetShared().SetValue(new KeyBind('V', KeyBindType.Press)));
 
                 _config.AddItem(
+                 new MenuItem("Flee", "Flee").SetShared().SetValue(new KeyBind('C', KeyBindType.Press)));
+
+                _config.AddItem(
+                   new MenuItem("Burst", "Burst").SetShared().SetValue(new KeyBind('T', KeyBindType.Press)));
+
+                _config.AddItem(
                     new MenuItem("Orbwalk", "Combo").SetShared().SetValue(new KeyBind(32, KeyBindType.Press)));
-
-                _config.AddItem(
-                    new MenuItem("Flee", "Flee").SetShared().SetValue(new KeyBind('K', KeyBindType.Press)));
-
-                _config.AddItem(
-                    new MenuItem("Burst", "Burst").SetShared().SetValue(new KeyBind('T', KeyBindType.Press)));
 
                 _config.AddItem(
                     new MenuItem("StillCombo", "Combo without moving").SetShared()
@@ -1009,18 +1005,9 @@ namespace LeagueSharp.Common
                     (sender, args) => { Move = !args.GetNewValue<KeyBind>().Active; };
 
                 this.Player = ObjectManager.Player;
-                Game.OnUpdate += this.GameOnOnGameUpdate;
-                Drawing.OnDraw += this.DrawingOnOnDraw;
-                EloBuddy.Player.OnIssueOrder += Player_OnIssueOrder; ;
+                Game.OnUpdate += new GameUpdate(this.GameOnOnGameUpdate);
+                Drawing.OnDraw += new DrawingDraw(this.DrawingOnOnDraw);
                 Instances.Add(this);
-            }
-
-            private void Player_OnIssueOrder(Obj_AI_Base sender, PlayerIssueOrderEventArgs args)
-            {
-                if (this.ActiveMode == OrbwalkingMode.Flee && args.Order == GameObjectOrder.AttackUnit)
-                {
-                    args.Process = false;
-                }
             }
 
             #endregion
@@ -1080,6 +1067,16 @@ namespace LeagueSharp.Common
                         return OrbwalkingMode.Mixed;
                     }
 
+                    if (_config.Item("Flee").GetValue<KeyBind>().Active)
+                    {
+                        return OrbwalkingMode.Flee;
+                    }
+
+                    if (_config.Item("Burst").GetValue<KeyBind>().Active)
+                    {
+                        return OrbwalkingMode.Burst;
+                    }
+
                     if (_config.Item("Freeze").GetValue<KeyBind>().Active)
                     {
                         return OrbwalkingMode.Freeze;
@@ -1088,15 +1085,6 @@ namespace LeagueSharp.Common
                     if (_config.Item("LastHit").GetValue<KeyBind>().Active)
                     {
                         return OrbwalkingMode.LastHit;
-                    }
-
-                    if (_config.Item("Burst").GetValue<KeyBind>().Active)
-                    {
-                        return OrbwalkingMode.Burst;
-                    }
-                    if (_config.Item("Flee").GetValue<KeyBind>().Active)
-                    {
-                        return OrbwalkingMode.Burst;
                     }
 
                     if (_config.Item(this.CustomModeName) != null
@@ -1139,8 +1127,8 @@ namespace LeagueSharp.Common
             public void Dispose()
             {
                 Menu.Remove(_config);
-                Game.OnUpdate -= this.GameOnOnGameUpdate;
-                Drawing.OnDraw -= this.DrawingOnOnDraw;
+                Game.OnUpdate -= new GameUpdate(this.GameOnOnGameUpdate);
+                Drawing.OnDraw -= new DrawingDraw(this.DrawingOnOnDraw);
                 Instances.Remove(this);
             }
 
@@ -1166,7 +1154,7 @@ namespace LeagueSharp.Common
                     && !_config.Item("PriorizeFarm").GetValue<bool>())
                 {
                     var target = TargetSelector.GetTarget(-1, TargetSelector.DamageType.Physical);
-                    if (target != null && EloBuddy.Player.Instance.IsInAutoAttackRange(target))
+                    if (target != null && this.InAutoAttackRange(target))
                     {
                         return target;
                     }
@@ -1191,7 +1179,7 @@ namespace LeagueSharp.Common
                                     minion =>
                                     minion.Team == GameObjectTeam.Neutral
                                     && minion.CharData.BaseSkinName == "gangplankbarrel" && minion.IsHPBarRendered
-                                    && minion.IsValidTarget() && EloBuddy.Player.Instance.IsInAutoAttackRange(minion));
+                                    && minion.IsValidTarget() && this.InAutoAttackRange(minion));
 
                         foreach (var barrel in barrels)
                         {
@@ -1238,7 +1226,7 @@ namespace LeagueSharp.Common
                 {
                     var MinionList =
                         ObjectManager.Get<Obj_AI_Minion>()
-                            .Where(minion => minion.IsValidTarget() && EloBuddy.Player.Instance.IsInAutoAttackRange(minion))
+                            .Where(minion => minion.IsValidTarget() && this.InAutoAttackRange(minion))
                             .OrderByDescending(minion => minion.CharData.BaseSkinName.Contains("Siege"))
                             .ThenBy(minion => minion.CharData.BaseSkinName.Contains("Super"))
                             .ThenBy(minion => minion.Health)
@@ -1286,7 +1274,7 @@ namespace LeagueSharp.Common
                 }
 
                 //Forced target
-                if (this._forcedTarget.IsValidTarget() && EloBuddy.Player.Instance.IsInAutoAttackRange(this._forcedTarget))
+                if (this._forcedTarget.IsValidTarget() && this.InAutoAttackRange(this._forcedTarget))
                 {
                     return this._forcedTarget;
                 }
@@ -1300,7 +1288,7 @@ namespace LeagueSharp.Common
                 {
                     /* turrets */
                     foreach (var turret in
-                        ObjectManager.Get<Obj_AI_Turret>().Where(t => t.IsValidTarget() && EloBuddy.Player.Instance.IsInAutoAttackRange(t)))
+                        ObjectManager.Get<Obj_AI_Turret>().Where(t => t.IsValidTarget() && this.InAutoAttackRange(t)))
                     {
                         return turret;
                     }
@@ -1308,26 +1296,26 @@ namespace LeagueSharp.Common
                     /* inhibitor */
                     foreach (var turret in
                         ObjectManager.Get<Obj_BarracksDampener>()
-                            .Where(t => t.IsValidTarget() && EloBuddy.Player.Instance.IsInAutoAttackRange(t)))
+                            .Where(t => t.IsValidTarget() && this.InAutoAttackRange(t)))
                     {
                         return turret;
                     }
 
                     /* nexus */
                     foreach (var nexus in
-                        ObjectManager.Get<Obj_HQ>().Where(t => t.IsValidTarget() && EloBuddy.Player.Instance.IsInAutoAttackRange(t)))
+                        ObjectManager.Get<Obj_HQ>().Where(t => t.IsValidTarget() && this.InAutoAttackRange(t)))
                     {
                         return nexus;
                     }
                 }
 
                 /*Champions*/
-                if (mode != OrbwalkingMode.LastHit)
+                if (mode != OrbwalkingMode.LastHit && mode != OrbwalkingMode.Flee)
                 {
                     if (mode != OrbwalkingMode.LaneClear || !this.ShouldWait())
                     {
                         var target = TargetSelector.GetTarget(-1, TargetSelector.DamageType.Physical);
-                        if (target.IsValidTarget() && EloBuddy.Player.Instance.IsInAutoAttackRange(target))
+                        if (target.IsValidTarget() && this.InAutoAttackRange(target))
                         {
                             return target;
                         }
@@ -1341,7 +1329,7 @@ namespace LeagueSharp.Common
                         ObjectManager.Get<Obj_AI_Minion>()
                             .Where(
                                 mob =>
-                                mob.IsValidTarget() && mob.Team == GameObjectTeam.Neutral && EloBuddy.Player.Instance.IsInAutoAttackRange(mob)
+                                mob.IsValidTarget() && mob.Team == GameObjectTeam.Neutral && this.InAutoAttackRange(mob)
                                 && mob.CharData.BaseSkinName != "gangplankbarrel" && mob.Name != "WardCorpse");
 
                     result = _config.Item("Smallminionsprio").GetValue<bool>()
@@ -1358,12 +1346,11 @@ namespace LeagueSharp.Common
                 if (mode == OrbwalkingMode.LaneClear || mode == OrbwalkingMode.Mixed || mode == OrbwalkingMode.LastHit
                     || mode == OrbwalkingMode.Freeze)
                 {
-                    var closestTower =
-                        ObjectManager.Get<Obj_AI_Turret>().MinOrDefault(t => t.IsAlly &&
-                        (t.Name.Contains("L_03_A") || t.Name.Contains("L_02_A") || t.Name.Contains("C_04_A") || t.Name.Contains("C_05_A") || t.Name.Contains("R_02_A") || t.Name.Contains("R_03_A"))
-                         && !t.IsDead ? Player.Distance(t, true) : float.MaxValue);
+                    var ClosestTower =
+                        ObjectManager.Get<Obj_AI_Turret>()
+                            .MinOrDefault(t => t.IsAlly && !t.IsDead ? this.Player.Distance(t, true) : float.MaxValue);
 
-                    if (closestTower != null && this.Player.Distance(closestTower, true) < 1500 * 1500)
+                    if (ClosestTower != null && this.Player.Distance(ClosestTower, true) < 1500 * 1500)
                     {
                         Obj_AI_Minion farmUnderTurretMinion = null;
                         Obj_AI_Minion noneKillableMinion = null;
@@ -1372,7 +1359,7 @@ namespace LeagueSharp.Common
                             MinionManager.GetMinions(this.Player.Position, this.Player.AttackRange + 200)
                                 .Where(
                                     minion =>
-                                    EloBuddy.Player.Instance.IsInAutoAttackRange(minion) && closestTower.Distance(minion, true) < 900 * 900)
+                                    this.InAutoAttackRange(minion) && ClosestTower.Distance(minion, true) < 900 * 900)
                                 .OrderByDescending(minion => minion.CharData.BaseSkinName.Contains("Siege"))
                                 .ThenBy(minion => minion.CharData.BaseSkinName.Contains("Super"))
                                 .ThenByDescending(minion => minion.MaxHealth)
@@ -1393,18 +1380,18 @@ namespace LeagueSharp.Common
                                 var turretStarTick = HealthPrediction.TurretAggroStartTick(
                                     turretMinion as Obj_AI_Minion);
                                 // from healthprediction (don't blame me :S)
-                                var turretLandTick = turretStarTick + (int)(closestTower.AttackCastDelay * 1000)
+                                var turretLandTick = turretStarTick + (int)(ClosestTower.AttackCastDelay * 1000)
                                                      + 1000
                                                      * Math.Max(
                                                          0,
                                                          (int)
-                                                         (turretMinion.Distance(closestTower)
-                                                          - closestTower.BoundingRadius))
-                                                     / (int)(closestTower.BasicAttack.MissileSpeed + 70);
+                                                         (turretMinion.Distance(ClosestTower)
+                                                          - ClosestTower.BoundingRadius))
+                                                     / (int)(ClosestTower.BasicAttack.MissileSpeed + 70);
                                 // calculate the HP before try to balance it
                                 for (float i = turretLandTick + 50;
-                                     i < turretLandTick + 10 * closestTower.AttackDelay * 1000 + 50;
-                                     i = i + closestTower.AttackDelay * 1000)
+                                     i < turretLandTick + 10 * ClosestTower.AttackDelay * 1000 + 50;
+                                     i = i + ClosestTower.AttackDelay * 1000)
                                 {
                                     var time = (int)i - Utils.GameTimeTickCount + Game.Ping / 2;
                                     var predHP =
@@ -1427,7 +1414,7 @@ namespace LeagueSharp.Common
                                     var hits = hpLeftBeforeDie / damage;
                                     var timeBeforeDie = turretLandTick
                                                         + (turretAttackCount + 1)
-                                                        * (int)(closestTower.AttackDelay * 1000)
+                                                        * (int)(ClosestTower.AttackDelay * 1000)
                                                         - Utils.GameTimeTickCount;
                                     var timeUntilAttackReady = LastAATick + (int)(this.Player.AttackDelay * 1000)
                                                                > Utils.GameTimeTickCount + Game.Ping / 2 + 25
@@ -1477,7 +1464,7 @@ namespace LeagueSharp.Common
                                         && !HealthPrediction.HasMinionAggro(x as Obj_AI_Minion)))
                                 {
                                     var playerDamage = (int)this.Player.GetAutoAttackDamage(minion);
-                                    var turretDamage = (int)closestTower.GetAutoAttackDamage(minion, true);
+                                    var turretDamage = (int)ClosestTower.GetAutoAttackDamage(minion, true);
                                     var leftHP = (int)minion.Health % turretDamage;
                                     if (leftHP > playerDamage)
                                     {
@@ -1493,7 +1480,7 @@ namespace LeagueSharp.Common
                                 if (lastminion != null && minions.Count() >= 2)
                                 {
                                     if (1f / this.Player.AttackDelay >= 1f
-                                        && (int)(turretAttackCount * closestTower.AttackDelay / this.Player.AttackDelay)
+                                        && (int)(turretAttackCount * ClosestTower.AttackDelay / this.Player.AttackDelay)
                                         * this.Player.GetAutoAttackDamage(lastminion) > lastminion.Health)
                                     {
                                         return lastminion;
@@ -1516,10 +1503,10 @@ namespace LeagueSharp.Common
                                         x => x is Obj_AI_Minion && !HealthPrediction.HasMinionAggro(x as Obj_AI_Minion))
                                     )
                                 {
-                                    if (closestTower != null)
+                                    if (ClosestTower != null)
                                     {
                                         var playerDamage = (int)this.Player.GetAutoAttackDamage(minion);
-                                        var turretDamage = (int)closestTower.GetAutoAttackDamage(minion, true);
+                                        var turretDamage = (int)ClosestTower.GetAutoAttackDamage(minion, true);
                                         var leftHP = (int)minion.Health % turretDamage;
                                         if (leftHP > playerDamage)
                                         {
@@ -1549,7 +1536,7 @@ namespace LeagueSharp.Common
                 {
                     if (!this.ShouldWait())
                     {
-                        if (this._prevMinion.IsValidTarget() && EloBuddy.Player.Instance.IsInAutoAttackRange(this._prevMinion))
+                        if (this._prevMinion.IsValidTarget() && this.InAutoAttackRange(this._prevMinion))
                         {
                             var predHealth = HealthPrediction.LaneClearHealthPrediction(
                                 this._prevMinion,
@@ -1566,7 +1553,7 @@ namespace LeagueSharp.Common
                                       ObjectManager.Get<Obj_AI_Minion>()
                                       .Where(
                                           minion =>
-                                          minion.IsValidTarget() && EloBuddy.Player.Instance.IsInAutoAttackRange(minion)
+                                          minion.IsValidTarget() && this.InAutoAttackRange(minion)
                                           && this.ShouldAttackMinion(minion))
                                   let predHealth =
                                       HealthPrediction.LaneClearHealthPrediction(
@@ -1653,7 +1640,7 @@ namespace LeagueSharp.Common
                         .Any(
                             minion =>
                             minion.IsValidTarget() && minion.Team != GameObjectTeam.Neutral
-                            && EloBuddy.Player.Instance.IsInAutoAttackRange(minion) && MinionManager.IsMinion(minion, false)
+                            && this.InAutoAttackRange(minion) && MinionManager.IsMinion(minion, false)
                             && HealthPrediction.LaneClearHealthPrediction(
                                 minion,
                                 (int)(this.Player.AttackDelay * 1000 * LaneClearWaitTimeMod),
@@ -1738,9 +1725,7 @@ namespace LeagueSharp.Common
                     }
 
                     var target = this.GetTarget();
-                    Orbwalk(
-                        target,
-                        this._orbwalkingPoint.To2D().IsValid() ? this._orbwalkingPoint : Game.CursorPos,
+                    Orbwalk(target, this._orbwalkingPoint.To2D().IsValid() ? this._orbwalkingPoint : Game.CursorPos,
                         _config.Item("ExtraWindup").GetValue<Slider>().Value,
                         Math.Max(_config.Item("HoldPosRadius").GetValue<Slider>().Value, 30));
                 }
@@ -1748,18 +1733,6 @@ namespace LeagueSharp.Common
                 {
                     Console.WriteLine(e);
                 }
-            }
-
-            public void Enable()
-            {
-                Game.OnUpdate += GameOnOnGameUpdate;
-                Drawing.OnDraw += DrawingOnOnDraw;
-            }
-
-            public void Disable()
-            {
-                Game.OnUpdate -= GameOnOnGameUpdate;
-                Drawing.OnDraw -= DrawingOnOnDraw;
             }
 
             /// <summary>
@@ -1792,7 +1765,7 @@ namespace LeagueSharp.Common
                             minion =>
                             (noneKillableMinion != null ? noneKillableMinion.NetworkId != minion.NetworkId : true)
                             && minion.IsValidTarget() && minion.Team != GameObjectTeam.Neutral
-                            && EloBuddy.Player.Instance.IsInAutoAttackRange(minion) && MinionManager.IsMinion(minion, false)
+                            && this.InAutoAttackRange(minion) && MinionManager.IsMinion(minion, false)
                             && HealthPrediction.LaneClearHealthPrediction(
                                 minion,
                                 (int)
