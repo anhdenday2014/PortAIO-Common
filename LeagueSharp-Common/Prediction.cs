@@ -231,7 +231,7 @@ namespace LeagueSharp.Common
         {
             get
             {
-                return this.UseBoundingRadius ? this.Radius + this.Unit.BoundingRadius : this.Radius;
+                return this.UseBoundingRadius ? this.Radius : this.Radius;
             }
         }
 

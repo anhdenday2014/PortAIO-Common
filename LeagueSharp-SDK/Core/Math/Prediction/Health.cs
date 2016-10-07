@@ -166,13 +166,13 @@ namespace LeagueSharp.SDK
             {
                 var attackDamage = 0f;
 
-                if (attack.Source.IsValidTarget(float.MaxValue, false) && attack.Target.IsValidTarget())
+                if (attack.Source.IsValidTarget(float.MaxValue, false) && attack.Target.IsValidTarget() && attack.Target != null)
                 {
                     var landTime = attack.StartTick + attack.Delay
                                    + 1000
                                    * (attack.Source.IsMelee
                                           ? 0
-                                          : Math.Max(unit.Distance(attack.Source) - attack.Source.BoundingRadius, 0)
+                                          : Math.Max(unit.Distance(attack.Source) /*- attack.Source.BoundingRadius*/, 0)
                                             / attack.ProjectileSpeed) + delay;
 
                     if (landTime < Variables.TickCount + time)
@@ -208,7 +208,7 @@ namespace LeagueSharp.SDK
                 var n = 0;
 
                 if (Variables.TickCount - 100 <= attack.StartTick + attack.AnimationTime
-                    && attack.Source.IsValidTarget(float.MaxValue, false) && attack.Target.IsValidTarget())
+                    && attack.Source.IsValidTarget(float.MaxValue, false) && attack.Target.IsValidTarget() && attack.Target != null)
                 {
                     var fromT = attack.StartTick;
                     var toT = Variables.TickCount + time;
@@ -219,7 +219,7 @@ namespace LeagueSharp.SDK
                             && fromT + attack.Delay / 1000
                             + (attack.Source.IsMelee
                                    ? 0
-                                   : Math.Max(unit.Distance(attack.Source) - attack.Source.BoundingRadius, 0)
+                                   : Math.Max(unit.Distance(attack.Source) /*- attack.Source.BoundingRadius*/, 0)
                                      / attack.ProjectileSpeed) < toT)
                         {
                             n++;

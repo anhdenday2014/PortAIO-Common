@@ -343,7 +343,7 @@ namespace LeagueSharp.SDK
                             GetHits(
                                 input.From.ToVector2(),
                                 candidate,
-                                input.Radius + (input.Unit.BoundingRadius / 3) - 10,
+                                input.Radius + /*(input.Unit.BoundingRadius / 3) -*/ 10,
                                 new List<Vector2> { posibleTargets[0].Position }).Count() == 1)
                         {
                             var hits = GetHits(input.From.ToVector2(), candidate, input.Radius, positionsList).ToList();

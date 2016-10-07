@@ -275,21 +275,6 @@ namespace LeagueSharp.SDK
                         }
 
                         var p = pos + input.RealRadius * direction;
-
-                        /*if (input.Type == SkillshotType.SkillshotLine)
-                        {
-                            var alpha = (input.From.ToVector2() - p).AngleBetween(a - b);
-
-                            if (alpha > 30 && alpha < 180 - 30)
-                            {
-                                var beta = (float)Math.Asin(input.RealRadius / p.Distance(input.From));
-                                var cp1 = input.From.ToVector2() + (p - input.From.ToVector2()).Rotated(beta);
-                                var cp2 = input.From.ToVector2() + (p - input.From.ToVector2()).Rotated(-beta);
-
-                                pos = cp1.DistanceSquared(pos) < cp2.DistanceSquared(pos) ? cp1 : cp2;
-                            }
-                        }*/
-
                         return new PredictionOutput
                                    {
                                        Input = input, CastPosition = pos.ToVector3(), UnitPosition = p.ToVector3(),
@@ -326,7 +311,6 @@ namespace LeagueSharp.SDK
 
             if (ft)
             {
-                // Increase the delay due to the latency and server tick:
                 input.Delay += Game.Ping / 2000f + 0.05f;
 
                 if (input.AoE)
@@ -428,7 +412,6 @@ namespace LeagueSharp.SDK
 
             if (input.Unit.DistanceSquared(input.From) < 200 * 200)
             {
-                // input.Delay /= 2;
                 speed /= 1.5f;
             }
 
@@ -792,7 +775,7 @@ namespace LeagueSharp.SDK
         /// <summary>
         ///     Gets the the calculated real radius of the unit.
         /// </summary>
-        internal float RealRadius => this.UseBoundingRadius ? this.Radius + this.Unit.BoundingRadius : this.Radius;
+        internal float RealRadius => this.UseBoundingRadius ? this.Radius : this.Radius;
 
         #endregion
 
