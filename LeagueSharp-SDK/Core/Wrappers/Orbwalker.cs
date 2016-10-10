@@ -224,7 +224,7 @@
                 else
                 {
                     this.isFinishAttack = false;
-                    this.LastAutoAttackTick = Variables.TickCount;
+                    this.LastAutoAttackTick = Variables.TickCount - Game.Ping / 2;
                     this.lastMovementOrderTick += Math.Max(0, this.mainMenu["advanced"]["delayMovement"]);
                 }
             }
@@ -237,7 +237,7 @@
             =>
                 GameObjects.Player.CanMove && !GameObjects.Player.IsCastingInterruptableSpell(true)
                 && Variables.TickCount - this.lastMovementOrderTick >= this.mainMenu["advanced"]["delayMovement"]
-                && this.lastBlockOrderTick - Variables.TickCount <= 0 && this.CanCancelAttack;
+                && this.lastBlockOrderTick - Variables.TickCount + Game.Ping / 2 <= 0 && this.CanCancelAttack;
 
         private void OnDoCast2(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
@@ -436,7 +436,7 @@
                 }
 
                 return finishAtk
-                       || Variables.TickCount + Game.Ping / 2
+                       || Variables.TickCount + Game.Ping / 2 + 25
                        >= this.LastAutoAttackTick + GameObjects.Player.AttackCastDelay * 1000 + extraWindUp;
             }
         }

@@ -150,8 +150,8 @@ namespace LeagueSharp.SDK.Utils
                 return 0;
             }
 
-            var result = sender.AttackRange + sender.BoundingRadius
-                         + (target != null && target.IsValid ? target.BoundingRadius : 0);
+            var result = sender.AttackRange
+                         + (target != null && target.IsValid ? 0 : 0);
             var heroSource = sender as AIHeroClient;
 
             if (heroSource != null && heroSource.ChampionName == "Caitlyn")
