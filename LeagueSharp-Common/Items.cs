@@ -1,10 +1,11 @@
-﻿namespace LeagueSharp.Common
+namespace LeagueSharp.Common
 {
     using System.Collections.Generic;
     using System.Linq;
 
     using SharpDX;
     using EloBuddy;
+    using EloBuddy.SDK;
 
     /// <summary>
     ///     Provides methods regarding items.
@@ -20,13 +21,10 @@
         /// <returns></returns>
         public static bool CanUseItem(string name)
         {
-            foreach (var slot in ObjectManager.Player.InventoryItems.Where(slot => slot.Name == name))
-            {
-                return ObjectManager.Player.Spellbook.CanUseSpell((SpellSlot)(slot.Slot + (int)SpellSlot.Item1))
-                       == SpellState.Ready;
-            }
-
-            return false;
+            return (from slot in Player.Instance.InventoryItems
+                    where slot.Name == name
+                    select Player.Instance.Spellbook.Spells.FirstOrDefault((SpellDataInst spell) => spell.Slot == slot.Slot + SpellSlot.Item1) into inst
+                    select inst != null && inst.State == SpellState.Ready).FirstOrDefault<bool>();
         }
 
         /// <summary>
@@ -36,13 +34,10 @@
         /// <returns></returns>
         public static bool CanUseItem(int id)
         {
-            foreach (var slot in ObjectManager.Player.InventoryItems.Where(slot => slot.Id == (ItemId)id))
-            {
-                return ObjectManager.Player.Spellbook.CanUseSpell((SpellSlot)(slot.Slot + (int)SpellSlot.Item1))
-                       == SpellState.Ready;
-            }
-
-            return false;
+            return (from slot in Player.Instance.InventoryItems
+                    where slot.Id == (ItemId)id
+                    select Player.Instance.Spellbook.Spells.FirstOrDefault((SpellDataInst spell) => spell.Slot == slot.Slot + SpellSlot.Item1) into inst
+                    select inst != null && inst.State == SpellState.Ready).FirstOrDefault<bool>();
         }
 
         /// <summary>
@@ -57,7 +52,7 @@
                               };
             return (from wardId in wardIds
                     where CanUseItem(wardId)
-                    select ObjectManager.Player.InventoryItems.FirstOrDefault(slot => slot.Id == (ItemId)wardId))
+                    select Player.Instance.InventoryItems.FirstOrDefault(slot => slot.Id == (ItemId)wardId))
                 .FirstOrDefault();
         }
 
@@ -69,7 +64,7 @@
         /// <returns></returns>
         public static bool HasItem(string name, AIHeroClient hero = null)
         {
-            return (hero ?? ObjectManager.Player).InventoryItems.Any(slot => slot.Name == name);
+            return (hero ?? Player.Instance).InventoryItems.Any(slot => slot.Name == name);
         }
 
         /// <summary>
@@ -80,7 +75,7 @@
         /// <returns></returns>
         public static bool HasItem(int id, AIHeroClient hero = null)
         {
-            return (hero ?? ObjectManager.Player).InventoryItems.Any(slot => slot.Id == (ItemId)id);
+            return (hero ?? Player.Instance).InventoryItems.Any(slot => slot.Id == (ItemId)id);
         }
 
         /// <summary>
@@ -91,15 +86,15 @@
         /// <returns></returns>
         public static bool UseItem(string name, Obj_AI_Base target = null)
         {
-            foreach (var slot in ObjectManager.Player.InventoryItems.Where(slot => slot.Name == name))
+            foreach (var slot in Player.Instance.InventoryItems.Where(slot => slot.Name == name))
             {
                 if (target != null)
                 {
-                    return ObjectManager.Player.Spellbook.CastSpell(slot.SpellSlot, target);
+                    return Player.Instance.Spellbook.CastSpell(slot.SpellSlot, target);
                 }
                 else
                 {
-                    return ObjectManager.Player.Spellbook.CastSpell(slot.SpellSlot);
+                    return Player.CastSpell(slot.SpellSlot);
                 }
             }
 
@@ -114,15 +109,15 @@
         /// <returns></returns>
         public static bool UseItem(int id, Obj_AI_Base target = null)
         {
-            foreach (var slot in ObjectManager.Player.InventoryItems.Where(slot => slot.Id == (ItemId)id))
+            foreach (var slot in Player.Instance.InventoryItems.Where(slot => slot.Id == (ItemId)id))
             {
                 if (target != null)
                 {
-                    return ObjectManager.Player.Spellbook.CastSpell(slot.SpellSlot, target);
+                    return Player.CastSpell(slot.SpellSlot, target);
                 }
                 else
                 {
-                    return ObjectManager.Player.Spellbook.CastSpell(slot.SpellSlot);
+                    return Player.CastSpell(slot.SpellSlot);
                 }
             }
 
@@ -150,9 +145,9 @@
         {
             if (position != Vector3.Zero)
             {
-                foreach (var slot in ObjectManager.Player.InventoryItems.Where(slot => slot.Id == (ItemId)id))
+                foreach (var slot in Player.Instance.InventoryItems.Where(slot => slot.Id == (ItemId)id))
                 {
-                    return ObjectManager.Player.Spellbook.CastSpell(slot.SpellSlot, position);
+                    return Player.CastSpell(slot.SpellSlot, position);
                 }
             }
 
@@ -249,7 +244,7 @@
                 get
                 {
                     return
-                        ObjectManager.Player.InventoryItems.Where(slot => slot.Id == (ItemId)this.Id)
+                        Player.Instance.InventoryItems.Where(slot => slot.Id == (ItemId)this.Id)
                             .Select(slot => slot.SpellSlot)
                             .ToList();
                 }
@@ -264,7 +259,8 @@
             /// </summary>
             public void Buy()
             {
-                Shop.BuyItem((ItemId)Id);
+                Shop.BuyItem((ItemId)this.Id);
+                //ObjectManager.Player.BuyItem((ItemId)this.Id);
             }
 
             /// <summary>
@@ -333,7 +329,7 @@
             /// <returns></returns>
             public bool IsInRange(Vector3 target)
             {
-                return ObjectManager.Player.ServerPosition.Distance(target, true) < this.RangeSqr;
+                return Player.Instance.ServerPosition.Distance(target, true) < this.RangeSqr;
             }
 
             /// <summary>
@@ -352,7 +348,7 @@
             /// <returns></returns>
             public bool IsReady()
             {
-                return CanUseItem(this.Id) && HasItem(this.Id);
+                return CanUseItem(this.Id);
             }
 
             #endregion
