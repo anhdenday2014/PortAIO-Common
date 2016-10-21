@@ -143,27 +143,21 @@
         /// </param>
         public MenuItem(string name, string displayName, bool championUnique = false)
         {
-            if (PortAIO.Common.Init.isLoaded == "LOADED")
+            if (championUnique)
             {
-                if (championUnique)
-                {
-                    name = ObjectManager.Player.ChampionName + name;
-                }
+                name = ObjectManager.Player.ChampionName + name;
+            }
 
-                this.Name = name;
-                this.DisplayName = MenuGlobals.Function001(displayName);
-                this.FontStyle = FontStyle.Regular;
-                this.FontColor = Color.White;
-                this.ShowItem = true;
-                this.Tag = 0;
-                this.configName = Assembly.GetCallingAssembly().GetName().Name
-                                  + Assembly.GetCallingAssembly().GetType().GUID;
-            }
-            else
-            {
-                Chat.Print("Unable to load menu. (Reason : Common is not initialized)");
-            }
+            this.Name = name;
+            this.DisplayName = MenuGlobals.Function001(displayName);
+            this.FontStyle = FontStyle.Regular;
+            this.FontColor = Color.White;
+            this.ShowItem = true;
+            this.Tag = 0;
+            this.configName = Assembly.GetCallingAssembly().GetName().Name
+                              + Assembly.GetCallingAssembly().GetType().GUID;
         }
+
 
         #endregion
 
@@ -1000,7 +994,7 @@
                     if (cursorPos.X > this.Position.X + this.Width - this.Height)
                     {
                         var c = this.GetValue<System.Drawing.Color>();
-                        ColorPicker.Load(delegate(System.Drawing.Color args) { this.SetValue(args); }, c);
+                        ColorPicker.Load(delegate (System.Drawing.Color args) { this.SetValue(args); }, c);
                     }
 
                     break;
@@ -1035,7 +1029,7 @@
                     {
                         var c = this.GetValue<Circle>();
                         ColorPicker.Load(
-                            delegate(System.Drawing.Color args)
+                            delegate (System.Drawing.Color args)
                                 {
                                     var val = this.GetValue<Circle>();
                                     val.Color = args;

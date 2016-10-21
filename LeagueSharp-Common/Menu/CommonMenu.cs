@@ -23,14 +23,7 @@ namespace LeagueSharp.Common
         /// </summary>
         static CommonMenu()
         {
-            if (PortAIO.Common.Init.isLoaded == "LOADED")
-            {
-                Initialize();
-            }
-            else
-            {
-                Chat.Print("Unable to load menu. (Reason : Common is not initialized)");
-            }
+            Initialize();
         }
 
         public static void Initialize()

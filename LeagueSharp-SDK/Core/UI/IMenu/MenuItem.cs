@@ -193,25 +193,18 @@ namespace LeagueSharp.SDK.UI
         /// </summary>
         public override void Load()
         {
-            if (PortAIO.Common.Init.isLoaded == "LOADED")
+            if (!this.SettingsLoaded && File.Exists(this.Path) && this.GetType().IsSerializable)
             {
-                if (!this.SettingsLoaded && File.Exists(this.Path) && this.GetType().IsSerializable)
+                this.SettingsLoaded = true;
+                try
                 {
-                    this.SettingsLoaded = true;
-                    try
-                    {
-                        var newValue = Deserialize<MenuItem>(File.ReadAllBytes(this.Path));
-                        this.Extract(newValue);
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.ToString());
-                    }
+                    var newValue = Deserialize<MenuItem>(File.ReadAllBytes(this.Path));
+                    this.Extract(newValue);
                 }
-            }
-            else
-            {
-                Chat.Print("PortAIO failed to load. Error : Wrong Key");
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
             }
         }
 
