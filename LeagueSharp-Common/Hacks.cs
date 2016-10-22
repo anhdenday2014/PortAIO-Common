@@ -68,7 +68,7 @@ namespace LeagueSharp.Common
 
             EloBuddy.Hacks.AntiAFK = MenuAntiAfk.GetValue<bool>();
             EloBuddy.Hacks.DisableDrawings = MenuDisableDrawings.GetValue<bool>();
-            EloBuddy.Hacks.IngameChat = MenuDisableSay.GetValue<bool>();
+            EloBuddy.Hacks.IngameChat = !MenuDisableSay.GetValue<bool>();
             EloBuddy.Hacks.TowerRanges = MenuTowerRange.GetValue<bool>();
 
             CommonMenu.Instance.AddSubMenu(menu);
