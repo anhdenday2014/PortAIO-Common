@@ -71,22 +71,23 @@
             /// <summary>
             ///     Initializes this instance.
             /// </summary>
-            public static void Initialize()
+             internal static void Initialize()
             {
                 foreach (var hq in ObjectManager.Get<Obj_HQ>().Where(hq => hq.IsValid))
                 {
                     NexusList.Add(hq);
                 }
-
-                if (EloBuddy.Game.Mode == GameMode.Running)
+                EloBuddy.Game.OnUpdate += new GameUpdate(OnTick);
+            }
+            internal static void OnTick(EventArgs args)
+            {         
+                if (EloBuddy.Game.Mode == GameMode.Running || EloBuddy.Game.Mode == GameMode.Paused || EloBuddy.Game.Mode == GameMode.Finished)
                 {
-                    //Otherwise the .ctor didn't return yet and no callback will occur
                     Utility.DelayAction.Add(500, () => { Game_OnGameStart(new EventArgs()); });
                 }
                 else
                 {
                     EloBuddy.Game.OnLoad += Game_OnGameStart;
-                //    EloBuddy.SDK.Events.Loading.OnLoadingComplete += Game_OnGameStart;
                 }
             }
 
