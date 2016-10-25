@@ -1,4 +1,4 @@
-﻿namespace LeagueSharp.Common
+namespace LeagueSharp.Common
 {
     using EloBuddy;
 //    using EloBuddy.SDK.Events;
@@ -55,6 +55,7 @@
             /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
             public delegate void OnGameEnded(EventArgs args);
 
+            public delegate void OnGameLoaded(EventArgs args);
             #endregion
 
             #region Public Events
@@ -64,6 +65,7 @@
             /// </summary>
             public static event OnGameEnded OnGameEnd;
 
+            public static event OnGameLoaded OnGameLoad;
             #endregion
 
             #region Public Methods and Operators
@@ -71,7 +73,7 @@
             /// <summary>
             ///     Initializes this instance.
             /// </summary>
-             internal static void Initialize()
+            internal static void Initialize()
             {
                 foreach (var hq in ObjectManager.Get<Obj_HQ>().Where(hq => hq.IsValid))
                 {
