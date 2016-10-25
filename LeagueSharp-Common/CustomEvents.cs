@@ -99,9 +99,26 @@
             ///     Fired when the game is started.
             /// </summary>
             /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
-            private static void Game_OnGameStart(EventArgs args)
+             private static void Game_OnGameStart(EventArgs args)
             {
-                EloBuddy.Game.OnUpdate += Game_OnGameUpdate;
+                EloBuddy.Game.OnUpdate += new GameUpdate(Game_OnGameUpdate);
+
+                if (OnGameLoad != null)
+                {
+                    foreach (
+                        var subscriber in OnGameLoad.GetInvocationList().Where(s => !NotifiedSubscribers.Contains(s)))
+                    {
+                        NotifiedSubscribers.Add(subscriber);
+                        try
+                        {
+                            subscriber.DynamicInvoke(new EventArgs());
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex);
+                        }
+                    }
+                }
             }
 
             /// <summary>
@@ -110,6 +127,22 @@
             /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
             private static void Game_OnGameUpdate(EventArgs args)
             {
+                if (OnGameLoad != null)
+                {
+                    foreach (
+                        var subscriber in OnGameLoad.GetInvocationList().Where(s => !NotifiedSubscribers.Contains(s)))
+                    {
+                        NotifiedSubscribers.Add(subscriber);
+                        try
+                        {
+                            subscriber.DynamicInvoke(new EventArgs());
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine(ex);
+                        }
+                    }
+                }
 
                 if (NexusList.Count == 0 || _endGameCalled)
                 {
