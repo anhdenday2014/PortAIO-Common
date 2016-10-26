@@ -74,15 +74,15 @@ namespace LeagueSharp.Common
             ///     Initializes this instance.
             /// </summary>
             internal static void Initialize()
-            {
+            {              
+                EloBuddy.SDK.Events.Loading.OnLoadingComplete += OnTick;
+            }
+            internal static void OnTick(EventArgs args)
+            {         
                 foreach (var hq in ObjectManager.Get<Obj_HQ>().Where(hq => hq.IsValid))
                 {
                     NexusList.Add(hq);
                 }
-                EloBuddy.Game.OnUpdate += new GameUpdate(OnTick);
-            }
-            internal static void OnTick(EventArgs args)
-            {         
                 if (EloBuddy.Game.Mode == GameMode.Running || EloBuddy.Game.Mode == GameMode.Paused || EloBuddy.Game.Mode == GameMode.Finished)
                 {
                     Utility.DelayAction.Add(500, () => { Game_OnGameStart(new EventArgs()); });
