@@ -290,6 +290,10 @@ namespace LeagueSharp.Common
 
             Burst,
 
+            QuickHarass,
+
+            WallJump,
+
             /// <summary>
             ///     The orbwalker does nothing.
             /// </summary>
@@ -979,9 +983,9 @@ namespace LeagueSharp.Common
 
                 /*Load the menu*/
                 _config.AddItem(
-                    new MenuItem("LastHit", "Last hit").SetShared().SetValue(new KeyBind('A', KeyBindType.Press)));
+                    new MenuItem("LastHit", "Last hit").SetShared().SetValue(new KeyBind('X', KeyBindType.Press)));
 
-                _config.AddItem(new MenuItem("Farm", "Mixed").SetShared().SetValue(new KeyBind('X', KeyBindType.Press)));
+                _config.AddItem(new MenuItem("Farm", "Mixed").SetShared().SetValue(new KeyBind('C', KeyBindType.Press)));
 
                 _config.AddItem(
                     new MenuItem("Freeze", "Freeze").SetShared().SetValue(new KeyBind('N', KeyBindType.Press)));
@@ -990,7 +994,16 @@ namespace LeagueSharp.Common
                     new MenuItem("LaneClear", "LaneClear").SetShared().SetValue(new KeyBind('V', KeyBindType.Press)));
 
                 _config.AddItem(
-                 new MenuItem("Flee", "Flee").SetShared().SetValue(new KeyBind('C', KeyBindType.Press)));
+                 new MenuItem("Flee", "Flee").SetShared().SetValue(new KeyBind('U', KeyBindType.Press)));
+
+                _config.AddItem(
+                 new MenuItem("WallJump", "WallJump").SetShared().SetValue(new KeyBind('K', KeyBindType.Press))).SetTooltip("Made for Flowers' Riven");
+
+                _config.AddItem(
+                 new MenuItem("QuickHarass", "Quick/Fast Harass").SetShared().SetValue(new KeyBind('L', KeyBindType.Press))).SetTooltip("Made for Flowers & Nechrito Riven");
+
+                _config.AddItem(
+                 new MenuItem("Flee", "Flee").SetShared().SetValue(new KeyBind('M', KeyBindType.Press)));
 
                 _config.AddItem(
                    new MenuItem("Burst", "Burst").SetShared().SetValue(new KeyBind('T', KeyBindType.Press)));
@@ -1085,6 +1098,16 @@ namespace LeagueSharp.Common
                     if (_config.Item("LastHit").GetValue<KeyBind>().Active)
                     {
                         return OrbwalkingMode.LastHit;
+                    }
+
+                    if (_config.Item("WallJump").GetValue<KeyBind>().Active)
+                    {
+                        return OrbwalkingMode.WallJump;
+                    }
+
+                    if (_config.Item("QuickHarass").GetValue<KeyBind>().Active)
+                    {
+                        return OrbwalkingMode.QuickHarass;
                     }
 
                     if (_config.Item(this.CustomModeName) != null
