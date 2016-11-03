@@ -146,6 +146,8 @@ namespace LeagueSharp.Common
         /// </summary>
         private static bool _missileLaunched;
 
+        public static List<Obj_AI_Minion> AzirSoliders = new List<Obj_AI_Minion>();
+
         #endregion
 
         #region Constructors and Destructors
@@ -179,6 +181,33 @@ namespace LeagueSharp.Common
                         }
                     };
             }
+
+            if (_championName == "Azir")
+            {
+                AzirSoliders = ObjectManager.Get<Obj_AI_Minion>().Where(x => x.IsAlly && x.Name == "AzirSoldier" && x.HasBuff("azirwspawnsound")).ToList();
+
+                GameObject.OnCreate += OnCreate;
+                GameObject.OnDelete += OnDelete;
+            }
+        }
+
+        private static void OnCreate(GameObject sender, EventArgs args)
+        {
+            if (!(sender is Obj_AI_Minion))
+                return;
+
+            if (sender.Name == "AzirSoldier" && sender.IsAlly)
+            {
+                var soldier = (Obj_AI_Minion)sender;
+
+                if (soldier.BaseSkinName == "AzirSoldier")
+                    AzirSoliders.Add(soldier);
+            }
+        }
+
+        private static void OnDelete(GameObject sender, EventArgs args)
+        {
+            AzirSoliders.RemoveAll(s => s.NetworkId == sender.NetworkId);
         }
 
         #endregion
@@ -1607,6 +1636,21 @@ namespace LeagueSharp.Common
             public virtual bool InAutoAttackRange(AttackableUnit target)
             {
                 return Orbwalking.InAutoAttackRange(target);
+            }
+
+            public virtual double GetAzirAaSandwarriorDamage(AttackableUnit target)
+            {
+                var unit = (Obj_AI_Base)target;
+                var dmg = ObjectManager.Player.GetSpellDamage(unit, SpellSlot.W);
+
+                var count = AzirSoliders.Count(obj => obj.Position.Distance(unit.Position) < 350);
+
+                return dmg * count;
+            }
+
+            public virtual bool InSoldierAttackRange(AttackableUnit target)
+            {
+                return AzirSoliders.Count(obj => obj.Position.Distance(target.Position) < 350 && ObjectManager.Player.Distance(target) < 1000 && !obj.IsMoving) > 0;
             }
 
             /// <summary>
