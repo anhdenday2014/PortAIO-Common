@@ -861,10 +861,13 @@ namespace LeagueSharp.SDK
             return SDK.Collision.GetCollision(
                 to.Select(h => h.ToVector3()).ToList(),
                 new PredictionInput
-                    {
-                        From = fromVector2.ToVector3(), Type = this.Type, Radius = this.Width,
-                        Delay = delayOverride > 0 ? delayOverride : this.Delay, Speed = this.Speed
-                    });
+                {
+                    From = fromVector2.ToVector3(),
+                    Type = this.Type,
+                    Radius = this.Width,
+                    Delay = delayOverride > 0 ? delayOverride : this.Delay,
+                    Speed = this.Speed
+                });
         }
 
         /// <summary>
@@ -990,15 +993,35 @@ namespace LeagueSharp.SDK
             float overrideRange = -1,
             CollisionableObjects collisionable = CollisionableObjects.Minions | CollisionableObjects.YasuoWall)
         {
-            return
-                Movement.GetPrediction(
+            var pred =
+               Movement.GetPrediction(
                     new PredictionInput
-                        {
-                            Unit = unit, Delay = this.Delay, Radius = this.Width, Speed = this.Speed, From = this.From,
-                            Range = (overrideRange > 0) ? overrideRange : this.Range, Collision = this.Collision,
-                            Type = this.Type, RangeCheckFrom = this.RangeCheckFrom, AoE = aoe,
-                            CollisionObjects = collisionable
-                        });
+                    {
+                        Unit = unit,
+                        Delay = this.Delay,
+                        Radius = this.Width,
+                        Speed = this.Speed,
+                        From = this.From,
+                        Range = (overrideRange > 0) ? overrideRange : this.Range,
+                        Collision = this.Collision,
+                        Type = this.Type,
+                        RangeCheckFrom = this.RangeCheckFrom,
+                        AoE = aoe,
+                        CollisionObjects = collisionable
+                    });
+
+            if (skillshot != null && IsSkillshot)
+            {
+                var a = skillshot.GetPrediction(unit);
+                return new PredictionOutput() { CastPosition = a.CastPosition, Hitchance = pred.Hitchance, CollisionObjects = pred.CollisionObjects, AoeTargetsHit = pred.AoeTargetsHit, Input = pred.Input, UnitPosition = a.UnitPosition, AoeHitCount = pred.AoeHitCount };
+            }
+            else if (IsChargedSpell && charge != null)
+            {
+                var b = charge.GetPrediction(unit);
+                return new PredictionOutput() { CastPosition = b.CastPosition, Hitchance = pred.Hitchance, CollisionObjects = pred.CollisionObjects, AoeTargetsHit = pred.AoeTargetsHit, Input = pred.Input, UnitPosition = b.UnitPosition, AoeHitCount = pred.AoeHitCount};
+            }
+            Console.WriteLine("Please report this to Berb.");
+            return new PredictionOutput();
         }
 
         /// <summary>
