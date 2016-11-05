@@ -884,9 +884,9 @@
         /// <param name="overrideRange">The override range.</param>
         /// <param name="collisionable">The collisionable.</param>
         /// <returns>PredictionOutput.</returns>
-        public virtual PredictionOutput GetPrediction(Obj_AI_Base unit, bool aoe = false, float overrideRange = -1, CollisionableObjects[] collisionable = null)
+        public PredictionOutput GetPrediction(Obj_AI_Base unit, bool aoe = false, float overrideRange = -1f, CollisionableObjects[] collisionable = null, int minTargets = 2)
         {
-            return
+            var pred = 
                 Prediction.GetPrediction(
                     new PredictionInput
                     {
@@ -902,6 +902,19 @@
                         Aoe = aoe,
                         CollisionObjects = collisionable ?? new[] { CollisionableObjects.Heroes, CollisionableObjects.Minions }
                     });
+
+            if (skillshot != null && IsSkillshot)
+            {
+                var a =  skillshot.GetPrediction(unit);
+                return new PredictionOutput() { CastPosition = a.CastPosition, Hitchance = pred.Hitchance, CollisionObjects = pred.CollisionObjects, AoeTargetsHit = pred.AoeTargetsHit, Input = pred.Input, UnitPosition = a.UnitPosition, _aoeTargetsHitCount = pred._aoeTargetsHitCount};
+            }
+            else if (IsChargedSpell && charge != null)
+            {
+                var b = charge.GetPrediction(unit);
+                return new PredictionOutput() { CastPosition = b.CastPosition, Hitchance = pred.Hitchance, CollisionObjects = pred.CollisionObjects, AoeTargetsHit = pred.AoeTargetsHit, Input = pred.Input, UnitPosition = b.UnitPosition, _aoeTargetsHitCount = pred._aoeTargetsHitCount };
+            }
+            Console.WriteLine("Please report this to Berb.");
+            return new PredictionOutput();
         }
         /// LOI cho nay
         /// <summary>
