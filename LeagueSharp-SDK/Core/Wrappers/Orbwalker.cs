@@ -237,25 +237,7 @@
             =>
                 GameObjects.Player.CanMove && !GameObjects.Player.IsCastingInterruptableSpell(true)
                 && Variables.TickCount - this.lastMovementOrderTick >= this.mainMenu["advanced"]["delayMovement"]
-                && this.lastBlockOrderTick - Variables.TickCount + Game.Ping / 2 <= 0 && this.CanCancelAttack;
-
-        private void OnDoCast2(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
-        {
-            if (!sender.IsMe)
-            {
-                return;
-            }
-
-            if (AutoAttack.IsAutoAttack(args.SData.Name))
-            {
-                var target = args.Target as AttackableUnit;
-
-                if (target != null && target.IsValid)
-                {
-                    this.InvokeActionOnAttack(target);
-                }
-            }
-        }
+                && this.CanCancelAttack && this.lastBlockOrderTick - Variables.TickCount + Game.Ping / 2 <= 0;
 
         private void OnDoCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
@@ -267,6 +249,11 @@
             if (AutoAttack.IsAutoAttack(args.SData.Name))
             {
                 this.InvokeActionAfterAttack();
+            }
+
+            if (AutoAttack.IsAutoAttackReset(args.SData.Name))
+            {
+                DelayAction.Add(30, this.ResetSwingTimer);
             }
         }
 
@@ -289,7 +276,6 @@
                         GameObject.OnDelete += this.OnDelete;
                         Obj_AI_Base.OnProcessSpellCast += this.OnProcessSpellCast;
                         Obj_AI_Base.OnSpellCast += this.OnDoCast;
-                        Obj_AI_Base.OnSpellCast += this.OnDoCast2;
                         Spellbook.OnStopCast += this.OnStopCast;
                         Obj_AI_Base.OnBuffGain += this.OnBuffAdd;
                         Obj_AI_Base.OnBasicAttack += Obj_AI_Base_OnBasicAttack;
@@ -366,7 +352,7 @@
             if (sender.IsMe && (args.Target is Obj_AI_Base || args.Target is Obj_BarracksDampener || args.Target is Obj_HQ))
             {
                 LastAutoAttackTick = Variables.TickCount - Game.Ping / 2;
-                //lastMovementOrderTick = 0;
+                lastMovementOrderTick = 0;
             }
         }
 
@@ -409,10 +395,10 @@
             {
                 var finishAtk = this.isFinishAttack;
 
-                if (!GameObjects.Player.CanCancelAutoAttack())
-                {
-                    return finishAtk || Variables.TickCount + Game.Ping / 2 >= this.LastAutoAttackTick + 100;
-                }
+                //if (!GameObjects.Player.CanCancelAutoAttack())
+                //{
+                //    return finishAtk || Variables.TickCount + Game.Ping / 2 >= this.LastAutoAttackTick + 100;
+                //}
 
                 var extraWindUp = this.mainMenu["advanced"]["delayWindup"].GetValue<MenuSlider>().Value;
                 switch (GameObjects.Player.ChampionName)

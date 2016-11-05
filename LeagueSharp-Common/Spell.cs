@@ -9,6 +9,8 @@
 
     using SharpDX;
     using EloBuddy;
+    using EloBuddy.SDK.Enumerations;
+
     /// <summary>
     ///     This class allows you to handle the spells easily.
     /// </summary>
@@ -59,6 +61,9 @@
         ///     The from position.
         /// </summary>
         private Vector3 _from;
+
+        public EloBuddy.SDK.Spell.Chargeable charge { get; private set; }
+        public EloBuddy.SDK.Spell.Skillshot skillshot { get; private set; }
 
         /// <summary>
         ///     The range of the spell
@@ -336,6 +341,7 @@
                        || Utils.TickCount - this._chargedCastedT < 300 + Game.Ping;
             }
         }
+
 
         /// <summary>
         ///     Gets or sets a value indicating whether this instance is skillshot.
@@ -792,10 +798,13 @@
             return Common.Collision.GetCollision(
                 to.Select(h => h.To3D()).ToList(),
                 new PredictionInput
-                    {
-                        From = from.To3D(), Type = this.Type, Radius = this.Width,
-                        Delay = delayOverride > 0 ? delayOverride : this.Delay, Speed = this.Speed
-                    });
+                {
+                    From = from.To3D(),
+                    Type = this.Type,
+                    Radius = this.Width,
+                    Delay = delayOverride > 0 ? delayOverride : this.Delay,
+                    Speed = this.Speed
+                });
         }
 
         /// <summary>
@@ -880,12 +889,19 @@
             return
                 Prediction.GetPrediction(
                     new PredictionInput
-                        {
-                            Unit = unit, Delay = this.Delay, Radius = this.Width, Speed = this.Speed, From = this.From,
-                            Range = (overrideRange > 0) ? overrideRange : this.Range, Collision = this.Collision,
-                            Type = this.Type, RangeCheckFrom = this.RangeCheckFrom, Aoe = aoe,
-                            CollisionObjects = collisionable ?? new[] { CollisionableObjects.Heroes, CollisionableObjects.Minions }
-                        });
+                    {
+                        Unit = unit,
+                        Delay = this.Delay,
+                        Radius = this.Width,
+                        Speed = this.Speed,
+                        From = this.From,
+                        Range = (overrideRange > 0) ? overrideRange : this.Range,
+                        Collision = this.Collision,
+                        Type = this.Type,
+                        RangeCheckFrom = this.RangeCheckFrom,
+                        Aoe = aoe,
+                        CollisionObjects = collisionable ?? new[] { CollisionableObjects.Heroes, CollisionableObjects.Minions }
+                    });
         }
         /// LOI cho nay
         /// <summary>
@@ -984,7 +1000,7 @@
         /// <param name="minRange">The minimum range.</param>
         /// <param name="maxRange">The maximum range.</param>
         /// <param name="deltaT">The delta time.</param>
-        public void SetCharged(string spellName, string buffName, int minRange, int maxRange, float deltaT)
+        public void SetCharged(string spellName, string buffName, int minRange, int maxRange, float deltaT, double castDelay = 0.25, int? spellSpeed = null, int? spellWidth = null)
         {
             this.IsChargedSpell = true;
             this.ChargedSpellName = spellName;
@@ -993,6 +1009,9 @@
             this.ChargedMaxRange = maxRange;
             this.ChargeDuration = (int)(deltaT * 1000);
             this._chargedCastedT = 0;
+
+            charge = new EloBuddy.SDK.Spell.Chargeable(Slot, (uint)minRange, (uint)maxRange - 75, (int)(deltaT * 1000), (int)castDelay * 1000, spellSpeed, spellWidth);
+            charge.AllowedCollisionCount = int.MaxValue;
 
             Obj_AI_Base.OnSpellCast += this.AIHeroClient_OnProcessSpellCast;
             Spellbook.OnUpdateChargeableSpell += this.Spellbook_OnUpdateChargedSpell;
@@ -1051,6 +1070,35 @@
             this.Type = type;
             this.RangeCheckFrom = rangeCheckFrom;
             this.IsSkillshot = true;
+
+            IsChargedSpell = false;
+
+            if (speed == float.MaxValue)
+            {
+                speed = 2147483648f;
+            }
+
+            charge = null;
+
+            if (type == SkillshotType.SkillshotCircle)
+            {
+                skillshot = new EloBuddy.SDK.Spell.Skillshot(Slot, (uint)_range, SkillShotType.Circular, (int)(delay * 1000), (int)(speed), (int)width);
+            }
+
+            if (Type == SkillshotType.SkillshotCone)
+            {
+                skillshot = new EloBuddy.SDK.Spell.Skillshot(Slot, (uint)_range, SkillShotType.Cone, (int)(delay * 1000), (int)(speed), (int)width);
+            }
+
+            if (Type == SkillshotType.SkillshotLine)
+            {
+                skillshot = new EloBuddy.SDK.Spell.Skillshot(Slot, (uint)_range, SkillShotType.Linear, (int)(delay * 1000), (int)(speed), (int)width);
+            }
+
+            if (collision)
+            {
+                skillshot.AllowedCollisionCount = 0;
+            }
         }
 
         /// <summary>
@@ -1249,6 +1297,7 @@
 
             //Get the best position to cast the spell.
             var prediction = this.GetPrediction(unit, aoe);
+            var prediction2 = (charge != null) ? charge.GetPrediction(unit) : skillshot.GetPrediction(unit);
 
             if (minTargets != -1 && prediction.AoeTargetsHitCount < minTargets)
             {
@@ -1256,22 +1305,32 @@
             }
 
             //Skillshot collides.
-            if (prediction.CollisionObjects.Count > 0)
+            if (prediction.CollisionObjects.Count() > 0)
             {
                 return CastStates.Collision;
             }
 
             //Target out of range.
-            if (this.RangeCheckFrom.Distance(prediction.CastPosition, true) > this.RangeSqr)
+            if (this.RangeCheckFrom.Distance(prediction2.CastPosition, true) > this.RangeSqr)
             {
                 return CastStates.OutOfRange;
             }
 
-            //The hitchance is too low.
-            if (prediction.Hitchance < this.MinHitChance
-                || (exactHitChance && prediction.Hitchance != this.MinHitChance))
+            if (IsChargedSpell)
             {
-                return CastStates.LowHitChance;
+                if (prediction.Hitchance < this.MinHitChance
+                    || (exactHitChance && prediction.Hitchance != this.MinHitChance))
+                {
+                    return CastStates.LowHitChance;
+                }
+            }
+            else
+            {
+                if (prediction2.HitChance < convertHitChance(this.MinHitChance)
+                    || (exactHitChance && prediction2.HitChance != convertHitChance(this.MinHitChance)))
+                {
+                    return CastStates.LowHitChance;
+                }
             }
 
             this.LastCastAttemptT = Utils.TickCount;
@@ -1280,7 +1339,7 @@
             {
                 if (this.IsCharging)
                 {
-                    ShootChargedSpell(this.Slot, prediction.CastPosition);
+                    ShootChargedSpell(this.Slot, prediction2.CastPosition);
                 }
                 else
                 {
@@ -1289,18 +1348,59 @@
             }
             else if (packetCast)
             {
-                ObjectManager.Player.Spellbook.CastSpell(this.Slot, prediction.CastPosition, false);
+                ObjectManager.Player.Spellbook.CastSpell(this.Slot, prediction2.CastPosition, false);
             }
             else
             {
                 //Cant cast the spell (actually should not happen).
-                if (!ObjectManager.Player.Spellbook.CastSpell(this.Slot, prediction.CastPosition))
+                if (!ObjectManager.Player.Spellbook.CastSpell(this.Slot, prediction2.CastPosition))
                 {
                     return CastStates.NotCasted;
                 }
             }
 
             return CastStates.SuccessfullyCasted;
+        }
+
+        public EloBuddy.SDK.Enumerations.HitChance convertHitChance(HitChance a)
+        {
+            if (a == HitChance.Collision)
+            {
+                return EloBuddy.SDK.Enumerations.HitChance.Collision;
+            }
+            if (a == HitChance.Dashing)
+            {
+                return EloBuddy.SDK.Enumerations.HitChance.Dashing;
+            }
+            if (a == HitChance.High)
+            {
+                return EloBuddy.SDK.Enumerations.HitChance.High;
+            }
+            if (a == HitChance.Immobile)
+            {
+                return EloBuddy.SDK.Enumerations.HitChance.Immobile;
+            }
+            if (a == HitChance.Impossible)
+            {
+                return EloBuddy.SDK.Enumerations.HitChance.Impossible;
+            }
+            if (a == HitChance.Low)
+            {
+                return EloBuddy.SDK.Enumerations.HitChance.Low;
+            }
+            if (a == HitChance.Medium)
+            {
+                return EloBuddy.SDK.Enumerations.HitChance.Medium;
+            }
+            if (a == HitChance.OutOfRange)
+            {
+                return EloBuddy.SDK.Enumerations.HitChance.Impossible;
+            }
+            if (a == HitChance.VeryHigh)
+            {
+                return EloBuddy.SDK.Enumerations.HitChance.High;
+            }
+            return EloBuddy.SDK.Enumerations.HitChance.Low;
         }
 
         /// <summary>

@@ -35,6 +35,9 @@ namespace LeagueSharp.SDK
     {
         #region Fields
 
+        public EloBuddy.SDK.Spell.Chargeable charge { get; private set; }
+        public EloBuddy.SDK.Spell.Skillshot skillshot { get; private set; }
+
         /// <summary>
         ///     Charged Cast Tick
         /// </summary>
@@ -485,6 +488,7 @@ namespace LeagueSharp.SDK
             }
 
             var prediction = this.GetPrediction(unit, areaOfEffect);
+            var prediction2 = (charge != null) ? charge.GetPrediction(unit) : skillshot.GetPrediction(unit);
 
             if (minTargets != -1 && prediction.AoeTargetsHitCount <= minTargets)
             {
@@ -496,14 +500,12 @@ namespace LeagueSharp.SDK
                 return CastStates.Collision;
             }
 
-            if (this.RangeCheckFrom.DistanceSquared(prediction.CastPosition) > this.RangeSqr)
+            if (this.RangeCheckFrom.DistanceSquared(prediction2.CastPosition) > this.RangeSqr)
             {
                 return CastStates.OutOfRange;
             }
 
-            if (prediction.Hitchance < ((tempHitChance == HitChance.None) ? this.MinHitChance : tempHitChance)
-                || (exactHitChance
-                    && prediction.Hitchance != ((tempHitChance == HitChance.None) ? this.MinHitChance : tempHitChance)))
+            if (prediction.Hitchance < ((tempHitChance == HitChance.None) ? this.MinHitChance : tempHitChance) || (exactHitChance && prediction.Hitchance != ((tempHitChance == HitChance.None) ? this.MinHitChance : tempHitChance)))
             {
                 return CastStates.LowHitChance;
             }
@@ -514,7 +516,7 @@ namespace LeagueSharp.SDK
             {
                 if (this.IsCharging)
                 {
-                    ShootChargedSpell(this.Slot, prediction.CastPosition);
+                    ShootChargedSpell(this.Slot, prediction2.CastPosition);
                 }
                 else
                 {
@@ -523,7 +525,7 @@ namespace LeagueSharp.SDK
             }
             else
             {
-                if (!GameObjects.Player.Spellbook.CastSpell(this.Slot, prediction.CastPosition))
+                if (!GameObjects.Player.Spellbook.CastSpell(this.Slot, prediction2.CastPosition))
                 {
                     return CastStates.NotCasted;
                 }
@@ -1130,7 +1132,7 @@ namespace LeagueSharp.SDK
         /// <returns>
         ///     The <see cref="Spell" />.
         /// </returns>
-        public Spell SetCharged(string spellName, string buffName, int minRange, int maxRange, float deltaT)
+        public Spell SetCharged(string spellName, string buffName, int minRange, int maxRange, float deltaT, double castDelay = 0.25, int? spellSpeed = null, int? spellWidth = null)
         {
             this.IsChargedSpell = true;
             this.ChargedSpellName = spellName;
@@ -1139,6 +1141,9 @@ namespace LeagueSharp.SDK
             this.ChargedMaxRange = maxRange;
             this.ChargeDuration = (int)(deltaT * 1000);
             this.chargedCastedT = 0;
+
+            charge = new EloBuddy.SDK.Spell.Chargeable(Slot, (uint)minRange, (uint)maxRange - 75, (int)(deltaT * 1000), (int)castDelay * 1000, spellSpeed, spellWidth);
+            charge.AllowedCollisionCount = int.MaxValue;
 
             Obj_AI_Base.OnSpellCast += this.OnProcessSpellCast;
             Spellbook.OnUpdateChargeableSpell += this.Spellbook_OnUpdateChargedSpell;
@@ -1202,6 +1207,35 @@ namespace LeagueSharp.SDK
             this.Type = type;
             this.RangeCheckFrom = rangeCheckFromVector3;
             this.IsSkillshot = true;
+
+            IsChargedSpell = false;
+
+            if (speed == float.MaxValue)
+            {
+                speed = 2147483648f;
+            }
+
+            charge = null;
+
+            if (type == SkillshotType.SkillshotCircle)
+            {
+                skillshot = new EloBuddy.SDK.Spell.Skillshot(Slot, (uint)range, EloBuddy.SDK.Enumerations.SkillShotType.Circular, (int)(delay * 1000), (int)(speed), (int)width);
+            }
+
+            if (Type == SkillshotType.SkillshotCone)
+            {
+                skillshot = new EloBuddy.SDK.Spell.Skillshot(Slot, (uint)range, EloBuddy.SDK.Enumerations.SkillShotType.Cone, (int)(delay * 1000), (int)(speed), (int)width);
+            }
+
+            if (Type == SkillshotType.SkillshotLine)
+            {
+                skillshot = new EloBuddy.SDK.Spell.Skillshot(Slot, (uint)range, EloBuddy.SDK.Enumerations.SkillShotType.Linear, (int)(delay * 1000), (int)(speed), (int)width);
+            }
+
+            if (collision)
+            {
+                skillshot.AllowedCollisionCount = 0;
+            }
 
             return this;
         }
